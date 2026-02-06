@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" href="../logoE.png" />
+    <title>Course Learning - NoveXa</title>
+    <link rel="stylesheet" href="../globals.css">
+    <link rel="stylesheet" href="../Sidebar/sidebar.css">
+    <link rel="stylesheet" href="../Homepage/style.css">
+    <link rel="stylesheet" href="courseafterapply.css">
+</head>
+<body data-page="courseLearning">
+    <!-- NAVIGATION BAR -->
+    <header class="navbar">
+        <div class="logo">
+            <a href="../home_page2/home_page2.html" id="logoButton">
+                <img src="../Novexa_assets/global_assets/logo_top.svg" alt="NoveXa Logo" />
+            </a>
+        </div>
+
+        <nav class="nav-links">
+            <a href="../home_page2/home_page2.html">Home</a>
+            <a href="../about_us/about_us.html">About Us</a>
+            <a href="../teacher list/teachersList.html">Teachers</a>
+            <a href="../e_library/e_library.html">Library</a>
+        </nav>
+
+        <a href="../profile/profile.html" class="profile-btn">My profile</a>
+        <div class="menu-icon" id="menu-toggle">☰</div>
+    </header>
+
+    <!-- MOBILE MENU -->
+    <div class="mobile-menu" id="mobileMenu">
+        <a href="../home_page2/home_page2.html">Home</a>
+        <a href="../about_us/about_us.html">About Us</a>
+        <a href="../teacher list/teachersList.html">Teachers</a>
+        <a href="../e_library/e_library.html">Library</a>
+    </div>
+
+    <!-- Main Content -->
+    <main class="course-learning-page">
+        <!-- Course Header with Progress -->
+        <section class="course-header-section">
+            <h1 class="course-title-main" id="courseTitle">Loading...</h1>
+            <div class="progress-container">
+                <div class="progress-bar" id="progressBar" style="width: 0%"></div>
+            </div>
+            <p class="progress-text">
+                <span id="progressPercent">0</span>% Complete • 
+                <span id="completedLectures">0</span> of 
+                <span id="totalLectures">0</span> items
+            </p>
+            <div id="certificateArea" style="margin-top: 15px; display: none;">
+                <button id="getCertificateBtn" class="btn-profile" style="background-color: #28a745; border-color: #28a745;">
+                    🎓 Get Certificate
+                </button>
+            </div>
+        </section>
+
+        <!-- Video & Sidebar Layout -->
+        <div class="learning-container">
+            <!-- Video Section -->
+            <div class="video-section">
+                <div class="video-container" id="videoContainer">
+                    <div class="video-placeholder">
+                        <div style="font-size: 80px;">▶️</div>
+                        <p>Video Player</p>
+                        <p style="font-size: 14px; margin-top: 10px;">Click a lecture to start</p>
+                    </div>
+                </div>
+
+                <div class="lecture-info">
+                    <h2 class="lecture-title-current" id="currentLectureTitle">Select a lecture to begin</h2>
+                    
+                    <div class="video-controls">
+                        <button class="control-btn btn-previous" id="prevBtn" disabled>⬅ Previous</button>
+                        <button class="control-btn btn-complete" id="completeBtn" disabled>✓ Mark Complete</button>
+                        <button class="control-btn btn-next" id="nextBtn" disabled>Next ➡</button>
+                    </div>
+                </div>
+                <div class="feedback">
+                    <span><strong>What do you think about the course ?</strong></span>
+                    <button class="add-feedback" id="feedback" >Add  a  feedback </button>
+                </div>
+            </div>
+
+            <!-- Course Content Sidebar -->
+            <div class="course-sidebar">
+                <h3 class="sidebar-header">Course Content</h3>
+                <div class="sections-container" id="sectionsContainer">
+                </div>
+                
+            </div>
+           
+        </div>
+
+    </main>
+    <!-- Footer -->
+        <div id="footer-placeholder"></div>
+
+        <script>
+            // Load footer.html into the placeholder
+            fetch("../Footer/footer.html")
+                .then(response => response.text())
+                .then(data => {
+                    document.getElementById("footer-placeholder").innerHTML = data;
+                })
+                .catch(error => console.error("Error loading footer:", error));
+        </script>
+
+
+    <script src="../js/api-config.js"></script>
+    <script src="../js/navbar-logic.js"></script>
+    <script src="courseafterapply.js"></script>
+    
+    
+    
+</body>
+</html>

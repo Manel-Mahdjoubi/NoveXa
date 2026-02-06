@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" href="../logoE.png" />
+    <title>Course Management - NOVEXA</title>
+    <link rel="stylesheet" href="coursemanagement.css">
+    <link rel="stylesheet" href="../Homepage/style.css">
+    <link rel="stylesheet" href="../Sidebar/sidebar.css">
+    <link rel="stylesheet" href="enhanced_course.css">
+    <link rel="stylesheet" href="../Footer/footer.css">
+</head>
+
+<body data-page="courseLearning">
+    <!-- Teacher-Only Access Control -->
+    <script src="../js/teacher-only.js"></script>
+    
+    <!--Header part -->
+    <header id="mainHeader">
+        <nav class="navbar">
+            <a href="../Homepage/homepage.html" class="navbar-logo">
+                <img src="../asset/logo.svg" alt="Logo" />
+            </a>
+
+            <ul class="nav-menu">
+                <li class="nav-item">
+                    <a href="../home_page2/home_page2.html" class="nav-link">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a href="../about_us/about_us.html" class="nav-link">About us</a>
+                </li>
+                <li class="nav-item">
+                    <a href="../teacher list/teachersList.html" class="nav-link">Teachers</a>
+                </li>
+                <li class="nav-item">
+                    <a href="../e_library/e_library.html" class="nav-link">Library</a>
+                </li>
+            </ul>
+
+            <div class="nav-buttons">
+                <button class="btn-profile">My Profile</button>
+            </div>
+
+            <div class="menu-toggle">&#9776;</div>
+        </nav>
+    </header>
+    <!-- Dynamic Sidebar will be loaded here -->
+    <script src="../js/api-config.js"></script>
+    <script src="../Sidebar/load-sidebare.js"></script>
+    <!-- Main Content -->
+    <main class="main-content">
+        <h1 class="page-title">Course Management</h1>
+
+        <div class="container">
+            <!-- Left Side - Course Form -->
+            <section class="course-form">
+                <div class="form-group">
+                    <input type="text" class="form-input" placeholder="Course Name" id="courseName">
+                </div>
+
+                <div class="form-group">
+                    <input type="text" class="form-input" placeholder="field" id="field">
+                </div>
+
+                <div class="form-group">
+                    <input type="text" class="form-input" placeholder="destionated to" id="destinatedTo">
+                </div>
+
+                <div class="form-group">
+                    <input type="text" class="form-input" placeholder="Number of sessions" id="sessions">
+                </div>
+
+              
+                <div class="form-group">
+                    <input type="text" class="form-input" placeholder="Course Description" id="description">
+                </div>
+
+                <div class="form-group">
+                    <input type="text" class="form-input" placeholder="Max number of students" id="maxStudents">
+                </div>
+
+                <div class="form-group">
+                    <input type="text" class="form-input" placeholder="Price" id="price">
+                </div>
+
+                <div class="form-group">
+                    <input type="text" class="form-input" placeholder="Certificate? yes/no" id="certificate">
+                </div>
+
+                <!-- Course Image Upload Section -->
+                <div class="form-group course-image-group">
+                    <label class="course-image-label">Course Image</label>
+                    <div class="course-image-upload">
+                        <button type="button" class="course-image-btn" id="courseImageBtn">
+                            Choose Image
+                        </button>
+                        <span class="course-image-name" id="courseImageName">No image selected</span>
+                    </div>
+                    <input type="file" id="courseImageInput" accept="image/*" hidden>
+                    <div class="course-image-preview" id="courseImagePreview"></div>
+                </div>
+            </section>
+
+            <!-- Right Side - Upload Sections -->
+            <section class="upload-sections">
+                <!-- Add File Section -->
+                <div class="upload-card">
+                    <button class="upload-btn" id="addFileBtn">Add file</button>
+
+                    <!-- Drag & Drop Zone for Files -->
+                    <div class="dropzone" id="fileDropzone">
+                        <p class="dropzone-text">Drag & drop files here</p>
+                        <p class="dropzone-subtext">or click to browse</p>
+                    </div>
+                    <input type="file" id="fileInput" multiple hidden>
+
+                    <!-- Files List -->
+                    <div class="files-container" id="filesContainer">
+                        <div class="files-header">
+                            <span class="files-count" id="filesCount"></span>
+                            <button class="clear-all-btn" id="clearAllBtn">Clear All</button>
+                        </div>
+                        <div id="filesList"></div>
+                    </div>
+                </div>
+
+                <!-- Add Video Section -->
+                <div class="upload-card">
+                    <button class="upload-btn" id="addVideoBtn">Add Video</button>
+
+                    <!-- Drag & Drop Zone for Videos -->
+                    <div class="dropzone" id="videoDropzone">
+                        <p class="dropzone-text">Drag & drop videos here</p>
+                        <p class="dropzone-subtext">or click to browse</p>
+                    </div>
+                    <input type="file" id="videoInput" accept="video/*" multiple hidden>
+
+                    <!-- Videos List -->
+                    <div class="files-container" id="videosContainer">
+                        <div class="files-header">
+                            <span class="files-count" id="videosCount"></span>
+                            <button class="clear-all-btn" id="clearAllVideosBtn">Clear All</button>
+                        </div>
+                        <div id="videosList"></div>
+                    </div>
+                </div>
+
+                <!-- Add Quiz Section -->
+                <div class="quiz-section">
+                    <button class="upload-btn quiz-btn" id="addQuizBtn">Add Quizz</button>
+                </div>
+            </section>
+            <!-- Create Course Button (Outside container, bottom right) -->
+            <div class="create-course-wrapper">
+                <button class="create-course-btn" id="createCourseBtn">Create course</button>
+            </div>
+        </div>
+
+    </main>
+    <!-- Footer -->
+    <div id="footer-placeholder"></div>
+
+    <script>
+        // Load footer.html into the placeholder
+        fetch("../Footer/footer.html")
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById("footer-placeholder").innerHTML = data;
+            })
+            .catch(error => console.error("Error loading footer:", error));
+    </script>
+    <script src="coursemanagement.js"></script>
+    
+
+</body>
+
+</html>

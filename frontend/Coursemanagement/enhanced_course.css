@@ -1,0 +1,511 @@
+/* ===============================
+   ENHANCED CHAPTERS CONFIGURATION
+   =============================== */
+
+.chapters-container {
+    margin-top: 1.5rem;
+    margin-bottom: 1.5rem;
+    padding: 1.5rem;
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 15px;
+    border: 2px solid #3ba5e2;
+    box-shadow: 0 4px 15px rgba(59, 165, 226, 0.2);
+    animation: slideIn 0.3s ease;
+}
+
+.chapters-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid #e0e0e0;
+}
+
+.chapters-badge {
+    background: linear-gradient(135deg, #3ba5e2, #2b95d2);
+    color: white;
+    padding: 0.4rem 1rem;
+    border-radius: 25px;
+    font-weight: 700;
+    font-size: 1rem;
+    box-shadow: 0 2px 8px rgba(59, 165, 226, 0.3);
+}
+
+.chapters-title {
+    color: #154d70;
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin: 0;
+}
+
+.chapters-list {
+    max-height: 500px;
+    overflow-y: auto;
+    padding-right: 0.5rem;
+}
+
+.chapter-row {
+    margin-bottom: 1.5rem;
+}
+
+.chapter-config {
+    background: white;
+    border-radius: 12px;
+    padding: 1.2rem;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    border-left: 4px solid #3ba5e2;
+    transition: all 0.3s ease;
+}
+
+.chapter-config:hover {
+    box-shadow: 0 4px 15px rgba(59, 165, 226, 0.2);
+    transform: translateX(5px);
+}
+
+.chapter-number {
+    display: inline-block;
+    background: linear-gradient(135deg, #3ba5e2, #2b95d2);
+    color: white;
+    padding: 0.3rem 0.8rem;
+    border-radius: 20px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    margin-bottom: 1rem;
+}
+
+.chapter-inputs-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 1rem;
+}
+
+.mini-label {
+    display: block;
+    color: #154d70;
+    font-size: 0.85rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+}
+
+.chapter-name-input,
+.chapter-lectures-input {
+    width: 100%;
+    padding: 0.7rem 1rem;
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    transition: all 0.3s ease;
+}
+
+.chapter-name-input:focus,
+.chapter-lectures-input:focus {
+    outline: none;
+    border-color: #3ba5e2;
+    box-shadow: 0 0 0 3px rgba(59, 165, 226, 0.1);
+}
+
+/* ===============================
+   DYNAMIC UPLOAD SECTIONS
+   =============================== */
+
+.dynamic-upload-container {
+    min-height: 400px;
+    background: white;
+    border-radius: 15px;
+    padding: 1.5rem;
+}
+
+.upload-placeholder {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 350px;
+    text-align: center;
+    color: #718096;
+}
+
+.placeholder-icon {
+    font-size: 4rem;
+    margin-bottom: 1rem;
+    opacity: 0.5;
+}
+
+.upload-placeholder h3 {
+    color: #2d3748;
+    margin-bottom: 0.5rem;
+    font-size: 1.3rem;
+}
+
+.upload-placeholder p {
+    color: #a0aec0;
+    font-size: 0.95rem;
+}
+
+/* Chapter Tabs */
+.chapter-tabs {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
+    flex-wrap: wrap;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid #e0e0e0;
+}
+
+.chapter-tab {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.3rem;
+    padding: 0.8rem 1.2rem;
+    background: #f7fafc;
+    border: 2px solid #e0e0e0;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-family: inherit;
+}
+
+.chapter-tab:hover {
+    background: #edf2f7;
+    border-color: #3ba5e2;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(59, 165, 226, 0.2);
+}
+
+.chapter-tab.active {
+    background: linear-gradient(135deg, #3ba5e2, #2b95d2);
+    border-color: #2b95d2;
+    color: white;
+    box-shadow: 0 4px 15px rgba(59, 165, 226, 0.4);
+}
+
+.tab-number {
+    font-size: 0.75rem;
+    font-weight: 700;
+    opacity: 0.8;
+}
+
+.chapter-tab.active .tab-number {
+    opacity: 1;
+}
+
+.tab-name {
+    font-size: 0.95rem;
+    font-weight: 600;
+}
+
+.tab-count {
+    font-size: 0.75rem;
+    opacity: 0.7;
+}
+
+.chapter-tab.active .tab-count {
+    opacity: 0.9;
+}
+
+/* Chapter Content Area */
+.chapter-content-area {
+    position: relative;
+}
+
+.chapter-content {
+    display: none;
+    animation: fadeIn 0.3s ease;
+}
+
+.chapter-content.active {
+    display: block;
+}
+
+.chapter-content-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+    padding: 1rem;
+    background: linear-gradient(135deg, #f0f9ff, #e0f2fe);
+    border-radius: 12px;
+    border-left: 4px solid #3ba5e2;
+}
+
+.chapter-content-header h3 {
+    color: #154d70;
+    font-size: 1.2rem;
+    margin: 0;
+}
+
+.lecture-count-badge {
+    background: #3ba5e2;
+    color: white;
+    padding: 0.3rem 1rem;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+
+/* Chapter Quiz Section */
+.chapter-quiz-section {
+    margin: 1rem 0 1.5rem 0;
+    padding: 1rem;
+    background: linear-gradient(135deg, #f0f9ff, #e0f2fe);
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    border: 2px dashed #3ba5e2;
+}
+
+.chapter-quiz-section .quiz-btn {
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    padding: 0.8rem 2rem;
+    font-size: 1rem;
+    color: white;
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+}
+
+.chapter-quiz-section .quiz-btn:hover {
+    background: linear-gradient(135deg, #764ba2, #667eea);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+}
+
+/* Lectures List */
+.lectures-list {
+    display: grid;
+    gap: 1.5rem;
+}
+
+.lecture-card {
+    background: white;
+    border: 2px solid #e0e0e0;
+    border-radius: 12px;
+    padding: 1.5rem;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.lecture-card:hover {
+    border-color: #3ba5e2;
+    box-shadow: 0 4px 15px rgba(59, 165, 226, 0.15);
+    transform: translateY(-2px);
+}
+
+.lecture-header {
+    margin-bottom: 1rem;
+    padding-bottom: 0.8rem;
+    border-bottom: 2px solid #f0f0f0;
+}
+
+.lecture-number {
+    display: inline-block;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: white;
+    padding: 0.3rem 1rem;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+
+.lecture-label {
+    display: block;
+    color: #2d3748;
+    font-size: 0.9rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+}
+
+.lecture-name-input {
+    width: 100%;
+    padding: 0.8rem 1rem;
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    transition: all 0.3s ease;
+}
+
+.lecture-name-input:focus {
+    outline: none;
+    border-color: #3ba5e2;
+    box-shadow: 0 0 0 3px rgba(59, 165, 226, 0.1);
+}
+
+/* Lecture Uploads */
+.lecture-uploads {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.upload-group {
+    background: #f7fafc;
+    padding: 1rem;
+    border-radius: 10px;
+    border: 2px dashed #cbd5e0;
+}
+
+.file-select-area {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+}
+
+.select-video-btn,
+.select-files-btn {
+    padding: 0.6rem 1rem;
+    background: linear-gradient(135deg, #3ba5e2, #2b95d2);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    white-space: nowrap;
+}
+
+.select-video-btn:hover,
+.select-files-btn:hover {
+    background: linear-gradient(135deg, #2b95d2, #1a75c2);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(59, 165, 226, 0.3);
+}
+
+.file-name {
+    flex: 1;
+    font-size: 0.85rem;
+    color: #718096;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* Mini Files List */
+.mini-files-list {
+    margin-top: 0.8rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.mini-file-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem 0.8rem;
+    background: white;
+    border-radius: 6px;
+    border: 1px solid #e0e0e0;
+}
+
+.mini-file-name {
+    flex: 1;
+    font-size: 0.8rem;
+    color: #2d3748;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.remove-mini-file {
+    padding: 0.2rem 0.6rem;
+    background: #fc8181;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.remove-mini-file:hover {
+    background: #e53e3e;
+    transform: scale(1.1);
+}
+
+/* ===============================
+   ANIMATIONS
+   =============================== */
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-10px); }
+    75% { transform: translateX(10px); }
+}
+
+/* ===============================
+   RESPONSIVE DESIGN
+   =============================== */
+
+@media (max-width: 900px) {
+    .chapter-inputs-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .lecture-uploads {
+        grid-template-columns: 1fr;
+    }
+
+    .chapter-tabs {
+        flex-direction: column;
+    }
+
+    .chapter-tab {
+        width: 100%;
+    }
+}
+
+@media (max-width: 600px) {
+    .chapters-container {
+        padding: 1rem;
+    }
+
+    .lecture-card {
+        padding: 1rem;
+    }
+
+    .file-select-area {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .select-video-btn,
+    .select-files-btn {
+        width: 100%;
+    }
+    
+    .chapter-quiz-section {
+        padding: 0.8rem;
+    }
+    
+    .chapter-quiz-section .quiz-btn {
+        padding: 0.7rem 1.5rem;
+        font-size: 0.9rem;
+    }
+}

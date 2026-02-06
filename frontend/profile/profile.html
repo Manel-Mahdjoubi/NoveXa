@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile Page</title>
+    <link rel="icon" type="image/png" href="../logoE.png">
+    <link rel="stylesheet" href="styleForProfile.css">
+    <link rel="stylesheet" href="../Sidebar/sidebar.css"> 
+    <link rel="stylesheet" href="../globals.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body data-page="profile">
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="spinner"></div>
+    </div>
+<!--Header part -->
+  <header class="navbar">
+    <div class="logo">
+      <a href="../home_page2/home_page2.html" id="logoButton">
+        <img
+          src="../Novexa_assets/global_assets/logo_top.svg"
+          alt="NoveXa Logo"
+        />
+      </a>
+    </div>
+
+    <nav class="nav-links">
+      <a href="../home_page2/home_page2.html">Home</a>
+      <a href="../about_us/about_us.html">About Us</a>
+      <a href="../teacher list/teachersList.html">Teachers</a>
+      <a href="../e_library/e_library.html">Library</a>
+    </nav>
+
+    <a href="../profile/profile.html" class="profile-btn">My profile</a>
+    <div class="menu-icon" id="menu-toggle">☰</div>
+  </header>
+
+  <!-- MOBILE MENU -->
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="../home_page2/home_page2.html">Home</a>
+    <a href="../about_us/about_us.html">About Us</a>
+    <a href="../teacher list/teachersList.html">Teachers</a>
+    <a href="../e_library/e_library.html">Library</a>
+  </div>
+
+    <!-- Dynamic Sidebar will be loaded here -->
+    <script src="../js/api-config.js"></script>
+    <script src="../Sidebar/load-sidebare.js"></script>
+
+    <div class="page-container">
+        <main class="page-wrapper">
+
+            <div class="container">
+                <!-- Profile Header Section -->
+                <section class="profile-header" aria-label="Profile header">
+                    <div class="profile-header__content">
+                        <div class="profile-header__avatar-wrapper">
+                            <div class="profile-header__avatar" role="img" aria-label="User profile picture"></div>
+                        </div>
+                        <div class="profile-header__info">
+                            <h1 class="profile-header__name">Name</h1>
+                            <p class="profile-header__bio">Bio</p>
+                        </div>
+                    </div>
+
+                    <button class="btn btn--secondary" aria-label="Change profile photo">
+                        Change Photo
+                    </button>
+                </section>
+
+                <!-- Edit Information Section -->
+                <div class="edit-section">
+                    <button class="btn btn-edit-info" aria-label="Edit profile information">
+                        edit information
+                    </button>
+                </div>
+
+                <!-- Main Content Grid -->
+                <div class="content-grid">
+                    <!-- General Information Card -->
+                    <section class="card" aria-labelledby="general-info-title">
+                        <h2 id="general-info-title" class="card__title">General information</h2>
+                        <form class="form" aria-label="General information form">
+                            <div class="form__group">
+                                <label for="first-name" class="form__label visually-hidden">First Name</label>
+                                <input type="text" id="first-name" name="first-name" class="form__input"
+                                    placeholder="First Name" aria-label="First Name">
+                            </div>
+                            <div class="form__group">
+                                <label for="last-name" class="form__label visually-hidden">Last Name</label>
+                                <input type="text" id="last-name" name="last-name" class="form__input"
+                                    placeholder="Last Name" aria-label="Last Name">
+                            </div>
+                            <div class="form__group">
+                                <label for="birthday" class="form__label visually-hidden">Birthday</label>
+                                <input type="date" id="birthday" name="birthday" class="form__input"
+                                    placeholder="Birthday" aria-label="Birthday">
+                            </div>
+                            <div class="form__group">
+                                <label for="phone" class="form__label visually-hidden">Phone Number</label>
+                                <input type="tel" id="phone" name="phone" class="form__input"
+                                    placeholder="+213*********" aria-label="Phone Number" max="10">
+                            </div>
+                        </form>
+                    </section>
+
+                    <!-- Social Information Card -->
+                    <section class="card" aria-labelledby="social-info-title">
+                        <h2 id="social-info-title" class="card__title">Social information</h2>
+                        <form class="form" aria-label="Social information form">
+                            <div class="form__group form__group--with-icon">
+                                <label for="youtube" class="form__label visually-hidden">YouTube URL</label>
+                                <i class="fab fa-youtube form__icon" aria-hidden="true"></i>
+                                <input type="url" id="youtube" name="youtube" class="form__input form__input--with-icon"
+                                    placeholder="" aria-label="YouTube URL">
+                            </div>
+                            <div class="form__group form__group--with-icon">
+                                <label for="facebook" class="form__label visually-hidden">Facebook URL</label>
+                                <i class="fab fa-facebook form__icon" aria-hidden="true"></i>
+                                <input type="url" id="facebook" name="facebook"
+                                    class="form__input form__input--with-icon" placeholder="" aria-label="Facebook URL">
+                            </div>
+                            <div class="form__group form__group--with-icon">
+                                <label for="instagram" class="form__label visually-hidden">Instagram URL</label>
+                                <i class="fab fa-instagram form__icon" aria-hidden="true"></i>
+                                <input type="url" id="instagram" name="instagram"
+                                    class="form__input form__input--with-icon" placeholder=""
+                                    aria-label="Instagram URL">
+                            </div>
+                            <div class="form__group form__group--with-icon">
+                                <label for="linkedin" class="form__label visually-hidden">LinkedIn URL</label>
+                                <i class="fab fa-linkedin form__icon" aria-hidden="true"></i>
+                                <input type="url" id="linkedin" name="linkedin"
+                                    class="form__input form__input--with-icon" placeholder="" aria-label="LinkedIn URL">
+                            </div>
+                        </form>
+                    </section>
+                </div>
+
+                <!-- Bio Section -->
+                <section class="card card--full-width" aria-labelledby="bio-title">
+                    <h2 id="bio-title" class="card__title">Bio</h2>
+                    <form class="form" aria-label="Bio form">
+                        <div class="form__group">
+                            <label for="bio" class="form__label visually-hidden">Biography</label>
+                            <textarea id="bio" name="bio" class="form__textarea" placeholder="" aria-label="Biography"
+                                rows="4" maxlength="100"></textarea>
+                        </div>
+                    </form>
+                </section>
+
+                <!-- About Section -->
+                <section class="card card--full-width" aria-labelledby="about-title">
+                    <h2 id="about-title" class="card__title">About</h2>
+                    <form class="form" aria-label="About form">
+                        <div class="form__group">
+                            <label for="study-at" class="form__label visually-hidden">Study at</label>
+                            <input type="text" id="study-at" name="study-at" class="form__input" placeholder="Study at"
+                                aria-label="Study at">
+                        </div>
+                        <div class="form__group">
+                            <label for="field-of-study" class="form__label visually-hidden">Field of study</label>
+                            <input type="text" id="field-of-study" name="field-of-study" class="form__input"
+                                placeholder="Field of study" aria-label="Field of study">
+                        </div>
+                        <div class="form__group">
+                            <label for="address" class="form__label visually-hidden">Address</label>
+                            <input type="text" id="address" name="address" class="form__input" placeholder="Adress"
+                                aria-label="Address">
+                        </div>
+                    </form>
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <script src="../js/navbar-logic.js"></script>
+    <script src="profile.js"></script>
+
+<!-- Script for header-->
+ <script>
+  document.addEventListener("DOMContentLoaded", function () {
+    /*MOBILE NAV MENU */
+    const menuToggle = document.getElementById("menu-toggle");
+    const mobileMenu = document.getElementById("mobileMenu");
+
+    if (menuToggle && mobileMenu) {
+      menuToggle.addEventListener("click", () => {
+        const isVisible =
+          mobileMenu.style.display === "flex" ||
+          mobileMenu.classList.contains("active");
+
+        if (isVisible) {
+          mobileMenu.style.display = "none";
+          mobileMenu.classList.remove("active");
+        } else {
+          mobileMenu.style.display = "flex";
+          mobileMenu.classList.add("active");
+        }
+      });
+    }
+  }); 
+ </script>
+
+
+    <!-- Footer -->
+    <div id="footer-placeholder"></div>
+
+    <script>
+        // Load footer.html into the placeholder
+        fetch("../Footer/footer.html")
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById("footer-placeholder").innerHTML = data;
+            })
+            .catch(error => console.error("Error loading footer:", error));
+    </script>
+
+   
+    
+    
+</body>
+
+</html>

@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teacher Dashboard - NOVEXA</title>
+    <link rel="stylesheet" href="styleForDashboard.css">
+    <link rel="stylesheet" href="../globals.css">
+    <link rel="stylesheet" href="../Sidebar/sidebar.css">
+    <link rel="icon" type="image/png" href="../logoE.png">
+</head>
+
+<body data-page="dashboard">
+    <!--Header part -->
+    <header class="navbar">
+        <div class="logo">
+            <a href="../home_page2/home_page2.html" id="logoButton">
+                <img src="../Novexa_assets/global_assets/logo_top.svg" alt="NoveXa Logo" />
+            </a>
+        </div>
+
+        <nav class="nav-links">
+            <a href="../home_page2/home_page2.html">Home</a>
+            <a href="../about_us/about_us.html">About Us</a>
+            <a href="../students list/studentsList.html">Students</a>
+            <a href="../e_library/e_library.html">Library</a>
+        </nav>
+
+        <a href="../profile/profile.html" class="profile-btn">My profile</a>
+        <div class="menu-icon" id="menu-toggle">☰</div>
+    </header>
+
+    <!-- MOBILE MENU -->
+    <div class="mobile-menu" id="mobileMenu">
+        <a href="../home_page2/home_page2.html">Home</a>
+        <a href="../about_us/about_us.html">About Us</a>
+        <a href="../students list/studentsList.html">Students</a>
+        <a href="../e_library/e_library.html">Library</a>
+    </div>
+    <aside class="sidebare collapsed" id="sidebare">
+        <!-- Close Button  -->
+        <button class="sidebare-close" id="sidebarClose"></button>
+
+        <!-- Sidebar Content -->
+        <div class="sidebare-content">
+            <!-- User Profile Section -->
+            <div class="user-profile">
+                <div class="user-avatar">
+                    <img src="../asset/sidebar/proSide.jpg" alt="User Avatar" id="sidebarAvatar">
+                </div>
+                <h3 class="user-name" id="sidebarName">Teacher Name</h3>
+                <p class="user-role" id="sidebarRole">Teacher</p>
+            </div>
+
+            <!-- Navigation Menu -->
+            <nav class="sidebare-navv">
+                <ul class="navv-list">
+                    <li class="navv-item active">
+                        <a href="../profile/profile.html" class="navv-link" data-page="profile">
+                            <span class="navv-icon">
+                                <img src="../asset/sidebar/profile.svg" alt="Profile">
+                            </span>
+                            <span class="navv-text">Profile</span>
+                        </a>
+                    </li>
+                    <li class="navv-item">
+                        <a href="../student and teacher dashboard/tDashboard.html" class="navv-link"
+                            data-page="dashboard">
+                            <span class="navv-icon">
+                                <img src="../asset/sidebar/dashboard.svg" alt="Dashboard">
+                            </span>
+                            <span class="navv-text">Dashboard</span>
+                        </a>
+                    </li>
+                    <li class="navv-item">
+                        <a href="../Coursemanagement/coursemanagement.html" class="navv-link"
+                            data-page="courseLearning">
+                            <span class="navv-icon">
+                                <img src="../asset/sidebar/lectures.svg" alt="My Courses">
+                            </span>
+                            <span class="navv-text">Create Course</span>
+                        </a>
+                    </li>
+                    <li class="navv-item">
+                        <a href="../quiz pages/tQuiz.html" class="navv-link" data-page="quizzes">
+                            <span class="navv-icon">
+                                <img src="../asset/sidebar/quizzes.svg" alt="Courses">
+                            </span>
+                            <span class="navv-text">Quizzes</span>
+                        </a>
+                    </li>
+                    <li class="navv-item">
+                        <a href="../students list/studentsList.html" class="navv-link" data-page="teachers">
+                            <span class="navv-icon">
+                                <img src="../asset/sidebar/students.svg" alt="Teachers">
+                            </span>
+                            <span class="navv-text">Students</span>
+                        </a>
+                    </li>
+                    <li class="navv-item">
+                        <a href="../e_library/e_library.html" class="navv-link" data-page="library">
+                            <span class="navv-icon">
+                                <img src="../asset/sidebar/library.svg" alt="Library">
+                            </span>
+                            <span class="navv-text">Library</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+
+            <!-- Action Buttons -->
+            <div class="sidebare-actions">
+                <button class="action-btn btn-secondary">
+                    <span class="btn-text">Logout</span>
+                </button>
+            </div>
+        </div>
+        <footer class="sidebare-footer">
+            <p>© 2025 NoveXa</p>
+        </footer>
+    </aside>
+
+    <!-- Toggle Button -->
+    <button class="sidebare-toggle" id="sidebarToggle">
+        <span class="togglee-icon">></span>
+    </button>
+
+    <!-- Overlay for mobile -->
+    <div class="sidebare-overlay" id="sidebarOverlay"></div>
+
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="spinner"></div>
+    </div>
+
+
+    <!-- Teacher Dashboard Page -->
+    <div class="dashboard teacher-dashboard">
+        <!-- Main Content -->
+        <main class="dashboard__content">
+            <div class="dashboard__container">
+
+                <!-- Your Courses Section -->
+                <section class="card card--full" aria-labelledby="courses-title">
+                    <div class="card__header">
+                        <h2 id="courses-title" class="card__title">Your Courses</h2>
+                        <div class="search-box">
+                            <input type="search" class="search-box__input" placeholder="search"
+                                aria-label="Search courses">
+                        </div>
+                        <a href="../Coursemanagement/coursemanagement.html">
+                            <button class="btn btn--management">+ Add a Course</button>
+                        </a>
+                    </div>
+
+                    <div class="responsive-table-container">
+                        <div class="courses-table teacher-courses-table">
+                            <div class="courses-table__header">
+                                <div class="courses-table__column">Course Name</div>
+                                <div class="courses-table__column">Students Enrolled</div>
+                                <div class="courses-table__column">Average Grade</div>
+                                <div class="courses-table__column">Actions</div>
+                            </div>
+
+                            <!-- Course Rows will be populated dynamically by JS -->
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Two Column Layout -->
+                <div class="dashboard__grid">
+
+                    <!-- Students Performance Section -->
+                    <section class="card" aria-labelledby="performance-title">
+                        <h2 id="performance-title" class="card__title">Students Performance</h2>
+
+                        <div class="performance-chart">
+                            <!-- Performance Bars -->
+                            <div class="performance-chart__bars">
+                                <div class="performance-bar">
+                                    <div class="performance-bar__fill performance-bar__fill--purple" style="width: 0%">
+                                        <span class="performance-bar__label">0%</span>
+                                    </div>
+                                </div>
+                                <div class="performance-bar">
+                                    <div class="performance-bar__fill performance-bar__fill--green" style="width: 0%">
+                                        <span class="performance-bar__label">0%</span>
+                                    </div>
+                                </div>
+                                <div class="performance-bar">
+                                    <div class="performance-bar__fill performance-bar__fill--yellow" style="width: 0%">
+                                        <span class="performance-bar__label">0%</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Scale Labels -->
+                        <div class="performance-chart__scale">
+                            <span>0%</span>
+                            <span>25%</span>
+                            <span>50%</span>
+                            <span>75%</span>
+                            <span>100%</span>
+                        </div>
+
+                        <!-- Legend -->
+                        <div class="performance-legend">
+                            <div class="performance-legend__item">
+                                <span class="performance-legend__color performance-legend__color--purple"></span>
+                                <span class="performance-legend__text">Lecture Attendees</span>
+                                <span class="performance-legend__value">0%</span>
+                            </div>
+                            <div class="performance-legend__item">
+                                <span class="performance-legend__color performance-legend__color--green"></span>
+                                <span class="performance-legend__text">Completed Courses</span>
+                                <span class="performance-legend__value">0%</span>
+                            </div>
+                            <div class="performance-legend__item">
+                                <span class="performance-legend__color performance-legend__color--yellow"></span>
+                                <span class="performance-legend__text">Doing Quizzes</span>
+                                <span class="performance-legend__value">0%</span>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Upcoming Tasks Section -->
+                    <section class="card" aria-labelledby="tasks-title">
+                        <h2 id="tasks-title" class="card__title">Upcoming Tasks</h2>
+
+                        <div class="task-list">
+                            <!-- Empty Task Slots for Input -->
+                            <div class="task-item">
+                                <input type="checkbox" id="teacher-task1" class="task-item__checkbox"
+                                    aria-label="Mark task as complete">
+                                <div class="task-item__bar">
+                                    <input type="text" class="task-item__input" placeholder="Write your task here..."
+                                        aria-label="Task description">
+                                </div>
+                                <button class="btn--task-delete" title="Delete Task" style="display: none;">×</button>
+                            </div>
+                            <div class="task-item">
+                                <input type="checkbox" id="teacher-task2" class="task-item__checkbox"
+                                    aria-label="Mark task as complete">
+                                <div class="task-item__bar">
+                                    <input type="text" class="task-item__input" placeholder="Write your task here..."
+                                        aria-label="Task description">
+                                </div>
+                                <button class="btn--task-delete" title="Delete Task" style="display: none;">×</button>
+                            </div>
+                            <div class="task-item">
+                                <input type="checkbox" id="teacher-task3" class="task-item__checkbox"
+                                    aria-label="Mark task as complete">
+                                <div class="task-item__bar">
+                                    <input type="text" class="task-item__input" placeholder="Write your task here..."
+                                        aria-label="Task description">
+                                </div>
+                                <button class="btn--task-delete" title="Delete Task" style="display: none;">×</button>
+                            </div>
+                            <div class="task-item">
+                                <input type="checkbox" id="teacher-task4" class="task-item__checkbox"
+                                    aria-label="Mark task as complete">
+                                <div class="task-item__bar">
+                                    <input type="text" class="task-item__input" placeholder="Write your task here..."
+                                        aria-label="Task description">
+                                </div>
+                                <button class="btn--task-delete" title="Delete Task" style="display: none;">×</button>
+                            </div>
+                            <div class="task-item">
+                                <input type="checkbox" id="teacher-task5" class="task-item__checkbox"
+                                    aria-label="Mark task as complete">
+                                <div class="task-item__bar">
+                                    <input type="text" class="task-item__input" placeholder="Write your task here..."
+                                        aria-label="Task description">
+                                </div>
+                                <button class="btn--task-delete" title="Delete Task" style="display: none;">×</button>
+                            </div>
+                            <div class="task-item">
+                                <input type="checkbox" id="teacher-task6" class="task-item__checkbox"
+                                    aria-label="Mark task as complete">
+                                <div class="task-item__bar">
+                                    <input type="text" class="task-item__input" placeholder="Write your task here..."
+                                        aria-label="Task description">
+                                </div>
+                                <button class="btn--task-delete" title="Delete Task" style="display: none;">×</button>
+                            </div>
+                            <div class="task-item">
+                                <input type="checkbox" id="teacher-task7" class="task-item__checkbox"
+                                    aria-label="Mark task as complete">
+                                <div class="task-item__bar">
+                                    <input type="text" class="task-item__input" placeholder="Write your task here..."
+                                        aria-label="Task description">
+                                </div>
+                                <button class="btn--task-delete" title="Delete Task" style="display: none;">×</button>
+                            </div>
+                        </div>
+                    </section>
+                </div> <!-- End of dashboard__grid -->
+            </div> <!-- End of dashboard__container -->
+        </main>
+    </div>
+
+    <!-- Course Details Popup Overlay -->
+    <div class="popup-overlay" id="courseDetailsPopup">
+        <div class="popup-content">
+            <button class="popup-close" id="closePopup">&times;</button>
+            <h2 class="popup-title" id="popupCourseTitle">Course Details</h2>
+            <div class="popup-body">
+                <div class="popup-detail">
+                    <span class="detail-label">Course Name:</span>
+                    <span class="detail-value" id="popupCourseName">-</span>
+                </div>
+                <div class="popup-detail">
+                    <span class="detail-label">Students Enrolled:</span>
+                    <span class="detail-value" id="popupStudentsEnrolled">-</span>
+                </div>
+                <div class="popup-detail">
+                    <span class="detail-label">Average Grade:</span>
+                    <span class="detail-value" id="popupAverageGrade">-</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Deletion Confirmation Popup -->
+    <div class="popup-overlay" id="deletionConfirmPopup">
+        <div class="popup-content popup-content--small">
+            <button class="popup-close" id="closeDeletionPopup">&times;</button>
+            <h2 class="popup-title">Request Course Deletion</h2>
+            <div class="popup-body">
+                <p class="deletion-warning">Are you sure you want to request deletion for <strong
+                        id="deletionCourseName">this course</strong>?</p>
+                <p class="deletion-note">This action will notify administrators and the course will be reviewed for
+                    deletion.</p>
+                <div class="form-group" style="margin-top: 15px;">
+                    <label for="deletionReason" class="detail-label">Reason for deletion:</label>
+                    <textarea id="deletionReason" class="task-item__input"
+                        style="width: 100%; height: 80px; padding: 10px; margin-top: 5px; border-radius: 8px; border: 1px solid var(--border-color); resize: none;"
+                        placeholder="Please provide a reason (min 10 characters)..."></textarea>
+                    <small id="deletionError" class="error-message"
+                        style="display: none; color: #ff4d4d; margin-top: 5px;"></small>
+                </div>
+                <div class="popup-actions" style="margin-top: 20px;">
+                    <button class="btn btn--secondary" id="cancelDeletion">Cancel</button>
+                    <button class="btn btn--danger btn--small" id="confirmDeletion">Confirm Request</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <div id="footer-placeholder"></div>
+
+    <script>
+        // Load footer.html into the placeholder
+        fetch("../Footer/footer.html")
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById("footer-placeholder").innerHTML = data;
+            })
+            .catch(error => console.error("Error loading footer:", error));
+    </script>
+
+    <script>
+        // Mobile menu toggle
+        document.addEventListener("DOMContentLoaded", function () {
+            const menuToggle = document.getElementById("menu-toggle");
+            const mobileMenu = document.getElementById("mobileMenu");
+
+            if (menuToggle && mobileMenu) {
+                menuToggle.addEventListener("click", () => {
+                    const isVisible = mobileMenu.style.display === "flex" || mobileMenu.classList.contains("active");
+                    if (isVisible) {
+                        mobileMenu.style.display = "none";
+                        mobileMenu.classList.remove("active");
+                    } else {
+                        mobileMenu.style.display = "flex";
+                        mobileMenu.classList.add("active");
+                    }
+                });
+            }
+
+            // Navbar scroll effect
+            const navbar = document.querySelector('.navbar');
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 50) {
+                    navbar.classList.add('scrolled');
+                } else {
+                    navbar.classList.remove('scrolled');
+                }
+            });
+        });
+    </script>
+
+    <script src="../js/api-config.js"></script>
+    <script src="../js/navbar-logic.js"></script>
+    <script src="../Sidebar/sidebar.js"></script>
+    <script type="module" src="tDashScript.js"></script>
+</body>
+
+</html>

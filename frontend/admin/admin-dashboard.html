@@ -1,0 +1,1146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NoveXa - Admin Dashboard</title>
+    <link rel="stylesheet" href="admin-dashboard.css">
+    <link rel="stylesheet" href="../students list/studentList.css">
+    <link rel="icon" type="image/png" href="../logoE.png">
+    <!-- Immediate Auth Check - Blocks page if not logged in -->
+    <script>
+        (function() {
+            const token = localStorage.getItem('adminToken');
+            if (!token) {
+                document.documentElement.innerHTML = '';
+                window.location.replace('admin-login.html');
+            }
+        })();
+    </script>
+    <style>
+        /* Hide everything until authenticated */
+        body { visibility: hidden; }
+        body.authenticated { visibility: visible; }
+    </style>
+</head>
+<body>
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="spinner"></div>
+        <p>Loading dashboard...</p>
+    </div>
+
+    <!-- Header -->
+    <header class="navbar">
+        <div class="logo">
+            <img src="../Novexa_assets/global_assets/logo_top.svg" alt="NoveXa Logo" />
+        </div>
+
+        <nav class="nav-links">
+            <a href="admin-dashboard.html" class="active">Dashboard</a>
+            <a href="#" id="courseDeletionTab">Deletion Requests</a>
+            <a href="#" id="libRequestsTab">Lib Requests</a>
+            <a href="#" id="studentsTab">Students</a>
+            <a href="#" id="teachersTab">Teachers</a>
+            <a href="admin-users.html">All Users</a>
+            <a href="#" id="financeTab">Finance</a>
+            <a href="#" id="statsTab">Statistics</a>
+            <a href="#" id="adminsTab" style="display: none;">Admins</a>
+        </nav>
+
+        <div class="admin-actions">
+            <span class="admin-username" id="adminUsername">Admin</span>
+            <button class="logout-btn" id="logoutBtn">Logout</button>
+        </div>
+        <div class="menu-icon" id="menu-toggle">☰</div>
+    </header>
+
+    <!-- Mobile Menu Overlay -->
+    <div class="mobile-overlay" id="mobileOverlay"></div>
+    
+    <!-- Mobile Menu -->
+    <div class="mobile-menu" id="mobileMenu">
+        <span class="mobile-menu-close" id="mobileMenuClose">&times;</span>
+        <div class="mobile-menu-header" id="mobileMenuHeader">
+            <span class="admin-username-mobile" id="adminUsernameMobile">Admin</span>
+            <span class="admin-role-mobile" id="adminRoleMobile">Administrator</span>
+        </div>
+        <a href="admin-dashboard.html" class="active">Dashboard</a>
+        <a href="#" id="courseDeletionTabMobile">Deletion Requests</a>
+        <a href="#" id="libRequestsTabMobile">Lib Requests</a>
+        <a href="#" id="studentsTabMobile">Students</a>
+        <a href="#" id="teachersTabMobile">Teachers</a>
+        <a href="admin-users.html">All Users</a>
+        <a href="#" id="financeTabMobile">Finance</a>
+        <a href="#" id="statsTabMobile">Statistics</a>
+        <a href="#" id="adminsTabMobile" style="display: none;">Admins</a>
+        <a href="#" id="logoutBtnMobile">Logout</a>
+    </div>
+
+    <!-- Main Content -->
+    <main class="admin-container">
+        <!-- Statistics Cards -->
+        <section class="stats-section" id="statsSection">
+            <h2 class="section-title">Admin Dashboard Overview</h2>
+            <div class="stats-grid">
+                <div class="stat-card clickable" onclick="showSection('students')">
+                    <div class="stat-icon students">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                            <circle cx="9" cy="7" r="4"></circle>
+                            <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                            <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                        </svg>
+                    </div>
+                    <div class="stat-info">
+                        <h3 id="overviewTotalStudents">0</h3>
+                        <p>Total Students</p>
+                        <small id="overviewActiveStudents">0 Active</small>
+                    </div>
+                </div>
+
+                <div class="stat-card clickable" onclick="showSection('teachers')">
+                    <div class="stat-icon courses">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                            <circle cx="12" cy="7" r="4"></circle>
+                        </svg>
+                    </div>
+                    <div class="stat-info">
+                        <h3 id="overviewTotalTeachers">0</h3>
+                        <p>Total Teachers</p>
+                        <small id="overviewActiveTeachers">0 Active</small>
+                    </div>
+                </div>
+
+                <div class="stat-card clickable" onclick="showSection('requests')">
+                    <div class="stat-icon pending">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                            <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
+                            <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>
+                        </svg>
+                    </div>
+                    <div class="stat-info">
+                        <h3 id="overviewTotalCourses">0</h3>
+                        <p>Total Courses</p>
+                        <small id="overviewPendingRequests">0 Deletion Requests</small>
+                    </div>
+                </div>
+
+                <div class="stat-card clickable" onclick="showSection('finance')">
+                    <div class="stat-icon revenue">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                            <line x1="12" y1="1" x2="12" y2="23"></line>
+                            <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+                        </svg>
+                    </div>
+                    <div class="stat-info">
+                        <h3 id="overviewTotalRevenue">$0</h3>
+                        <p>Total Revenue</p>
+                        <small id="overviewMonthlyRevenue">$0 This Month</small>
+                    </div>
+                </div>
+
+                <div class="stat-card clickable" onclick="showSection('stats')">
+                    <div class="stat-icon students">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                            <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
+                        </svg>
+                    </div>
+                    <div class="stat-info">
+                        <h3 id="overviewAvgQuizScore">0%</h3>
+                        <p>Avg Quiz Score</p>
+                        <small id="overviewCompletionRate">0% Completion Rate</small>
+                    </div>
+                </div>
+
+                <div class="stat-card clickable" onclick="showSection('stats')">
+                    <div class="stat-icon courses">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                            <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                        </svg>
+                    </div>
+                    <div class="stat-info">
+                        <h3 id="overviewAvgRating">0</h3>
+                        <p>Avg Teacher Rating</p>
+                        <small id="overviewTotalEnrollments">0 Total Enrollments</small>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Summary Cards -->
+            <div class="quick-summary">
+                <div class="summary-card">
+                    <h3>Recent Activity</h3>
+                    <div id="recentActivityList">
+                        <div class="activity-item">
+                            <span class="activity-icon">👤</span>
+                            <span class="activity-text">Loading recent activities...</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="summary-card">
+                    <h3>Top Performing Courses</h3>
+                    <div id="topCoursesList">
+                        <div class="activity-item">
+                            <span class="activity-icon">📚</span>
+                            <span class="activity-text">Loading top courses...</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="summary-card">
+                    <h3>Pending Actions</h3>
+                    <div id="pendingActionsList">
+                        <div class="activity-item">
+                            <span class="activity-icon">⏳</span>
+                            <span class="activity-text">Loading pending actions...</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Course Deletion Requests -->
+        <section class="requests-section" id="requestsSection">
+            <div class="section-header">
+                <h2 class="section-title">Course Deletion Requests</h2>
+                <div class="filter-controls">
+                    <select id="statusFilter" class="filter-select">
+                        <option value="all">All Requests</option>
+                        <option value="pending" selected>Pending</option>
+                        <option value="approved">Approved</option>
+                        <option value="rejected">Rejected</option>
+                    </select>
+                    <input type="text" id="searchInput" class="search-input" placeholder="Search by course or teacher...">
+                </div>
+            </div>
+
+            <div class="requests-container" id="requestsContainer">
+                <!-- Requests will be dynamically loaded here -->
+            </div>
+        </section>
+
+        <!-- Library Requests Section -->
+        <section class="requests-section" id="libRequestsSection" style="display: none;">
+            <div class="section-header">
+                <h2 class="section-title">Library Resource Requests</h2>
+                <div class="filter-controls">
+                    <select id="libStatusFilter" class="filter-select">
+                        <option value="all">All Requests</option>
+                        <option value="pending" selected>Pending</option>
+                        <option value="approved">Approved</option>
+                        <option value="rejected">Rejected</option>
+                    </select>
+                    <input type="text" id="libSearchInput" class="search-input" placeholder="Search by title or subject...">
+                </div>
+            </div>
+
+            <div class="table-container">
+                <table class="data-table" id="libRequestsTable">
+                    <thead>
+                        <tr>
+                            <th>Title</th>
+                            <th>Subject</th>
+                            <th>Type</th>
+                            <th>Uploaded By</th>
+                            <th>Date</th>
+                            <th>Preview</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="libRequestsBody">
+                        <!-- Library requests will be dynamically loaded here -->
+                    </tbody>
+                </table>
+            </div>
+            
+            <div class="empty-state" id="libEmptyState" style="display: none;">
+                <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                    <polyline points="14 2 14 8 20 8"></polyline>
+                    <line x1="16" y1="13" x2="8" y2="13"></line>
+                    <line x1="16" y1="17" x2="8" y2="17"></line>
+                    <polyline points="10 9 9 9 8 9"></polyline>
+                </svg>
+                <h3>No Library Requests</h3>
+                <p>There are no pending library resource requests to review.</p>
+            </div>
+        </section>
+
+        <!-- All Courses Section -->
+        <section class="courses-section" id="coursesSection" style="display: none;">
+            <div class="section-header">
+                <h2 class="section-title">All Courses</h2>
+                <div class="filter-controls">
+                    <input type="text" id="courseSearchInput" class="search-input" placeholder="Search courses...">
+                </div>
+            </div>
+
+            <div class="courses-table-container">
+                <table class="courses-table">
+                    <thead>
+                        <tr>
+                            <th>Course ID</th>
+                            <th>Course Name</th>
+                            <th>Teacher</th>
+                            <th>Enrolled Students</th>
+                            <th>Revenue</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="coursesTableBody">
+                        <!-- Courses will be dynamically loaded here -->
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Students Section -->
+        <section class="students-section" id="studentsSection" style="display: none;">
+            <div class="section-header">
+                <h2 class="section-title">All Students</h2>
+                <div class="filter-controls">
+                    <select id="studentCourseFilter" class="filter-select">
+                        <option value="all">All Courses</option>
+                    </select>
+                    <select id="studentTeacherFilter" class="filter-select">
+                        <option value="all">All Teachers</option>
+                    </select>
+                    <input type="text" id="studentSearchInput" class="search-input" placeholder="Search students...">
+                    <button class="btn btn-primary" id="addStudentBtn">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                            <line x1="12" y1="5" x2="12" y2="19"></line>
+                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                        </svg>
+                        Add Student
+                    </button>
+                </div>
+            </div>
+
+            <div class="table-container">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Phone</th>
+                            <th>Enrolled Courses</th>
+                            <th>Status</th>
+                            <th>Joined Date</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="studentsTableBody">
+                        <!-- Students will be dynamically loaded here -->
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Teachers Section -->
+        <section class="teachers-section" id="teachersSection" style="display: none;">
+            <div class="section-header">
+                <h2 class="section-title">All Teachers</h2>
+                <div class="filter-controls">
+                    <input type="text" id="teacherSearchInput" class="search-input" placeholder="Search teachers...">
+                    <button class="btn btn-primary" id="addTeacherBtn">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                            <line x1="12" y1="5" x2="12" y2="19"></line>
+                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                        </svg>
+                        Add Teacher
+                    </button>
+                </div>
+            </div>
+
+            <div class="table-container">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Phone</th>
+                            <th>Courses</th>
+                            <th>Total Students</th>
+                            <th>Revenue</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="teachersTableBody">
+                        <!-- Teachers will be dynamically loaded here -->
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Finance Section (Super Admin Only) -->
+        <section class="finance-section" id="financeSection" style="display: none;">
+            <div class="super-admin-warning" id="superAdminWarning" style="display: none;">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <line x1="12" y1="8" x2="12" y2="12"></line>
+                    <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                </svg>
+                <p>This section is only accessible to Super Administrators</p>
+            </div>
+
+            <div id="financeContent">
+                <div class="section-header">
+                    <h2 class="section-title">Financial Overview</h2>
+                    <div class="filter-controls">
+                        <select id="financePeriod" class="filter-select">
+                            <option value="today">Today</option>
+                            <option value="week">This Week</option>
+                            <option value="month" selected>This Month</option>
+                            <option value="year">This Year</option>
+                            <option value="custom">Custom Period</option>
+                        </select>
+                        <input type="date" id="financeStartDate" class="filter-select" style="display: none;">
+                        <input type="date" id="financeEndDate" class="filter-select" style="display: none;">
+                        <button class="btn btn-success" id="exportFinanceBtn">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                <polyline points="7 10 12 15 17 10"></polyline>
+                                <line x1="12" y1="15" x2="12" y2="3"></line>
+                            </svg>
+                            Export Report
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Finance Stats -->
+                <div class="stats-grid finance-stats">
+                    <div class="stat-card">
+                        <div class="stat-icon revenue">
+                            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                <line x1="12" y1="1" x2="12" y2="23"></line>
+                                <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+                            </svg>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="totalRevenue">$0</h3>
+                            <p>Total Revenue</p>
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-icon courses">
+                            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
+                                <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>
+                            </svg>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="paidCourses">0</h3>
+                            <p>Paid Enrollments</p>
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-icon pending">
+                            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <path d="M12 6v6l4 2"></path>
+                            </svg>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="pendingPayments">$0</h3>
+                            <p>Pending Payments</p>
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-icon students">
+                            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                                <circle cx="8.5" cy="7" r="4"></circle>
+                                <polyline points="17 11 19 13 23 9"></polyline>
+                            </svg>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="payingStudents">0</h3>
+                            <p>Paying Students</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Revenue by Course -->
+                <div class="finance-card">
+                    <h3>Revenue by Course</h3>
+                    <div class="table-container">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Course</th>
+                                    <th>Enrollments</th>
+                                    <th>Price</th>
+                                    <th>Total Revenue</th>
+                                    <th>Avg. Rating</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="revenueByCourseBody">
+                                <!-- Revenue data will be loaded here -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Revenue by Teacher -->
+                <div class="finance-card">
+                    <h3>Revenue by Teacher</h3>
+                    <div class="table-container">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Teacher</th>
+                                    <th>Courses</th>
+                                    <th>Total Students</th>
+                                    <th>Total Revenue</th>
+                                    <th>Commission (70%)</th>
+                                    <th>Platform Share (30%)</th>
+                                </tr>
+                            </thead>
+                            <tbody id="revenueByTeacherBody">
+                                <!-- Revenue data will be loaded here -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Statistics Section -->
+        <section class="statistics-section" id="statisticsSection" style="display: none;">
+            <div class="section-header">
+                <h2 class="section-title">Platform Statistics</h2>
+                <div class="filter-controls">
+                    <select id="statsPeriod" class="filter-select">
+                        <option value="week">Last 7 Days</option>
+                        <option value="month" selected>Last 30 Days</option>
+                        <option value="year">Last Year</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Student Statistics -->
+            <div class="stats-card">
+                <h3>Student Activity Statistics</h3>
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon students">
+                            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                                <circle cx="9" cy="7" r="4"></circle>
+                                <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                                <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                            </svg>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="activeStudents">0</h3>
+                            <p>Active Students</p>
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-icon courses">
+                            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <path d="M12 16v-4"></path>
+                                <path d="M12 8h.01"></path>
+                            </svg>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="avgQuizScore">0%</h3>
+                            <p>Average Quiz Score</p>
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-icon pending">
+                            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
+                            </svg>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="completionRate">0%</h3>
+                            <p>Course Completion Rate</p>
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-icon revenue">
+                            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <polyline points="12 6 12 12 16 14"></polyline>
+                            </svg>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="avgStudyTime">0h</h3>
+                            <p>Average Study Time/Week</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Students by Course -->
+                <div class="table-container">
+                    <h4>Students per Course</h4>
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Course</th>
+                                <th>Total Students</th>
+                                <th>Active Students</th>
+                                <th>Completed</th>
+                                <th>Avg. Progress</th>
+                                <th>Avg. Quiz Score</th>
+                            </tr>
+                        </thead>
+                        <tbody id="studentsByCourseBody">
+                            <!-- Data will be loaded here -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Teacher Statistics -->
+            <div class="stats-card">
+                <h3>Teacher Performance Statistics</h3>
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon students">
+                            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                                <circle cx="12" cy="7" r="4"></circle>
+                            </svg>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="activeTeachers">0</h3>
+                            <p>Active Teachers</p>
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-icon courses">
+                            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                <path d="M22 10v6M2 10l10-5 10 5-10 5z"></path>
+                                <path d="M6 12v5c3 3 9 3 12 0v-5"></path>
+                            </svg>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="avgCoursesPerTeacher">0</h3>
+                            <p>Avg. Courses per Teacher</p>
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-icon pending">
+                            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                            </svg>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="avgTeacherRating">0</h3>
+                            <p>Average Teacher Rating</p>
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-icon revenue">
+                            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                <polyline points="22 7 13.5 15.5 8.5 10.5 2 17"></polyline>
+                                <polyline points="16 7 22 7 22 13"></polyline>
+                            </svg>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="avgStudentsPerTeacher">0</h3>
+                            <p>Avg. Students per Teacher</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Teacher Performance -->
+                <div class="table-container">
+                    <h4>Teacher Performance Metrics</h4>
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Teacher</th>
+                                <th>Courses</th>
+                                <th>Students</th>
+                                <th>Avg. Rating</th>
+                                <th>Content Updates</th>
+                                <th>Response Time</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="teacherPerformanceBody">
+                            <!-- Data will be loaded here -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- Admins Management Section (Super Admin Only) -->
+        <section class="admins-section" id="adminsSection" style="display: none;">
+            <div class="super-admin-warning" id="adminsWarning" style="display: none;">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <line x1="12" y1="8" x2="12" y2="12"></line>
+                    <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                </svg>
+                <div>
+                    <h3>Restricted Access</h3>
+                    <p>Admin management is only available for Super Administrators</p>
+                </div>
+            </div>
+
+            <div id="adminsContent">
+                <div class="section-header">
+                    <h2 class="section-title">Admin Management</h2>
+                    <button class="btn-primary" id="addAdminBtn">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                            <line x1="12" y1="5" x2="12" y2="19"></line>
+                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                        </svg>
+                        Add New Admin
+                    </button>
+                </div>
+
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>Username</th>
+                            <th>Email</th>
+                            <th>Role</th>
+                            <th>Created Date</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="adminsTableBody">
+                        <!-- Admins will be dynamically loaded here -->
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </main>
+
+    <!-- Modal for Request Details -->
+    <div class="modal" id="requestModal">
+        <div class="modal-content">
+            <span class="close-modal" id="closeModal">&times;</span>
+            <h2 class="modal-title">Deletion Request Details</h2>
+            <div class="modal-body" id="modalBody">
+                <!-- Details will be loaded here -->
+            </div>
+            <div class="modal-actions">
+                <button class="btn btn-danger" id="approveBtn">Approve Deletion</button>
+                <button class="btn btn-warning" id="archiveBtn">Archive Instead</button>
+                <button class="btn btn-secondary" id="rejectBtn">Reject Request</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal for Rejection Reason -->
+    <div class="modal" id="rejectionModal">
+        <div class="modal-content modal-small">
+            <span class="close-modal" id="closeRejectionModal">&times;</span>
+            <h2 class="modal-title">Rejection Reason</h2>
+            <div class="modal-body">
+                <textarea id="rejectionReason" class="reason-textarea" placeholder="Provide explanation to teacher..." rows="5"></textarea>
+            </div>
+            <div class="modal-actions">
+                <button class="btn btn-primary" id="submitRejectionBtn">Submit Rejection</button>
+                <button class="btn btn-secondary" id="cancelRejectionBtn">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal for Teacher Message -->
+    <div class="modal" id="messageModal">
+        <div class="modal-content modal-small">
+            <span class="close-modal" id="closeMessageModal">&times;</span>
+            <h2 class="modal-title">Message Teacher</h2>
+            <div class="modal-body">
+                <textarea id="teacherMessage" class="reason-textarea" placeholder="Type your message to the teacher..." rows="5"></textarea>
+            </div>
+            <div class="modal-actions">
+                <button class="btn btn-primary" id="sendMessageBtn">Send Message</button>
+                <button class="btn btn-secondary" id="cancelMessageBtn">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal for Adding Student -->
+    <div class="modal" id="addStudentModal">
+        <div class="modal-content">
+            <span class="close-modal" id="closeAddStudentModal">&times;</span>
+            <h2 class="modal-title">Add New Student</h2>
+            <form id="addStudentForm" class="form-grid">
+                <div class="form-group">
+                    <label>Full Name *</label>
+                    <input type="text" name="fullName" required>
+                </div>
+                <div class="form-group">
+                    <label>Email *</label>
+                    <input type="email" name="email" required>
+                </div>
+                <div class="form-group">
+                    <label>Phone</label>
+                    <input type="tel" name="phone">
+                </div>
+                <div class="form-group">
+                    <label>Password *</label>
+                    <input type="password" name="password" required>
+                </div>
+                <div class="form-group">
+                    <label>Date of Birth</label>
+                    <input type="date" name="dob">
+                </div>
+                <div class="form-group">
+                    <label>Gender</label>
+                    <select name="gender">
+                        <option value="">Select...</option>
+                        <option value="male">Male</option>
+                        <option value="female">Female</option>
+                    </select>
+                </div>
+            </form>
+            <div class="modal-actions">
+                <button type="submit" form="addStudentForm" class="btn btn-primary">Add Student</button>
+                <button class="btn btn-secondary" id="cancelAddStudentBtn">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal for Adding Teacher -->
+    <div class="modal" id="addTeacherModal">
+        <div class="modal-content">
+            <span class="close-modal" id="closeAddTeacherModal">&times;</span>
+            <h2 class="modal-title">Add New Teacher</h2>
+            <form id="addTeacherForm" class="form-grid">
+                <div class="form-group">
+                    <label>Full Name *</label>
+                    <input type="text" name="fullName" required>
+                </div>
+                <div class="form-group">
+                    <label>Email *</label>
+                    <input type="email" name="email" required>
+                </div>
+                <div class="form-group">
+                    <label>Phone</label>
+                    <input type="tel" name="phone">
+                </div>
+                <div class="form-group">
+                    <label>Password *</label>
+                    <input type="password" name="password" required>
+                </div>
+                <div class="form-group">
+                    <label>Specialization</label>
+                    <input type="text" name="specialization" placeholder="e.g., Web Development">
+                </div>
+                <div class="form-group">
+                    <label>Experience (years)</label>
+                    <input type="number" name="experience" min="0">
+                </div>
+                <div class="form-group full-width">
+                    <label>Bio</label>
+                    <textarea name="bio" rows="3" placeholder="Brief description..."></textarea>
+                </div>
+            </form>
+            <div class="modal-actions">
+                <button type="submit" form="addTeacherForm" class="btn btn-primary">Add Teacher</button>
+                <button class="btn btn-secondary" id="cancelAddTeacherBtn">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal for User Details -->
+    <div class="modal" id="userDetailsModal">
+        <div class="modal-content">
+            <span class="close-modal" id="closeUserDetailsModal">&times;</span>
+            <h2 class="modal-title" id="userDetailsTitle">User Details</h2>
+            <div class="modal-body" id="userDetailsBody">
+                <!-- User details will be loaded here -->
+            </div>
+            <div class="modal-actions">
+                <button class="btn btn-danger" id="deleteUserBtn">Delete User</button>
+                <button class="btn btn-secondary" id="closeUserDetailsBtn">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Course Statistics Modal -->
+    <div id="courseStatsModal" class="modal">
+        <div class="modal-content modal-large">
+            <span class="close" onclick="closeCourseStatsModal()">&times;</span>
+            <h2 id="courseStatsTitle">Course Statistics</h2>
+            
+            <div class="course-stats-grid">
+                <!-- Overview Cards -->
+                <div class="stats-overview">
+                    <div class="mini-stat-card">
+                        <div class="mini-stat-icon">👥</div>
+                        <div class="mini-stat-info">
+                            <h4 id="courseEnrolled">0</h4>
+                            <p>Enrolled Students</p>
+                        </div>
+                    </div>
+                    <div class="mini-stat-card">
+                        <div class="mini-stat-icon">💰</div>
+                        <div class="mini-stat-info">
+                            <h4 id="courseRevenue">$0</h4>
+                            <p>Total Revenue</p>
+                        </div>
+                    </div>
+                    <div class="mini-stat-card">
+                        <div class="mini-stat-icon">⭐</div>
+                        <div class="mini-stat-info">
+                            <h4 id="courseRating">0</h4>
+                            <p>Average Rating</p>
+                        </div>
+                    </div>
+                    <div class="mini-stat-card">
+                        <div class="mini-stat-icon">📈</div>
+                        <div class="mini-stat-info">
+                            <h4 id="courseCompletion">0%</h4>
+                            <p>Completion Rate</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Circular Progress Stats -->
+                <div class="circular-stats">
+                    <div class="circular-stat">
+                        <svg class="progress-ring" width="120" height="120">
+                            <circle class="progress-ring-circle-bg" cx="60" cy="60" r="52"></circle>
+                            <circle class="progress-ring-circle" id="engagementCircle" cx="60" cy="60" r="52"></circle>
+                        </svg>
+                        <div class="circular-stat-value">
+                            <span id="engagementValue">0%</span>
+                            <small>Engagement</small>
+                        </div>
+                    </div>
+                    <div class="circular-stat">
+                        <svg class="progress-ring" width="120" height="120">
+                            <circle class="progress-ring-circle-bg" cx="60" cy="60" r="52"></circle>
+                            <circle class="progress-ring-circle" id="satisfactionCircle" cx="60" cy="60" r="52"></circle>
+                        </svg>
+                        <div class="circular-stat-value">
+                            <span id="satisfactionValue">0%</span>
+                            <small>Satisfaction</small>
+                        </div>
+                    </div>
+                    <div class="circular-stat">
+                        <svg class="progress-ring" width="120" height="120">
+                            <circle class="progress-ring-circle-bg" cx="60" cy="60" r="52"></circle>
+                            <circle class="progress-ring-circle" id="activeStudentsCircle" cx="60" cy="60" r="52"></circle>
+                        </svg>
+                        <div class="circular-stat-value">
+                            <span id="activeStudentsValue">0%</span>
+                            <small>Active Students</small>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Performance Bars -->
+                <div class="performance-section">
+                    <h3>Student Performance</h3>
+                    <div class="performance-bar-item">
+                        <div class="performance-label">
+                            <span>Quiz Scores</span>
+                            <span id="quizScorePercent">0%</span>
+                        </div>
+                        <div class="performance-bar">
+                            <div class="performance-bar-fill" id="quizScoreBar" style="width: 0%"></div>
+                        </div>
+                    </div>
+                    <div class="performance-bar-item">
+                        <div class="performance-label">
+                            <span>Assignment Completion</span>
+                            <span id="assignmentPercent">0%</span>
+                        </div>
+                        <div class="performance-bar">
+                            <div class="performance-bar-fill" id="assignmentBar" style="width: 0%"></div>
+                        </div>
+                    </div>
+                    <div class="performance-bar-item">
+                        <div class="performance-label">
+                            <span>Video Watch Rate</span>
+                            <span id="videoPercent">0%</span>
+                        </div>
+                        <div class="performance-bar">
+                            <div class="performance-bar-fill" id="videoBar" style="width: 0%"></div>
+                        </div>
+                    </div>
+                    <div class="performance-bar-item">
+                        <div class="performance-label">
+                            <span>Forum Participation</span>
+                            <span id="forumPercent">0%</span>
+                        </div>
+                        <div class="performance-bar">
+                            <div class="performance-bar-fill" id="forumBar" style="width: 0%"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Enrollment Trend -->
+                <div class="enrollment-section">
+                    <h3>Enrollment Trend (Last 6 Months)</h3>
+                    <div class="bar-chart">
+                        <div class="bar-chart-item">
+                            <div class="bar-chart-bar" id="month1Bar" style="height: 0%"></div>
+                            <span class="bar-chart-label">Jul</span>
+                            <span class="bar-chart-value" id="month1Value">0</span>
+                        </div>
+                        <div class="bar-chart-item">
+                            <div class="bar-chart-bar" id="month2Bar" style="height: 0%"></div>
+                            <span class="bar-chart-label">Aug</span>
+                            <span class="bar-chart-value" id="month2Value">0</span>
+                        </div>
+                        <div class="bar-chart-item">
+                            <div class="bar-chart-bar" id="month3Bar" style="height: 0%"></div>
+                            <span class="bar-chart-label">Sep</span>
+                            <span class="bar-chart-value" id="month3Value">0</span>
+                        </div>
+                        <div class="bar-chart-item">
+                            <div class="bar-chart-bar" id="month4Bar" style="height: 0%"></div>
+                            <span class="bar-chart-label">Oct</span>
+                            <span class="bar-chart-value" id="month4Value">0</span>
+                        </div>
+                        <div class="bar-chart-item">
+                            <div class="bar-chart-bar" id="month5Bar" style="height: 0%"></div>
+                            <span class="bar-chart-label">Nov</span>
+                            <span class="bar-chart-value" id="month5Value">0</span>
+                        </div>
+                        <div class="bar-chart-item">
+                            <div class="bar-chart-bar" id="month6Bar" style="height: 0%"></div>
+                            <span class="bar-chart-label">Dec</span>
+                            <span class="bar-chart-value" id="month6Value">0</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Additional Stats -->
+                <div class="additional-stats">
+                    <h3>Additional Metrics</h3>
+                    <div class="stat-row">
+                        <span class="stat-label">Average Study Time:</span>
+                        <span class="stat-value" id="avgStudyTime">0 hrs/week</span>
+                    </div>
+                    <div class="stat-row">
+                        <span class="stat-label">Content Updates:</span>
+                        <span class="stat-value" id="contentUpdates">0 this month</span>
+                    </div>
+                    <div class="stat-row">
+                        <span class="stat-label">Student Retention:</span>
+                        <span class="stat-value" id="retentionRate">0%</span>
+                    </div>
+                    <div class="stat-row">
+                        <span class="stat-label">Discussion Posts:</span>
+                        <span class="stat-value" id="discussionPosts">0 posts</span>
+                    </div>
+                    <div class="stat-row">
+                        <span class="stat-label">Teacher Response Time:</span>
+                        <span class="stat-value" id="responseTime">0 hours</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Admin Modal -->
+    <div class="modal" id="addAdminModal">
+        <div class="modal-content">
+            <span class="close-modal" id="closeAddAdminModal">&times;</span>
+            <h2 class="modal-title">Add New Administrator</h2>
+            <p style="color: #666; margin-bottom: 20px; font-size: 14px;">Assign admin access to a staff member by entering their details below.</p>
+            <form id="addAdminForm" class="form-grid">
+                <div class="form-group">
+                    <label>Staff Member Name *</label>
+                    <input type="text" name="fullName" placeholder="e.g., Sarah Ahmed" required>
+                    <small style="color: #999; font-size: 12px;">Enter the person's actual full name</small>
+                </div>
+                <div class="form-group">
+                    <label>Username (Login) *</label>
+                    <input type="text" name="username" placeholder="e.g., sarah.ahmed" required>
+                </div>
+                <div class="form-group">
+                    <label>Email Address *</label>
+                    <input type="email" name="email" placeholder="e.g., sarah.ahmed@novexa.com" required>
+                </div>
+                <div class="form-group">
+                    <label>Password *</label>
+                    <input type="password" name="password" placeholder="Min. 6 characters" required minlength="6">
+                </div>
+                <div class="form-group full-width">
+                    <label>Access Level *</label>
+                    <select name="role" required>
+                        <option value="admin">Admin (Standard Access)</option>
+                        <option value="superadmin">Super Admin (Full Access + Admin Management)</option>
+                    </select>
+                </div>
+            </form>
+            <div class="modal-actions">
+                <button type="submit" form="addAdminForm" class="btn btn-primary">Create Admin Account</button>
+                <button class="btn btn-secondary" id="cancelAddAdminBtn">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Change Admin Role Modal -->
+    <div class="modal" id="changeRoleModal">
+        <div class="modal-content modal-small">
+            <span class="close-modal" id="closeChangeRoleModal">&times;</span>
+            <h2 class="modal-title">Change Administrator Role</h2>
+            <div class="modal-body">
+                <p id="changeRoleMessage">Change role for <strong id="changeRoleAdminName"></strong>?</p>
+                <div class="form-group">
+                    <label>New Role</label>
+                    <select id="newRoleSelect" class="form-control">
+                        <option value="admin">Admin</option>
+                        <option value="superadmin">Super Admin</option>
+                    </select>
+                </div>
+            </div>
+            <div class="modal-actions">
+                <button class="btn btn-primary" id="confirmChangeRoleBtn">Change Role</button>
+                <button class="btn btn-secondary" id="cancelChangeRoleBtn">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Delete Admin Modal -->
+    <div class="modal" id="deleteAdminModal">
+        <div class="modal-content modal-small">
+            <span class="close-modal" id="closeDeleteAdminModal">&times;</span>
+            <h2 class="modal-title">Confirm Deletion</h2>
+            <div class="modal-body">
+                <p id="deleteAdminMessage"></p>
+                <div class="alert alert-warning" style="background: #fff3cd; padding: 15px; border-radius: 8px; margin-top: 15px;">
+                    <strong>⚠️ Warning:</strong> This action cannot be undone. The administrator will lose access immediately.
+                </div>
+            </div>
+            <div class="modal-actions">
+                <button class="btn btn-danger" id="confirmDeleteAdminBtn">Delete Admin</button>
+                <button class="btn btn-secondary" id="cancelDeleteAdminBtn">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="../js/api-config.js"></script>
+    <script src="admin-credentials.js"></script>
+    <script src="admin-dashboard.js"></script>
+</body>
+</html>

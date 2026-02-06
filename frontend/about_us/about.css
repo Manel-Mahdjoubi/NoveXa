@@ -1,0 +1,318 @@
+@import url('../Footer/footer.css');
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Poppins", sans-serif;
+}
+html{
+  overflow-x: hidden;
+  max-width: 100vw;
+}
+
+body {
+    background: linear-gradient(180deg, #0e84c8 0%, #99cce9 50%, white 100%);
+    background-repeat: no-repeat;
+    color: #fff;
+    overflow-x: hidden;
+}
+
+/*  NAVBAR */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 18px 60px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1001;
+  background: transparent;
+  backdrop-filter: none;
+  border: none;
+  transition: all 0.3s ease;
+  
+
+
+     background: rgba(10, 120, 200, 0.2); /* tinted color */ 
+     backdrop-filter: blur(10px) saturate(100%);
+  -webkit-backdrop-filter: blur(10px) saturate(120%); /* Safari */
+}
+
+.logo img {
+  width: 110px;
+  height: auto;
+  object-fit: contain;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+  transition: transform 0.3s ease;
+}
+
+.logo img:hover {
+  transform: scale(1.04);
+}
+
+.nav-links {
+  display: flex;
+  gap: 32px;
+  white-space: nowrap;
+}
+
+.nav-links a {
+  position: relative;
+  color: #ffffff;
+  text-decoration: none;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  font-size: 18px;
+  transition: color 0.25s ease;
+}
+.nav-links a::after {
+    content: "";
+    position: absolute;
+    width: 0%;
+    height: 2px;
+    left: 0;
+    bottom: -4px;
+    background: #fff;
+    transition: width 0.3s ease;
+}
+
+.nav-links a:hover::after {
+    width: 100%;
+}
+
+.nav-links a:hover {
+    color: #dff3ff;
+}
+
+.auth-buttons a {
+    text-decoration: none;
+}
+
+.auth-buttons {
+    display: flex;
+    gap: 15px;
+}
+
+.login-btn,
+.register-btn {
+  display: inline-block;
+    padding: 10px 20px;
+    border-radius: 26px;
+    font-weight: 600;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: none;
+}
+
+.login-btn {
+    background: rgba(0, 0, 0, 0.3);
+    color: white;
+}
+
+.register-btn {
+    background: white;
+    color: #2E9FD9;
+}
+
+.login-btn:hover {
+    background: rgba(0, 0, 0, 0.5);
+}
+
+.register-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  
+}
+
+.menu-icon {
+  display: none;
+  font-size: 26px;
+  color: white;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+.menu-icon:hover {
+  transform: scale(1.1);
+}
+
+.mobile-menu {
+  display: none;
+  position: absolute;
+  top: 70px;
+  right: 30px;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(8px);
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  flex-direction: column;
+  gap: 10px;
+  padding: 15px 20px;
+  z-index: 20;
+}
+.mobile-menu a {
+  color: #0e84c8;
+  text-decoration: none;
+  font-weight: 600;
+  padding: 8px 0;
+  transition: color 0.3s ease;
+}
+.mobile-menu a:hover {
+  color: #003c78;
+}
+
+.mobile-menu.active {
+  display: flex;
+}
+
+@media (max-width: 900px) {
+  .nav-links {
+    display: none;
+  }
+  .menu-icon {
+    display: block;
+  }
+  .navbar {
+    padding: 14px 25px;
+  }
+  .logo img {
+    width: 90px;
+  }
+}
+
+/* HERO SECTION  */
+.hero-section {
+    text-align: center;
+    padding: 80px 40px 60px;
+    animation: fadeInDown 1s ease;
+}
+
+@keyframes fadeInDown {
+    from {
+        opacity: 0;
+        transform: translateY(-30px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.hero-section h3 {
+    font-size: 24px;
+    font-weight: 500;
+    margin-bottom: 20px;
+    letter-spacing: 2px;
+    opacity: 0.95;
+}
+
+.hero-section h1 {
+    font-size: 56px;
+    font-weight: 700;
+    line-height: 1.2;
+    margin-bottom: 30px;
+    color: #000;
+}
+
+.hero-section p {
+    font-size: 18px;
+    line-height: 1.8;
+    max-width: 900px;
+    margin: 0 auto;
+    color: #414040;
+    font-weight: 500;
+}
+
+/*  MISSION & VISION SECTION */
+.mission-vision {
+    max-width: 1100px;
+    margin: 60px auto;
+    padding: 0 40px;
+    animation: fadeInUp 1s ease;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.mv-container {
+    background: white;
+    border-radius: 30px;
+    padding: 60px;
+    display: grid;
+    grid-template-columns: 1fr 2px 1fr;
+    gap: 60px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+}
+
+.divider {
+    background: linear-gradient(180deg, transparent 0%, #2E9FD9 50%, transparent 100%);
+    width: 2px;
+}
+
+.mission,
+.vision {
+    color: #1a1a1a;
+}
+
+.mission h2,
+.vision h2 {
+    font-size: 32px;
+    color: #2E9FD9;
+    margin-bottom: 25px;
+    font-weight: 700;
+}
+
+.mission p,
+.vision p {
+    font-size: 16px;
+    line-height: 1.8;
+    color: #333;
+    font-weight: 400;
+}
+
+
+/* Mission / Vision responsive layout */
+@media (max-width: 600px) {
+  .mission-vision {
+    margin: 40px auto;
+    padding: 0 20px;
+  }
+
+  .mv-container {
+    grid-template-columns: 1fr;       
+    grid-template-rows: auto 2px auto; 
+    gap: 30px;
+    padding: 30px 20px;
+  }
+
+  .divider {
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(
+      90deg,
+      transparent 0%,
+      #2E9FD9 50%,
+      transparent 100%
+    );                                  
+    margin: 0;
+  }
+
+  .mission,
+  .vision {
+    text-align: left;                   
+  }
+}
+
+

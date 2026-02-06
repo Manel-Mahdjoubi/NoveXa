@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Dashboard - NOVEXA</title>
+    <link rel="stylesheet" href="styleForDashboard.css">
+    <link rel="stylesheet" href="../Sidebar/sidebar.css" />
+    <link rel="stylesheet" href="../globals.css">
+
+
+
+    <link rel="icon" type="image/png" href="../logoE.png">
+</head>
+
+<body data-page="dashboard">
+
+    <!--Header part -->
+    <header class="navbar">
+        <div class="logo">
+            <a href="../home_page2/home_page2.html" id="logoButton">
+                <img src="../Novexa_assets/global_assets/logo_top.svg" alt="NoveXa Logo" />
+            </a>
+        </div>
+
+        <nav class="nav-links">
+            <a href="../home_page2/home_page2.html">Home</a>
+            <a href="../about_us/about_us.html">About Us</a>
+            <a href="#">Teachers</a>
+            <a href="../e_library/e_library.html">Library</a>
+        </nav>
+
+        <a href="../profile/profile.html" class="profile-btn">My profile</a>
+        <div class="menu-icon" id="menu-toggle">☰</div>
+    </header>
+
+    <!-- MOBILE MENU -->
+    <div class="mobile-menu" id="mobileMenu">
+        <a href="../home_page2/home_page2.html">Home</a>
+        <a href="../about_us/about_us.html">About Us</a>
+        <a href="../teacher list/teachersList.html">Teachers</a>
+        <a href="../e_library/e_library.html">Library</a>
+    </div>
+
+    <aside class="sidebare collapsed" id="sidebare">
+        <!-- Close Button  -->
+        <button class="sidebare-close" id="sidebarClose"></button>
+
+        <!-- Sidebar Content -->
+        <div class="sidebare-content">
+            <!-- User Profile Section -->
+            <div class="user-profile">
+                <div class="user-avatar">
+                    <img src="../asset/sidebar/proSide.jpg" alt="User Avatar" id="sidebarAvatar">
+                </div>
+                <h3 class="user-name" id="sidebarName">Student Name</h3>
+                <p class="user-role" id="sidebarRole">Student</p>
+            </div>
+
+            <!-- Navigation Menu -->
+            <nav class="sidebare-navv">
+                <ul class="navv-list">
+                    <li class="navv-item active">
+                        <a href="../profile/profile.html" class="navv-link" data-page="profile">
+                            <span class="navv-icon">
+                                <img src="../asset/sidebar/profile.svg" alt="Profile">
+                            </span>
+                            <span class="navv-text">Profile</span>
+                        </a>
+                    </li>
+                    <li class="navv-item">
+                        <a href="../student and teacher dashboard/sDashboard.html" class="navv-link"
+                            data-page="dashboard">
+                            <span class="navv-icon">
+                                <img src="../asset/sidebar/dashboard.svg" alt="Dashboard">
+                            </span>
+                            <span class="navv-text">Dashboard</span>
+                        </a>
+                    </li>
+                    <li class="navv-item">
+                        <a href="../CourseAfterApply/courseafterapply.html" class="navv-link"
+                            data-page="courseLearning">
+                            <span class="navv-icon">
+                                <img src="../asset/sidebar/lectures.svg" alt="My Courses">
+                            </span>
+                            <span class="navv-text">Lectures videos</span>
+                        </a>
+                    </li>
+                    <li class="navv-item">
+                        <a href="../quiz pages/sQuiz.html" class="navv-link" data-page="quizzes">
+                            <span class="navv-icon">
+                                <img src="../asset/sidebar/quizzes.svg" alt="Courses">
+                            </span>
+                            <span class="navv-text">Quizzes</span>
+                        </a>
+                    </li>
+                    <li class="navv-item">
+                        <a href="../teacher list/teachersList.html" class="navv-link" data-page="teachers">
+                            <span class="navv-icon">
+                                <img src="../asset/sidebar/students.svg" alt="Teachers">
+                            </span>
+                            <span class="navv-text">Teachers</span>
+                        </a>
+                    </li>
+                    <li class="navv-item">
+                        <a href="../e_library/e_library.html" class="navv-link" data-page="library">
+                            <span class="navv-icon">
+                                <img src="../asset/sidebar/library.svg" alt="Library">
+                            </span>
+                            <span class="navv-text">Library</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+
+            <!-- Action Buttons -->
+            <div class="sidebare-actions">
+                <button class="action-btn btn-secondary">
+                    <span class="btn-text">Logout</span>
+                </button>
+            </div>
+        </div>
+        <footer class="sidebare-footer">
+            <p>© 2025 NoveXa</p>
+        </footer>
+    </aside>
+
+    <!-- Toggle Button -->
+    <button class="sidebare-toggle" id="sidebarToggle">
+        <span class="toggle-icon">></span>
+    </button>
+
+    <!-- Dashboard Page -->
+    <div class="dashboard">
+
+        <!-- Overlay for mobile -->
+        <div class="sidebare-overlay" id="sidebarOverlay"></div>
+
+        <!-- Loading Overlay -->
+        <div class="loading-overlay" id="loadingOverlay">
+            <div class="spinner"></div>
+        </div>
+
+
+        <!-- Main Content -->
+        <main class="dashboard__content">
+            <div class="dashboard__container">
+
+                <!-- My Courses Section -->
+                <section class="card card--full" aria-labelledby="courses-title">
+                    <div class="card__header">
+                        <h2 id="courses-title" class="card__title">My Courses</h2>
+                        <div class="search-box">
+                            <input type="search" class="search-box__input" placeholder="search"
+                                aria-label="Search courses">
+                        </div>
+                    </div>
+
+                    <div class="courses-table">
+                        <div class="courses-table__header">
+                            <div class="courses-table__column courses-table__column--name">Course Name</div>
+                            <div class="courses-table__column courses-table__column--progress">Progress</div>
+                            <div class="courses-table__column courses-table__column--actions"></div>
+                        </div>
+
+                        <!-- Course rows will be populated dynamically by JS -->
+                    </div>
+                </section>
+
+                <!-- Two Column Layout -->
+                <div class="dashboard__grid">
+
+                    <!-- My Certificates Section -->
+                    <section class="card" aria-labelledby="certificates-title">
+                        <h2 id="certificates-title" class="card__title">My Certificates</h2>
+
+                        <div class="certificate-list">
+                            <!-- Certificate items will be populated dynamically by JS -->
+                        </div>
+                    </section>
+
+                    <!-- Upcoming Tasks Section -->
+                    <section class="card" aria-labelledby="tasks-title">
+                        <h2 id="tasks-title" class="card__title">Upcoming Tasks</h2>
+
+                        <div class="task-list">
+                            <!-- Empty Task Slots for Input -->
+                            <div class="task-item">
+                                <input type="checkbox" id="task1" class="task-item__checkbox"
+                                    aria-label="Mark task as complete">
+                                <div class="task-item__bar">
+                                    <input type="text" class="task-item__input" placeholder="Write your task here..."
+                                        aria-label="Task description">
+                                </div>
+                                <button class="btn--task-delete" title="Delete Task" style="display: none;">×</button>
+                            </div>
+                            <div class="task-item">
+                                <input type="checkbox" id="task2" class="task-item__checkbox"
+                                    aria-label="Mark task as complete">
+                                <div class="task-item__bar">
+                                    <input type="text" class="task-item__input" placeholder="Write your task here..."
+                                        aria-label="Task description">
+                                </div>
+                                <button class="btn--task-delete" title="Delete Task" style="display: none;">×</button>
+                            </div>
+                            <div class="task-item">
+                                <input type="checkbox" id="task3" class="task-item__checkbox"
+                                    aria-label="Mark task as complete">
+                                <div class="task-item__bar">
+                                    <input type="text" class="task-item__input" placeholder="Write your task here..."
+                                        aria-label="Task description">
+                                </div>
+                                <button class="btn--task-delete" title="Delete Task" style="display: none;">×</button>
+                            </div>
+                            <div class="task-item">
+                                <input type="checkbox" id="task4" class="task-item__checkbox"
+                                    aria-label="Mark task as complete">
+                                <div class="task-item__bar">
+                                    <input type="text" class="task-item__input" placeholder="Write your task here..."
+                                        aria-label="Task description">
+                                </div>
+                                <button class="btn--task-delete" title="Delete Task" style="display: none;">×</button>
+                            </div>
+                            <div class="task-item">
+                                <input type="checkbox" id="task5" class="task-item__checkbox"
+                                    aria-label="Mark task as complete">
+                                <div class="task-item__bar">
+                                    <input type="text" class="task-item__input" placeholder="Write your task here..."
+                                        aria-label="Task description">
+                                </div>
+                                <button class="btn--task-delete" title="Delete Task" style="display: none;">×</button>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+
+                <!-- My Grades Section -->
+                <section class="card card--full" aria-labelledby="grades-title">
+                    <h2 id="grades-title" class="card__title">My Grades</h2>
+
+                    <div class="grades-table">
+                        <div class="grades-table__header">
+                            <div class="grades-table__column grades-table__column--course">Course</div>
+                            <div class="grades-table__column grades-table__column--grade">Grade</div>
+                            <div class="grades-table__column grades-table__column--total">Total</div>
+                            <div class="grades-table__column grades-table__column--action"></div>
+                        </div>
+
+                        <!-- Grade rows will be populated dynamically by JS -->
+                    </div>
+                </section>
+
+            </div>
+        </main>
+    </div>
+    <!-- Footer -->
+    <div id="footer-placeholder"></div>
+
+    <script>
+        // Load footer.html into the placeholder
+        fetch("../Footer/footer.html")
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById("footer-placeholder").innerHTML = data;
+            })
+            .catch(error => console.error("Error loading footer:", error));
+    </script>
+
+    <script>
+        // Mobile menu toggle
+        document.addEventListener("DOMContentLoaded", function () {
+            const menuToggle = document.getElementById("menu-toggle");
+            const mobileMenu = document.getElementById("mobileMenu");
+
+            if (menuToggle && mobileMenu) {
+                menuToggle.addEventListener("click", () => {
+                    const isVisible = mobileMenu.style.display === "flex" || mobileMenu.classList.contains("active");
+                    if (isVisible) {
+                        mobileMenu.style.display = "none";
+                        mobileMenu.classList.remove("active");
+                    } else {
+                        mobileMenu.style.display = "flex";
+                        mobileMenu.classList.add("active");
+                    }
+                });
+            }
+
+            // Navbar scroll effect
+            const navbar = document.querySelector('.navbar');
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 50) {
+                    navbar.classList.add('scrolled');
+                } else {
+                    navbar.classList.remove('scrolled');
+                }
+            });
+        });
+    </script>
+
+    <script src="../js/api-config.js"></script>
+    <script src="../js/navbar-logic.js"></script>
+    <script src="../Sidebar/sidebar.js"></script>
+    <script type="module" src="sDashScript.js"></script>
+
+
+</body>
+
+</html>

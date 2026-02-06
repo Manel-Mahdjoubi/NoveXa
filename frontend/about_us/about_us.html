@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/png" href="../logoE.png" />
+    <title>About Us - NoveXa</title>
+    <link rel="stylesheet" href="about.css" />
+  </head>
+
+  <body>
+    <!-- NAVBAR -->
+    <nav class="navbar">
+      <div class="logo">
+        <a href="../Homepage/homepage.html" id="logoButton">
+          <img
+            src="../Novexa_assets/global_assets/logo_top.svg"
+            alt="NoveXa Logo"
+          />
+        </a>
+      </div>
+
+      <div class="nav-links">
+        <a href="../Homepage/homepage.html">Home</a>
+        <a href="../about_us/about_us.html">About Us</a>
+        <a href="../login_page/login.html">Teachers</a>
+        <a href="../login_page/login.html">Library</a>
+      </div>
+      <div class="auth-buttons">
+        <a href="../login_page/login.html" class="login-btn"
+          >Login</a
+        >
+        <a
+          href="../registration_page/registration_page.html"
+          class="register-btn"
+          >Register</a
+        >
+      </div>
+      <div class="menu-icon" id="menu-toggle">☰</div>
+    </nav>
+
+    <!-- MOBILE MENU -->
+    <div class="mobile-menu" id="mobileMenu">
+      <a href="../Homepage/homepage.html">Home</a>
+      <a href="../about_us/about_us.html">About Us</a>
+      <a href="../login_page/login.html">Teachers</a>
+      <a href="../login_page/login.html">Library</a>
+    </div>
+
+    <!-- HERO SECTION -->
+    <section class="hero-section">
+      <h3>About US</h3>
+      <h1>Your journey to knowledge<br />starts here</h1>
+      <p>
+        We're a team of educators, developers, and creatives dedicated to making
+        learning simple and effective. Our platform offers expert-led courses in
+        technology, business, science, and design—helping you build real skills,
+        grow faster, and turn curiosity into achievement.
+      </p>
+    </section>
+
+    <!--MISSION & VISION-->
+    <section class="mission-vision">
+      <div class="mv-container">
+        <div class="mission">
+          <h2>Our Mission</h2>
+          <p>
+            To make high-quality education accessible to everyone. We aim to
+            simplify learning through expert-led courses that build real-world
+            skills and inspire continuous growth.
+          </p>
+        </div>
+        <div class="divider"></div>
+        <div class="vision">
+          <h2>Our Vision</h2>
+          <p>
+            To become a global learning hub where curiosity drives progress,
+            innovation shapes the future, and every learner reaches their full
+            potential.
+          </p>
+        </div>
+      </div>
+    </section>
+
+     <!-- Footer -->
+    <div id="footer-placeholder"></div>
+
+    <script>
+        // Load footer.html into the placeholder
+        fetch("../Footer/footer.html")
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById("footer-placeholder").innerHTML = data;
+            })
+            .catch(error => console.error("Error loading footer:", error));
+    </script>
+    <script src="../js/api-config.js"></script>
+    <script src="../js/navbar-logic.js"></script>
+    <script src="about.js"></script>
+  </body>
+</html>

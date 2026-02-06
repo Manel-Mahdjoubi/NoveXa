@@ -1,0 +1,268 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+
+}
+
+model Student {
+  S_id                Int           @id @default(autoincrement())
+  S_firstname         String
+  S_lastname          String
+  S_email             String        @unique
+  S_phone             String
+  S_password          String
+  S_pfp               String?
+  S_bio               String?
+  S_study             String?
+  S_studyplace        String?
+  S_studyfield        String?
+  S_address           String?
+  S_socialmedia       String[]
+  S_birthdate         DateTime
+  created_at          DateTime      @default(now())
+  updated_at          DateTime      @updatedAt
+  resetPasswordToken  String?
+  resetPasswordExpire DateTime?
+  certificates        Certificate[]
+  Enrollment          Enrollment[]
+  Feedback            Feedback[]
+  Progress            Progress[]
+  QuizAttempt         QuizAttempt[] @relation("StudentQuizAttempts")
+
+  @@index([S_email])
+}
+
+model Teacher {
+  T_id                Int               @id @default(autoincrement())
+  T_firstname         String
+  T_lastname          String
+  T_email             String            @unique
+  T_phone             String
+  T_password          String
+  T_pfp               String?
+  T_bio               String?
+  T_study             String?
+  T_studyplace        String?
+  T_studyfield        String?
+  T_address           String?
+  T_socialmedia       String[]
+  T_birthdate         DateTime
+  created_at          DateTime          @default(now())
+  updated_at          DateTime          @updatedAt
+  resetPasswordToken  String?
+  resetPasswordExpire DateTime?
+  Course              Course[]
+  DeletionRequest     DeletionRequest[]
+  Feedback            Feedback[]
+  TeacherTask         TeacherTask[]
+
+  @@index([T_email])
+}
+
+model Course {
+  C_id              Int               @id @default(autoincrement())
+  C_title           String
+  C_desc            String
+  C_image           String
+  C_field           String
+  C_destination     String
+  C_sessnum         Int
+  C_maxstud         Int
+  C_price           Float
+  C_certificate     Boolean           @default(false)
+  teacherId         Int
+  created_at        DateTime          @default(now())
+  updated_at        DateTime          @updatedAt
+  deletionRequested Boolean           @default(false)
+  certificates      Certificate[]
+  Chapter           Chapter[]
+  Teacher           Teacher           @relation(fields: [teacherId], references: [T_id], onDelete: Cascade)
+  DeletionRequest   DeletionRequest[]
+  Enrollment        Enrollment[]
+  Feedback          Feedback[]
+  Progress          Progress[]
+  QuizAttempt       QuizAttempt[]     @relation("CourseQuizAttempts")
+}
+
+model Chapter {
+  chap_id     Int           @id @default(autoincrement())
+  chap_title  String
+  numlecture  Int
+  courseId    Int
+  Course      Course        @relation(fields: [courseId], references: [C_id], onDelete: Cascade)
+  Lecture     Lecture[]
+  Quiz        Quiz?
+  QuizAttempt QuizAttempt[] @relation("ChapterQuizAttempts")
+}
+
+model Lecture {
+  lec_id       Int        @id @default(autoincrement())
+  lec_title    String
+  lec_file     String
+  lec_vid      String
+  chapterId    Int
+  lec_duration Int?
+  Chapter      Chapter    @relation(fields: [chapterId], references: [chap_id], onDelete: Cascade)
+  Progress     Progress[]
+}
+
+model Quiz {
+  quiz_id     Int           @id @default(autoincrement())
+  chapId      Int           @unique
+  quiz_title  String
+  Question    Question[]
+  Chapter     Chapter       @relation(fields: [chapId], references: [chap_id], onDelete: Cascade)
+  QuizAttempt QuizAttempt[] @relation("QuizQuizAttempts")
+}
+
+model Question {
+  question_id  Int      @id @default(autoincrement())
+  questionText String
+  quizId       Int
+  Option       Option[]
+  Quiz         Quiz     @relation(fields: [quizId], references: [quiz_id], onDelete: Cascade)
+}
+
+model Option {
+  option_id  Int      @id @default(autoincrement())
+  optionText String
+  isCorrect  Boolean  @default(false)
+  questionId Int
+  Question   Question @relation(fields: [questionId], references: [question_id], onDelete: Cascade)
+}
+
+model Enrollment {
+  enrollment_id Int      @id @default(autoincrement())
+  studentId     Int
+  courseId      Int
+  enrolledAt    DateTime @default(now())
+  progress      Json     @default("{}")
+  Course        Course   @relation(fields: [courseId], references: [C_id], onDelete: Cascade)
+  Student       Student  @relation(fields: [studentId], references: [S_id], onDelete: Cascade)
+
+  @@unique([studentId, courseId])
+}
+
+model QuizAttempt {
+  attempt_id  Int       @id @default(autoincrement())
+  studentId   Int
+  quizId      Int
+  chapterId   Int
+  courseId    Int
+  completed   Boolean   @default(false)
+  score       Float?
+  attemptedAt DateTime  @default(now())
+  completedAt DateTime?
+  Chapter     Chapter   @relation("ChapterQuizAttempts", fields: [chapterId], references: [chap_id], onDelete: Cascade)
+  Course      Course    @relation("CourseQuizAttempts", fields: [courseId], references: [C_id], onDelete: Cascade)
+  Quiz        Quiz      @relation("QuizQuizAttempts", fields: [quizId], references: [quiz_id], onDelete: Cascade)
+  Student     Student   @relation("StudentQuizAttempts", fields: [studentId], references: [S_id], onDelete: Cascade)
+
+  @@index([studentId, quizId])
+}
+
+model Feedback {
+  feedback_id    Int      @id @default(autoincrement())
+  studentId      Int
+  courseId       Int
+  teacherId      Int
+  teacherComment String?
+  courseComment  String?
+  teacherRating  Int
+  courseRating   Int
+  created_at     DateTime @default(now())
+  Course         Course   @relation(fields: [courseId], references: [C_id], onDelete: Cascade)
+  Student        Student  @relation(fields: [studentId], references: [S_id], onDelete: Cascade)
+  Teacher        Teacher  @relation(fields: [teacherId], references: [T_id], onDelete: Cascade)
+
+  @@unique([studentId, courseId])
+}
+
+model Progress {
+  P_id      Int      @id @default(autoincrement())
+  studentId Int
+  courseId  Int
+  lessonId  Int
+  updatedAt DateTime @updatedAt
+  Course    Course   @relation(fields: [courseId], references: [C_id], onDelete: Cascade)
+  Lecture   Lecture  @relation(fields: [lessonId], references: [lec_id], onDelete: Cascade)
+  Student   Student  @relation(fields: [studentId], references: [S_id], onDelete: Cascade)
+
+  @@unique([studentId, courseId, lessonId])
+}
+
+model Admin {
+  admin_id        Int               @id @default(autoincrement())
+  username        String            @unique
+  password        String
+  fullName        String
+  role            String
+  created_at      DateTime          @default(now())
+  updated_at      DateTime          @updatedAt
+  DeletionRequest DeletionRequest[]
+}
+
+model DeletionRequest {
+  request_id  Int       @id @default(autoincrement())
+  courseId    Int
+  teacherId   Int
+  reason      String
+  status      String    @default("pending")
+  requestedAt DateTime  @default(now())
+  reviewedAt  DateTime?
+  reviewedBy  Int?
+  Course      Course    @relation(fields: [courseId], references: [C_id], onDelete: Cascade)
+  Admin       Admin?    @relation(fields: [reviewedBy], references: [admin_id], onDelete: Cascade)
+  Teacher     Teacher   @relation(fields: [teacherId], references: [T_id], onDelete: Cascade)
+}
+
+model Certificate {
+  id                 Int      @id @default(autoincrement())
+  certificateId      String   @unique
+  studentId          Int
+  courseId           Int
+  studentName        String
+  courseName         String
+  completionDate     DateTime
+  qrCodeData         String
+  format             String
+  fileData           Bytes
+  createdAt          DateTime @default(now())
+  cloudinaryPublicId String?
+  cloudinaryUrl      String?
+  Course             Course   @relation(fields: [courseId], references: [C_id], onDelete: Cascade)
+  Student            Student  @relation(fields: [studentId], references: [S_id], onDelete: Cascade)
+
+  @@index([studentId, courseId])
+  @@index([certificateId])
+}
+
+model TeacherTask {
+  task_id     Int       @id @default(autoincrement())
+  teacherId   Int
+  text        String
+  completed   Boolean   @default(false)
+  createdAt   DateTime  @default(now())
+  completedAt DateTime?
+  updatedAt   DateTime
+  Teacher     Teacher   @relation(fields: [teacherId], references: [T_id], onDelete: Cascade)
+}
+
+model LibraryResource {
+  id           Int      @id @default(autoincrement())
+  title        String
+  description  String?
+  type         String   @default("FILE")
+  subject      String
+  url          String
+  status       String   @default("pending")
+  folderUrl    String?
+  uploadedBy   String?
+  uploaderId   Int?
+  uploaderRole String?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime
+}

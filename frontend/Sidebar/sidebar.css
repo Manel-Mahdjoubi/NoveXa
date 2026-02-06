@@ -1,0 +1,413 @@
+/* ===============================
+   SIDEBAR STYLES
+   =============================== */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --sidebare-bg: linear-gradient(180deg, #33a0df 0%, #1c5779 100%);
+  --sidebare-width: 250px;
+  --white: #ffffff;
+  
+  --hover-bg: rgba(255, 255, 255, 0.1);
+  --active-bg: rgba(255, 255, 255, 0.2);
+  --transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+body {
+  font-family: "Poppins", sans-serif;
+  
+  overflow-x: hidden;
+}
+
+/* ===============================
+   SIDEBAR CONTAINER
+   =============================== */
+.sidebare {
+  position: fixed;
+  left: 0;
+  top: 10px;
+  height: 100vh;
+  width: var(--sidebare-width);
+  background: var(--sidebare-bg);
+  box-shadow: 4px 0 15px rgba(0, 0, 0, 0.1);
+  transition: var(--transition);
+  z-index: 1000;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.sidebare::-webkit-scrollbar {
+  width: 8px;
+}
+
+.sidebare::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.sidebare::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 10px;
+}
+
+.sidebare.collapsed {
+  transform: translateX(-100%);
+}
+
+/* ===============================
+   TOGGLE BUTTON - ALWAYS VISIBLE
+   =============================== */
+.sidebare-toggle {
+  position: fixed;
+  top: 50%;
+  left: 0;
+  transform: translateY(-50%);
+  width: 40px;
+  height: 80px;
+  background: linear-gradient(135deg, #33a0df 0%, #1c5779 100%);
+  border: none;
+  border-radius: 0 12px 12px 0;
+  box-shadow: 2px 0 10px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  z-index: 1001;
+  opacity: 1;
+  pointer-events: all;
+}
+
+/* Hide toggle button when sidebare is open */
+.sidebare:not(.collapsed) ~ .sidebare-toggle {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Show toggle button when sidebare is collapsed */
+.sidebare.collapsed ~ .sidebare-toggle {
+  opacity: 1;
+  pointer-events: all;
+}
+
+.sidebare-toggle:hover {
+  width: 45px;
+  box-shadow: 3px 0 15px rgba(0, 0, 0, 0.3);
+}
+
+.togglee-icon  {
+  font-size: 24px;
+  color: black;
+  font-weight: bold;
+  transition: transform 0.3s ease;
+}
+
+
+
+/* ===============================
+   CLOSE BUTTON (Inside Sidebar)
+   =============================== */
+.sidebare-close {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  width: 35px;
+  height: 35px;
+  background: rgba(255, 255, 255, 0.2);
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: var(--transition);
+  z-index: 1001;
+}
+
+.sidebare-close:hover {
+  background: rgba(255, 255, 255, 0.3);
+  transform: rotate(90deg);
+}
+
+.sidebare-close::before,
+.sidebare-close::after {
+  content: "";
+  position: absolute;
+  width: 18px;
+  height: 2px;
+  background: var(--white);
+}
+
+.sidebare-close::before {
+  transform: rotate(45deg);
+}
+
+.sidebare-close::after {
+  transform: rotate(-45deg);
+}
+
+/* ===============================
+   SIDEBAR CONTENT
+   =============================== */
+.sidebare-content {
+  padding: 50px 20px 30px;
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+  min-height: 100vh;
+}
+
+/* ===============================
+   USER PROFILE
+   =============================== */
+.user-profile {
+  text-align: center;
+  padding: 20px 10px;
+  transition: var(--transition);
+}
+
+.user-avatar {
+  width: 80px;
+  height: 80px;
+  margin: 0 auto 15px;
+  border-radius: 50%;
+  overflow: hidden;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  transition: var(--transition);
+}
+
+.user-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.user-name {
+  font-size: 18px;
+  font-weight: 600;
+   color: black;
+  margin-bottom: 5px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  transition: var(--transition);
+}
+
+.user-role {
+  font-size: 14px;
+  color: black;
+  transition: var(--transition);
+}
+
+/* ===============================
+   navvIGATION MENU
+   =============================== */
+.sidebare-navv {
+  flex: 1;
+}
+
+.navv-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.navv-item {
+  transition: var(--transition);
+}
+
+.navv-link {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  padding: 14px 18px;
+ color: black;
+  text-decoration: none;
+  border-radius: 12px;
+  transition: var(--transition);
+  font-size: 15px;
+  font-weight: 500;
+  position: relative;
+  overflow: hidden;
+}
+
+.navv-link::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 4px;
+  background: var(--white);
+  transform: scaleY(0);
+  transition: var(--transition);
+}
+
+.navv-link:hover {
+  background: var(--hover-bg);
+  transform: translateX(5px);
+}
+
+.navv-link:hover::before {
+  transform: scaleY(1);
+}
+
+.navv-item.active .navv-link {
+  background: var(--active-bg);
+  color: var(--white);
+  font-weight: 600;
+}
+
+.navv-item.active .navv-link::before {
+  transform: scaleY(1);
+}
+
+.navv-icon {
+  width: 24px;
+  height: 24px;
+  flex-shrink: 0;
+  transition: var(--transition);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+
+
+.navv-text {
+  white-space: nowrap;
+  transition: var(--transition);
+  color: black;
+}
+
+/* ===============================
+   ACTION BUTTONS
+   =============================== */
+.sidebare-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding-top: 20px;
+  border-top: 2px solid rgba(255, 255, 255, 0.2);
+}
+
+.action-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 12px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition);
+  white-space: nowrap;
+}
+
+.btn-secondary {
+  background-color: var(--white);
+  color: #1c5779;
+}
+
+.btn-secondary:hover {
+  background: rgba(255, 255, 255, 0.9);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.btn-text {
+  transition: var(--transition);
+}
+
+/* ===============================
+   FOOTER
+   =============================== */
+.sidebare-footer {
+  margin-top: auto;
+  margin-bottom: 10px;
+  text-align: center;
+  color: white;
+  font-size: 13px;
+}
+
+/* ===============================
+   OVERLAY (for mobile)
+   =============================== */
+.sidebare-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 999;
+  opacity: 0;
+  pointer-events: none;
+  transition: var(--transition);
+}
+
+.sidebare-overlay.active {
+  opacity: 1;
+  pointer-events: all;
+}
+
+/* ===============================
+   RESPONSIVE DESIGN
+   =============================== */
+
+/* ===============================
+   SIDEBAR COMPATIBILITY FIXES
+   =============================== */
+
+/* Ensure sidebare doesn't cover content on mobile */
+@media (max-width: 600px) {
+    .sidebare {
+        width: 250px ;
+        transform: translateX(-100%);
+    }
+    
+    .sidebare:not(.collapsed) {
+        transform: translateX(0);
+    }
+    
+    
+    
+    /* Add overlay when sidebare is open on mobile */
+    .sidebare-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: 998;
+        opacity: 0;
+        pointer-events: none;
+        transition: all 0.4s ease;
+    }
+    
+    .sidebare-overlay.active {
+        opacity: 1;
+        pointer-events: all;
+    }
+    
+    /* Ensure toggle button is visible on mobile */
+    .sidebare-toggle {
+        opacity: 1 !important;
+        pointer-events: all !important;
+        z-index: 1001 !important;
+    }
+    
+    .sidebare:not(.collapsed) ~ .sidebare-toggle {
+        opacity: 0 !important;
+        pointer-events: none !important;
+    }
+}
+

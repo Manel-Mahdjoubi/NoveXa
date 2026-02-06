@@ -1,0 +1,81 @@
+<!-- teacher-sidebar.html -->
+<aside class="sidebare collapsed" id="sidebare">
+    <!-- Close Button  -->
+    <button class="sidebare-close" id="sidebarClose"></button>
+
+    <!-- Sidebar Content -->
+    <div class="sidebare-content">
+        <!-- User Profile Section -->
+        <div class="user-profile">
+            <div class="user-avatar">
+                <img src="../asset/sidebar/proSide.jpg" alt="User Avatar" id="sidebarAvatar">
+            </div>
+            <h3 class="user-name" id="sidebarName">Teacher Name</h3>
+            <p class="user-role" id="sidebarRole">Teacher</p>
+        </div>
+
+        <!-- Navigation Menu -->
+        <nav class="sidebare-navv">
+            <ul class="navv-list">
+                <li class="navv-item">
+                    <a href="../profile/profile.html" class="navv-link" data-page="profile">
+                        <span class="navv-icon">
+                            <img src="../asset/sidebar/profile.svg" alt="Profile">
+                        </span>
+                        <span class="navv-text">Profile</span>
+                    </a>
+                </li>
+                <li class="navv-item">
+                    <a href="../student and teacher dashboard/tDashboard.html" class="navv-link" data-page="dashboard">
+                        <span class="navv-icon">
+                            <img src="../asset/sidebar/dashboard.svg" alt="Dashboard">
+                        </span>
+                        <span class="navv-text">Dashboard</span>
+                    </a>
+                </li>
+                <li class="navv-item">
+                    <a href="../Coursemanagement/coursemanagement.html" class="navv-link" data-page="courseLearning">
+                        <span class="navv-icon">
+                            <img src="../asset/sidebar/lectures.svg" alt="My Courses">
+                        </span>
+                        <span class="navv-text">Create Course</span>
+                    </a>
+                </li>
+                <li class="navv-item">
+                    <a href="../students list/studentsList.html" class="navv-link" data-page="teachers">
+                        <span class="navv-icon">
+                            <img src="../asset/sidebar/students.svg" alt="Students">
+                        </span>
+                        <span class="navv-text">Students</span>
+                    </a>
+                </li>
+                <li class="navv-item">
+                    <a href="../e_library/e_library.html" class="navv-link" data-page="library">
+                        <span class="navv-icon">
+                            <img src="../asset/sidebar/library.svg" alt="Library">
+                        </span>
+                        <span class="navv-text">Library</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+
+        <!-- Action Buttons -->
+        <div class="sidebare-actions">
+            <button class="action-btn btn-secondary" id="logoutBtn">
+                <span class="btn-text">Logout</span>
+            </button>
+        </div>
+    </div>
+    <footer class="sidebare-footer">
+        <p>© 2026 NoveXa</p>
+    </footer>
+</aside>
+
+<!-- Toggle Button -->
+<button class="sidebare-toggle" id="sidebarToggle">
+    <span class="toggle-icon">></span>
+</button>
+
+<!-- Overlay for mobile -->
+<div class="sidebare-overlay" id="sidebarOverlay"></div>

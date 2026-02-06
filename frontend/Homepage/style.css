@@ -1,0 +1,36 @@
+@import url('https://fonts.googleapis.com/css2?family=Beiruti:wght@200..900&family=Poppins:wght@300;400;500;600;700&display=swap');
+
+body {
+  
+  background-size: cover;
+  background-attachment: scroll;
+  overflow-x: hidden;
+
+
+}
+
+:root {
+  --blue-color1: #216890;
+  --blue-color2: #154D70;
+  --black-text: #000000;
+  --white-text: #FFFFFF;
+  --primary-blue: #0e84c8;
+  --light-blue: #99cce9;
+  --dark-blue: #154D70;
+  --gray-text: #666;
+  --border-color: #e0e0e0;
+  --success-green: #4CAF50;
+  --font-size1: 24px;
+  --font-size2: 25px;
+  --boder-radmenu: 30px;
+}
+
+ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+a {
+  text-decoration: none;
+}

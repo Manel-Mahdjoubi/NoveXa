@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NoveXa - Teachers List</title>
+    <link rel="stylesheet" href="../Sidebar/sidebar.css">
+    <link rel="stylesheet" href="../students list/studentList.css">
+
+    <link rel="icon" type="image/png" href="../logoE.png">
+    <link rel="stylesheet" href="../globals.css">
+</head>
+<body  data-page="teachers">
+    <script src="../js/api-config.js"></script>
+    <script src="../js/navbar-logic.js"></script>
+    <script src="../Sidebar/load-sidebare.js"></script>
+    
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="spinner"></div>
+        <p>Loading teachers...</p>
+    </div>
+<!--Header part -->
+  <header class="navbar">
+    <div class="logo">
+      <a href="../home_page2/home_page2.html" id="logoButton">
+        <img
+          src="../Novexa_assets/global_assets/logo_top.svg"
+          alt="NoveXa Logo"
+        />
+      </a>
+    </div>
+
+    <nav class="nav-links">
+      <a href="../home_page2/home_page2.html">Home</a>
+      <a href="../about_us/about_us.html">About Us</a>
+      <a href="#">Teachers</a>
+      <a href="../e_library/e_library.html">Library</a>
+    </nav>
+
+    <a href="../profile/profile.html" class="profile-btn">My profile</a>
+    <div class="menu-icon" id="menu-toggle">☰</div>
+  </header>
+
+  <!-- MOBILE MENU -->
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="../home_page2/home_page2.html">Home</a>
+    <a href="../about_us/about_us.html">About Us</a>
+    <a href="#">Teachers</a>
+    <a href="../e_library/e_library.html">Library</a>
+  </div>
+
+  
+    <!-- Main Dashboard Container -->
+    <div class="dashboard-container" role="main">
+        
+        <!-- Header Section -->
+        <header class="dashboard-header">
+            <div class="header-left">
+                <h1> My Teachers List</h1>
+            </div>
+            <div class="header-actions">
+                <div class="search-wrapper">
+                    <input 
+                        type="search" 
+                        id="searchInput" 
+                        placeholder="Search teachers... (Ctrl+K)" 
+                        class="search-input"
+                        aria-label="Search teachers">
+                </div>
+                <button class="btn-refresh" onclick="refreshData()" aria-label="Refresh data" title="Refresh (Ctrl+R)">
+                     <span class="btn-text">Refresh</span>
+                </button>
+            </div>
+        </header>
+
+        <!-- Table Section -->
+        <section class="table-section" aria-label="Teachers table">
+            <div class="table-header">
+                <div class="table-info">
+                    <span id="tableCount" class="table-count">Showing 0 teachers</span>
+                </div>
+            </div>
+
+            <div class="table-container">
+                <table class="students-table" id="teachersTable">
+                    <thead>
+                        <tr>
+                            <th onclick="sortTable(0)" class="sortable" role="button" tabindex="0">
+                                ID <span class="sort-icon" aria-hidden="true">⇅</span>
+                            </th>
+                            <th onclick="sortTable(1)" class="sortable" role="button" tabindex="0">
+                                Name <span class="sort-icon" aria-hidden="true">⇅</span>
+                            </th>
+                            <th onclick="sortTable(2)" class="sortable" role="button" tabindex="0">
+                                Email <span class="sort-icon" aria-hidden="true">⇅</span>
+                            </th>
+                            <th onclick="sortTable(3)" class="sortable" role="button" tabindex="0">
+                                Course/Subject <span class="sort-icon" aria-hidden="true">⇅</span>
+                            </th>
+                            <th>Joined Date</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tableBody">
+                        <tr>
+                            <td colspan="6" class="loading-row">
+                                <div class="loading-spinner"></div>
+                                <p>Loading your teachers...</p>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Pagination Section -->
+        <nav class="pagination" aria-label="Pagination">
+            <button 
+                class="btn-page" 
+                onclick="changePage(-1)" 
+                id="prevPageBtn"
+                aria-label="Previous page">
+                ← Previous
+            </button>
+            <span id="pageInfo" class="page-info" aria-live="polite">Page 1 of 1</span>
+            <button 
+                class="btn-page" 
+                onclick="changePage(1)" 
+                id="nextPageBtn"
+                aria-label="Next page">
+                Next →
+            </button>
+        </nav>
+
+        <!-- Footer -->
+        <footer class="dashboard-footer">
+            <p>© 2025 NoveXa - Teacher Management System</p>
+            <div class="footer-links">
+                <a href="../terms privacy/termsPrivacy.html">Terms & Privacy</a>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Modal for Teacher Details -->
+    <div id="teacherModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modalTitle"> Teacher Details</h2>
+                <button class="close" onclick="closeModal()" aria-label="Close modal">&times;</button>
+            </div>
+            <div class="modal-body" id="modalBody">
+                <!-- Dynamic content -->
+            </div>
+        </div>
+    </div>
+
+    
+    <!-- Toast Container -->
+    <div id="toastContainer" aria-live="polite" aria-atomic="true"></div>
+
+    <!-- Scripts -->
+
+<!-- Script for header-->
+ <script>
+  document.addEventListener("DOMContentLoaded", function () {
+    /*MOBILE NAV MENU */
+    const menuToggle = document.getElementById("menu-toggle");
+    const mobileMenu = document.getElementById("mobileMenu");
+
+    if (menuToggle && mobileMenu) {
+      menuToggle.addEventListener("click", () => {
+        const isVisible =
+          mobileMenu.style.display === "flex" ||
+          mobileMenu.classList.contains("active");
+
+        if (isVisible) {
+          mobileMenu.style.display = "none";
+          mobileMenu.classList.remove("active");
+        } else {
+          mobileMenu.style.display = "flex";
+          mobileMenu.classList.add("active");
+        }
+      });
+    }
+  }); 
+ </script>
+
+
+
+
+    <script src="../js/navbar-logic.js"></script>
+    <script src="teacherList.js"></script>
+    
+    <!-- Footer -->
+        <div id="footer-placeholder"></div>
+
+        <script>
+            // Load footer.html into the placeholder
+            fetch("../Footer/footer.html")
+                .then(response => response.text())
+                .then(data => {
+                    document.getElementById("footer-placeholder").innerHTML = data;
+                })
+                .catch(error => console.error("Error loading footer:", error));
+        </script>
+
+</body>
+</html>

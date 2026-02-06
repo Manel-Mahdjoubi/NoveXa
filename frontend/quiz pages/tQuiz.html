@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Quiz Builder</title>
+  <link rel="stylesheet" href="styleQuiz.css" />
+  <link rel="icon" type="image/png" href="../logoE.png">
+  <link rel="stylesheet" href="../Sidebar/sidebar.css" />
+
+</head>
+
+<body data-page="quizzes">
+<!-- Teacher-Only Access Control -->
+<script src="../js/api-config.js"></script>
+<script src="../js/teacher-only.js"></script>
+<script src="../js/navbar-logic.js"></script>
+<!--Header part -->
+  <header class="navbar">
+    <div class="logo">
+      <a href="../home_page2/home_page2.html" id="logoButton">
+        <img
+          src="../Novexa_assets/global_assets/logo_top.svg"
+          alt="NoveXa Logo"
+        />
+      </a>
+    </div>
+
+    <nav class="nav-links">
+      <a href="../home_page2/home_page2.html">Home</a>
+      <a href="../about_us/about_us.html">About Us</a>
+      <a href="../students list/studentsList.html">Students</a>
+      <a href="../e_library/e_library.html">Library</a>
+    </nav>
+
+    <a href="../profile/profile.html" class="profile-btn">My profile</a>
+    <div class="menu-icon" id="menu-toggle">☰</div>
+  </header>
+
+  <!-- MOBILE MENU -->
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="../home_page2/home_page2.html">Home</a>
+    <a href="../about_us/about_us.html">About Us</a>
+    <a href="../students list/studentsList.html">Students</a>
+    <a href="../e_library/e_library.html">Library</a>
+  </div>
+
+  
+    <!-- Dynamic Sidebar will be loaded here -->
+    <script src="../Sidebar/load-sidebare.js"></script>
+
+  <!-- Quiz Creation Form -->
+  <div class="page" id="quizCreationPage">
+    <form class="quiz-form" id="quizForm">
+      <h1>Quiz about : <span class="dotted">
+          <input type="text" id="quizTitle" placeholder="Topic of quiz"
+            style="border:none; background:transparent; outline:none; text-align:center; width:200px; font-family:'Poppins', sans-serif; font-weight: 600; font-size: inherit; color: inherit;" />
+        </span>
+      </h1>
+      <style>
+        #quizTitle::placeholder {
+          color: inherit;
+          opacity: 0.7;
+          font-weight: 600;
+        }
+        
+        /* Course & Chapter Selector Styles */
+        .course-chapter-selector {
+          background: rgba(255, 255, 255, 0.05);
+          border: 2px solid rgba(255, 255, 255, 0.1);
+          border-radius: 12px;
+          padding: 20px;
+          margin: 20px 0;
+        }
+        
+        .course-info {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          margin-bottom: 10px;
+        }
+        
+        .course-name {
+          font-size: 1.1em;
+          font-weight: 600;
+          color: #fff;
+        }
+        
+        .chapter-dropdown {
+          margin-top: 15px;
+        }
+        
+        .chapter-dropdown-header {
+          background: linear-gradient(135deg, #004e92, #66bbff);
+          padding: 12px 15px;
+          border-radius: 8px;
+          cursor: pointer;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          transition: all 0.3s ease;
+        }
+        
+        .chapter-dropdown-header:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 4px 12px rgba(102, 187, 255, 0.3);
+        }
+        
+        .chapter-dropdown-title {
+          font-weight: 500;
+          color: #fff;
+        }
+        
+        .chapter-dropdown-arrow {
+          transition: transform 0.3s ease;
+          color: #fff;
+        }
+        
+        .chapter-dropdown.expanded .chapter-dropdown-arrow {
+          transform: rotate(180deg);
+        }
+        
+        .chapter-options {
+          max-height: 0;
+          overflow: hidden;
+          transition: max-height 0.3s ease;
+          margin-top: 10px;
+        }
+        
+        .chapter-dropdown.expanded .chapter-options {
+          max-height: 400px;
+          overflow-y: auto;
+        }
+        
+        .chapter-option {
+          background: rgba(255, 255, 255, 0.08);
+          padding: 12px 15px;
+          margin: 8px 0;
+          border-radius: 8px;
+          cursor: pointer;
+          transition: all 0.3s ease;
+          border: 2px solid transparent;
+        }
+        
+        .chapter-option:hover {
+          background: rgba(255, 255, 255, 0.12);
+          transform: translateX(5px);
+        }
+        
+        .chapter-option.selected {
+          background: linear-gradient(135deg, rgba(0, 78, 146, 0.3), rgba(102, 187, 255, 0.3));
+          border-color: #66bbff;
+        }
+        
+        .chapter-option-title {
+          font-weight: 500;
+          color: #fff;
+          margin-bottom: 4px;
+        }
+        
+        .chapter-option-meta {
+          font-size: 0.85em;
+          color: rgba(255, 255, 255, 0.7);
+        }
+        
+        .no-chapter-selected {
+          color: #ff6b6b;
+          font-size: 0.9em;
+          margin-top: 8px;
+          font-style: italic;
+        }
+        
+        .chapter-selected-indicator {
+          color: #4ade80;
+          font-size: 0.9em;
+          margin-top: 8px;
+          display: flex;
+          align-items: center;
+          gap: 5px;
+        }
+      </style>
+
+
+      <!-- Chapter Info Display (Auto-selected from Course Management) -->
+      <div class="course-chapter-selector">
+        <div class="course-info">
+          <span style="color: rgba(255, 255, 255, 0.7);">Creating quiz for:</span>
+          <span class="course-name" id="selectedChapterName">Loading...</span>
+        </div>
+      </div>
+
+      <div style="background: rgba(255, 255, 255, 0.1); padding: 15px; border-radius: 10px; margin: 20px 0; text-align: center;">
+        <p style="margin: 0; font-size: 0.95em; color: #ddd;">💡 Tip: You can select multiple correct answers by using checkboxes</p>
+      </div>
+
+      <!-- Progress Tracker -->
+      <div class="progress-container">
+        <div class="progress-header">
+          <span>Questions Added</span>
+          <span id="progressText">0 Questions</span>
+        </div>
+        <div class="progress-bar">
+          <div class="progress-fill" id="progressFill" style="width: 0%;">0</div>
+        </div>
+      </div>
+
+      <!-- Dynamic Question Blocks -->
+      <div class="questions" id="questionsContainer">
+        <!-- Questions will be added dynamically -->
+      </div>
+
+      <button type="button" class="submit-btn" id="addQuestionBtn"
+        style="background: linear-gradient(to right, #7a7a7a, #4a4a4a); margin-bottom: 15px;">
+        + Add Question
+      </button>
+
+      <div class="disclaimer">
+        <label>
+          <input type="checkbox" id="disclaimerCheck" />
+          I've read that once the questions are submitted, there's no way to change them
+        </label>
+      </div>
+<a href ="../Coursemanagement/coursemanagement.html"> 
+      <button type="submit" class="submit-btn">Submit Quiz</button>
+      </a>
+    </form>
+  </div>
+
+  <!-- Success Page -->
+  <div class="page" id="successPage" style="display: none;">
+    <div class="quiz-form" style="text-align: center;">
+      <h1>Quiz Created Successfully! </h1>
+
+      <div class="score-circle"
+        style="width: 150px; height: 150px; margin: 30px auto; border-radius: 50%; background: linear-gradient(135deg, #004e92, #66bbff); display: flex; align-items: center; justify-content: center; box-shadow: 0 10px 30px rgba(0, 78, 146, 0.4);">
+        <svg width="100" height="100" viewBox="0 0 100 100" style="fill: white;">
+          <path d="M50 15 L61 40 L88 40 L67 55 L78 80 L50 65 L22 80 L33 55 L12 40 L39 40 Z" />
+        </svg>
+      </div>
+
+      <div
+        style="background: white; padding: 20px; border-radius: 10px; margin: 20px 0; box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.15);">
+        <div style="display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #e0e0e0;">
+          <span>Quiz Title:</span>
+          <strong id="displayQuizTitle">-</strong>
+        </div>
+        <div style="display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #e0e0e0;">
+          <span>Total Questions:</span>
+          <strong id="displayTotalQuestions">0</strong>
+        </div>
+        <div style="display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #e0e0e0;">
+          <span>Quiz ID:</span>
+          <strong id="displayQuizId" style="font-size: 0.9em;">-</strong>
+        </div>
+        <div style="display: flex; justify-content: space-between; padding: 10px 0;">
+          <span>Quiz Link:</span>
+          <strong id="displayQuizLink"
+            style="word-break: break-all; color: #0077cc; font-size: 0.85em; max-width: 60%;">-</strong>
+        </div>
+      </div>
+
+      <div style="display: flex; gap: 15px; justify-content: center;">
+        <button type="button" class="submit-btn" onclick="copyQuizLink()"
+          style="flex: 1; max-width: 200px; background: linear-gradient(to right, #7a7a7a, #4a4a4a);">
+          Copy Link
+        </button>
+        <button type="button" class="submit-btn" onclick="createNewQuiz()" style="flex: 1; max-width: 200px;">
+          Create New Quiz
+        </button>
+      </div>
+    </div>
+  </div>
+
+
+
+  <script src="teacher-quiz.js"></script>
+</body>
+
+</html>

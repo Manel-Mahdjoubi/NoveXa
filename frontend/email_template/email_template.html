@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Reset your password</title>
+  </head>
+  <body
+    style="
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
+      background: linear-gradient(180deg, #0e84c8 0%, #99cce9 50%, #ffffff 100%);
+    "
+  >
+    <table width="100%" cellpadding="0" cellspacing="0">
+      <tr>
+        <td align="center" style="padding: 60px 20px">
+          
+          <!-- CARD -->
+          <table
+            width="100%"
+            cellpadding="0"
+            cellspacing="0"
+            style="
+              max-width: 480px;
+              background: #ffffff;
+              border-radius: 24px;
+              box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+              padding: 40px 32px;
+            "
+          >
+            <!-- LOGO -->
+            <tr>
+              <td align="center" style="padding-bottom: 24px">
+                <img
+                  src="../Novexa_assets/global_assets/logo_top.svg"
+                  alt="NoveXa"
+                  width="140"
+                  style="display: block"
+                />
+              </td>
+            </tr>
+
+            <!-- TITLE -->
+            <tr>
+              <td
+                align="center"
+                style="
+                  font-size: 28px;
+                  font-weight: 700;
+                  background: linear-gradient(135deg, #4a90e2, #2c5f7d);
+                  background-clip: text;
+                  -webkit-background-clip: text;
+                  -webkit-text-fill-color: transparent;
+                  padding-bottom: 12px;
+                "
+              >
+                Reset Password
+              </td>
+            </tr>
+
+            <!-- LINE -->
+            <tr>
+              <td align="center" style="padding-bottom: 24px">
+                <div
+                  style="
+                    width: 60px;
+                    height: 4px;
+                    border-radius: 2px;
+                    background: linear-gradient(135deg, #4a90e2, #2c5f7d);
+                  "
+                ></div>
+              </td>
+            </tr>
+
+            <!-- TEXT -->
+            <tr>
+              <td
+                style="
+                  color: #2c3e50;
+                  font-size: 15px;
+                  line-height: 1.6;
+                  text-align: center;
+                  padding-bottom: 28px;
+                "
+              >
+                Hello <strong>{{NAME}}</strong>,<br /><br />
+                You requested to reset your password. Click the button below to
+                choose a new one.
+              </td>
+            </tr>
+
+            <!-- BUTTON -->
+            <tr>
+              <td align="center" style="padding-bottom: 32px">
+                <a
+                  href="{{RESET_URL}}"
+                  style="
+                    display: inline-block;
+                    padding: 16px 32px;
+                    background: linear-gradient(135deg, #4a90e2, #2c5f7d);
+                    color: #ffffff;
+                    text-decoration: none;
+                    font-weight: 600;
+                    border-radius: 12px;
+                    font-size: 16px;
+                  "
+                >
+                  Reset Password
+                </a>
+              </td>
+            </tr>
+
+            <!-- NOTE -->
+            <tr>
+              <td
+                style="
+                  color: #6c757d;
+                  font-size: 13px;
+                  text-align: center;
+                  line-height: 1.5;
+                "
+              >
+                This link will expire in <strong>15 minutes</strong>.<br />
+                If you didn't request this, you can safely ignore this email.
+              </td>
+            </tr>
+          </table>
+
+          <!-- FOOTER -->
+          <div
+            style="
+              margin-top: 24px;
+              font-size: 12px;
+              color: #6c757d;
+              text-align: center;
+            "
+          >
+            © 2026 NoveXa. All rights reserved.
+          </div>
+
+        </td>
+      </tr>
+    </table>
+  </body>
+</html>

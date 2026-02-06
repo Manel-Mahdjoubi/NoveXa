@@ -1,0 +1,1232 @@
+// ===============================
+// MAIN INITIALIZATION
+// ===============================
+document.addEventListener('DOMContentLoaded', function () {
+    initMobileMenu();
+    initCourseManagement();
+    initAddQuizButton();
+});
+
+// ===============================
+// MOBILE MENU
+// ===============================
+function initMobileMenu() {
+    const menuToggle = document.getElementById('menuToggle') || document.querySelector('.menu-toggle');
+    const navMenu = document.getElementById('navMenu') || document.querySelector('.nav-menu');
+    const navItems = document.querySelectorAll('.nav-item');
+    const navLinks = document.querySelectorAll('.nav-link');
+
+    if (!menuToggle || !navMenu) return;
+
+    menuToggle.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const isOpen = navMenu.classList.toggle('show');
+        menuToggle.classList.toggle('active');
+
+        if (navigator.vibrate) {
+            navigator.vibrate(50);
+        }
+
+        menuToggle.style.transform = isOpen ? 'rotate(180deg) scale(1.1)' : 'rotate(0deg) scale(1)';
+    });
+
+    navLinks.forEach(link => {
+        link.addEventListener('click', () => {
+            if (window.innerWidth <= 900) {
+                closeMenuWithAnimation();
+            }
+        });
+    });
+
+    document.addEventListener('click', (e) => {
+        if (window.innerWidth <= 900 &&
+            navMenu.classList.contains('show') &&
+            !navMenu.contains(e.target) &&
+            !menuToggle.contains(e.target)) {
+            closeMenuWithAnimation();
+        }
+    });
+
+    let touchStartY = 0;
+    navMenu.addEventListener('touchstart', (e) => {
+        touchStartY = e.touches[0].clientY;
+    });
+
+    navMenu.addEventListener('touchmove', (e) => {
+        if (window.innerWidth <= 900 && navMenu.classList.contains('show')) {
+            const touchY = e.touches[0].clientY;
+            const diff = touchStartY - touchY;
+
+            if (diff > 100) {
+                closeMenuWithAnimation();
+            }
+        }
+    });
+
+    function closeMenuWithAnimation() {
+        navMenu.classList.remove('show');
+        menuToggle.classList.remove('active');
+        menuToggle.style.transform = 'rotate(0deg) scale(1)';
+
+        navItems.forEach((item, index) => {
+            setTimeout(() => {
+                item.style.transform = 'translateX(-50px) rotateY(-20deg)';
+                item.style.opacity = '0';
+            }, index * 50);
+        });
+
+        setTimeout(() => {
+            navItems.forEach(item => {
+                item.style.transform = '';
+                item.style.opacity = '';
+            });
+        }, 500);
+    }
+
+    
+}
+
+// ===============================
+// COURSE MANAGEMENT
+// ===============================
+function initCourseManagement() {
+    let chaptersData = [];
+    let selectedCourseImage = null;
+
+    initCourseImageUpload();
+    initChaptersDynamicInput();
+    initFileUpload('file', ['*/*']);
+    initFileUpload('video', ['video/*']);
+    initFormValidation();
+    initCreateCourseButton();
+    addAnimationStyles();
+
+    // ===============================
+    // COURSE IMAGE UPLOAD
+    // ===============================
+    function initCourseImageUpload() {
+        const courseImageBtn = document.getElementById('courseImageBtn');
+        const courseImageInput = document.getElementById('courseImageInput');
+        const courseImageName = document.getElementById('courseImageName');
+        const courseImagePreview = document.getElementById('courseImagePreview');
+
+        if (!courseImageBtn || !courseImageInput) return;
+
+        courseImageBtn.addEventListener('click', () => {
+            courseImageInput.click();
+        });
+
+        courseImageInput.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (file && file.type.startsWith('image/')) {
+                selectedCourseImage = file;
+                courseImageName.textContent = file.name;
+
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    courseImagePreview.innerHTML = `
+                        <img src="${e.target.result}" alt="Course preview">
+                        <button class="remove-image-btn" id="removeCourseImage">Remove</button>
+                    `;
+                    courseImagePreview.style.display = 'block';
+
+                    document.getElementById('removeCourseImage').addEventListener('click', () => {
+                        selectedCourseImage = null;
+                        courseImageInput.value = '';
+                        courseImageName.textContent = 'No image selected';
+                        courseImagePreview.style.display = 'none';
+                        courseImagePreview.innerHTML = '';
+                    });
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+    }
+
+    // ===============================
+    // CHAPTERS DYNAMIC INPUT
+    // ===============================
+    function initChaptersDynamicInput() {
+        const sessionsInput = document.getElementById('sessions');
+        if (!sessionsInput) return;
+
+        const chaptersContainer = document.createElement('div');
+        chaptersContainer.id = 'chaptersContainer';
+        chaptersContainer.style.display = 'none';
+        chaptersContainer.className = 'chapters-container';
+        sessionsInput.parentElement.insertAdjacentElement('afterend', chaptersContainer);
+
+        sessionsInput.addEventListener('input', (e) => {
+            const numSessions = parseInt(e.target.value) || 0;
+
+            if (numSessions > 0) {
+                createChaptersInputs(numSessions);
+                chaptersContainer.style.display = 'block';
+            } else {
+                chaptersContainer.style.display = 'none';
+                chaptersData = [];
+            }
+        });
+
+        function createChaptersInputs(count) {
+            chaptersContainer.innerHTML = `
+                <div class="chapters-header">
+                    <span class="chapters-badge">${count}</span>
+                    <h3 class="chapters-title">Chapter Names</h3>
+                </div>
+                <div class="chapters-list" id="chaptersList"></div>
+            `;
+
+            const chaptersList = document.getElementById('chaptersList');
+
+            for (let i = 0; i < count; i++) {
+                const chapterRow = document.createElement('div');
+                chapterRow.className = 'chapter-row';
+                chapterRow.innerHTML = `
+                    <span class="chapter-label">Chapter ${i + 1}:</span>
+                    <div class="form-group">
+                        <input 
+                            type="text" 
+                            class="chapter-input" 
+                            placeholder="Enter chapter ${i + 1} name"
+                            data-chapter-index="${i}"
+                            value="${chaptersData[i] || ''}"
+                        >
+                        <small class="error-message"></small>
+                    </div>
+                `;
+                chaptersList.appendChild(chapterRow);
+            }
+
+            document.querySelectorAll('.chapter-input').forEach(input => {
+                input.addEventListener('input', (e) => {
+                    const index = parseInt(e.target.dataset.chapterIndex);
+                    chaptersData[index] = e.target.value;
+                    
+                    // Remove error on input
+                    if (e.target.value.trim() !== '') {
+                        setSuccessFor(e.target);
+                    }
+                });
+            });
+        }
+    }
+
+    // ===============================
+    // UNIFIED FILE UPLOAD (FILES & VIDEOS)
+    // ===============================
+    function initFileUpload(type, acceptedTypes) {
+        const dropzone = document.getElementById(`${type}Dropzone`);
+        const input = document.getElementById(`${type}Input`);
+        const container = document.getElementById(`${type}sContainer`);
+        const list = document.getElementById(`${type}sList`);
+        const count = document.getElementById(`${type}sCount`);
+        const clearAllBtn = document.getElementById(`clearAll${type === 'video' ? 'Videos' : ''}Btn`);
+        const addBtn = document.getElementById(`add${type.charAt(0).toUpperCase() + type.slice(1)}Btn`);
+
+        if (!dropzone || !input) return;
+
+        let selectedFiles = [];
+
+        ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+            dropzone.addEventListener(eventName, (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+            });
+        });
+
+        ['dragenter', 'dragover'].forEach(eventName => {
+            dropzone.addEventListener(eventName, () => {
+                dropzone.classList.add('highlight');
+            });
+        });
+
+        ['dragleave', 'drop'].forEach(eventName => {
+            dropzone.addEventListener(eventName, () => {
+                dropzone.classList.remove('highlight');
+            });
+        });
+
+        dropzone.addEventListener('drop', (e) => {
+            const files = Array.from(e.dataTransfer.files);
+            const filteredFiles = type === 'video' 
+                ? files.filter(file => file.type.startsWith('video/'))
+                : files;
+            addFiles(filteredFiles);
+        });
+
+        dropzone.addEventListener('click', () => {
+            input.click();
+        });
+
+        if (addBtn) {
+            addBtn.addEventListener('click', () => {
+                input.click();
+            });
+        }
+
+        input.addEventListener('change', (e) => {
+            const files = Array.from(e.target.files);
+            addFiles(files);
+            input.value = '';
+        });
+
+        function addFiles(files) {
+            files.forEach(file => {
+                file.id = Date.now() + Math.random();
+                selectedFiles.push(file);
+            });
+            updateFilesList();
+        }
+
+        function updateFilesList() {
+            list.innerHTML = '';
+
+            if (selectedFiles.length === 0) {
+                container.classList.remove('show');
+                return;
+            }
+
+            container.classList.add('show');
+            count.textContent = `${selectedFiles.length} ${type}${selectedFiles.length > 1 ? 's' : ''} selected`;
+
+            selectedFiles.forEach((file, index) => {
+                const fileItem = document.createElement('div');
+                fileItem.className = 'file-item';
+
+                fileItem.innerHTML = `
+                    <div class="file-details">
+                        <div class="file-name">${file.name}</div>
+                        <div class="file-size">${formatBytes(file.size)}</div>
+                    </div>
+                    <button class="remove-file-btn" data-index="${index}">Remove</button>
+                `;
+
+                list.appendChild(fileItem);
+            });
+
+            document.querySelectorAll(`#${type}sList .remove-file-btn`).forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    const index = parseInt(btn.dataset.index);
+                    selectedFiles.splice(index, 1);
+                    updateFilesList();
+                });
+            });
+        }
+
+        if (clearAllBtn) {
+            clearAllBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                selectedFiles = [];
+                updateFilesList();
+            });
+        }
+
+        window[`get${type.charAt(0).toUpperCase() + type.slice(1)}s`] = () => selectedFiles;
+        window[`reset${type.charAt(0).toUpperCase() + type.slice(1)}s`] = () => {
+            selectedFiles = [];
+            updateFilesList();
+        };
+    }
+
+    // ===============================
+    // FORM VALIDATION & FORMATTING
+    // ===============================
+    function initFormValidation() {
+        const priceInput = document.getElementById('price');
+        if (priceInput) {
+            priceInput.addEventListener('input', function (e) {
+                // Remove all non-digit characters
+                let value = e.target.value.replace(/[^0-9]/g, '');
+                
+                // Format with DA suffix if there's a value
+                if (value) {
+                    e.target.value = value + ' DA';
+                } else {
+                    e.target.value = '';
+                }
+                
+                // Remove error on input
+                if (value) {
+                    const formControl = e.target.parentElement;
+                    formControl.classList.remove('error');
+                    const small = formControl.querySelector('small');
+                    if (small) small.style.display = 'none';
+                }
+            });
+            
+            // Real-time validation for price
+            priceInput.addEventListener('blur', function() {
+                const value = this.value.replace(/[^0-9.]/g, '');
+                if (value && parseFloat(value) > 1000000) {
+                    setErrorFor(this, 'Price cannot exceed 1,000,000 DA');
+                } else if (value && parseFloat(value) < 0) {
+                    setErrorFor(this, 'Price must be 0 or greater');
+                }
+            });
+        }
+
+        const numberInputs = ['sessions', 'documentations', 'maxStudents'];
+        numberInputs.forEach(id => {
+            const input = document.getElementById(id);
+            if (input) {
+                input.addEventListener('input', function (e) {
+                    e.target.value = e.target.value.replace(/[^0-9]/g, '');
+                    
+                    // Remove error on input
+                    if (e.target.value) {
+                        const formControl = e.target.parentElement;
+                        formControl.classList.remove('error');
+                        const small = formControl.querySelector('small');
+                        if (small) small.style.display = 'none';
+                    }
+                });
+                
+                // Real-time validation for number inputs
+                input.addEventListener('blur', function() {
+                    const value = parseInt(this.value);
+                    if (id === 'sessions' && value > 100) {
+                        setErrorFor(this, 'Number of sessions cannot exceed 100');
+                    } else if (id === 'sessions' && value < 1 && this.value) {
+                        setErrorFor(this, 'Number of sessions must be at least 1');
+                    } else if (id === 'documentations' && value > 50) {
+                        setErrorFor(this, 'Number of documentations cannot exceed 50');
+                    } else if (id === 'documentations' && value < 0) {
+                        setErrorFor(this, 'Value must be 0 or greater');
+                    } else if (id === 'maxStudents' && value > 1000) {
+                        setErrorFor(this, 'Maximum students cannot exceed 1000');
+                    } else if (id === 'maxStudents' && value < 1 && this.value) {
+                        setErrorFor(this, 'Maximum students must be at least 1');
+                    }
+                });
+            }
+        });
+
+        // Add character counter for description
+        const descriptionInput = document.getElementById('description');
+        if (descriptionInput) {
+            const counter = document.createElement('div');
+            counter.className = 'char-counter';
+            counter.style.cssText = 'text-align: right; font-size: 0.85rem; color: #666; margin-top: 0.3rem;';
+            descriptionInput.parentElement.appendChild(counter);
+            
+            descriptionInput.addEventListener('input', function() {
+                const length = this.value.length;
+                counter.textContent = `${length}/500 characters`;
+                const formControl = this.parentElement;
+                formControl.classList.remove('error');
+                const small = formControl.querySelector('.error-message');
+                
+                if (length > 500) {
+                    counter.style.color = '#f44336';
+                    setErrorFor(this, 'Description must not exceed 500 characters');
+                } else if (length < 10 && length > 0) {
+                    counter.style.color = '#ff9800';
+                } else if (length >= 10) {
+                    counter.style.color = '#4CAF50';
+                    if (small) small.style.display = 'none';
+                } else {
+                    counter.style.color = '#666';
+                }
+            });
+        }
+
+        // Real-time validation for course name
+        const courseNameInput = document.getElementById('courseName');
+        if (courseNameInput) {
+            courseNameInput.addEventListener('blur', function() {
+                const value = this.value.trim();
+                if (value.length > 0 && value.length < 3) {
+                    setErrorFor(this, 'Course name must be at least 3 characters');
+                } else if (value.length > 100) {
+                    setErrorFor(this, 'Course name must not exceed 100 characters');
+                } else if (value.length > 0 && /^[0-9]+$/.test(value)) {
+                    setErrorFor(this, 'Course name cannot contain only digits');
+                }
+            });
+        }
+
+        // Real-time validation for field
+        const fieldInput = document.getElementById('field');
+        if (fieldInput) {
+            fieldInput.addEventListener('blur', function() {
+                const value = this.value.trim();
+                if (value.length > 0 && /^[0-9]+$/.test(value)) {
+                    setErrorFor(this, 'Field cannot contain only digits');
+                }
+            });
+        }
+         const destinateTo = document.getElementById('destinatedTo');
+        if (destinateTo) {
+            destinateTo.addEventListener('blur', function() {
+                const value = this.value.trim();
+                if (value.length > 0 && /^[0-9]+$/.test(value)) {
+                    setErrorFor(this, 'destinatedTo cannot contain only digits');
+                }
+            });
+        }
+
+        // Real-time validation for certificate
+        const certificateInput = document.getElementById('certificate');
+        if (certificateInput) {
+            certificateInput.addEventListener('blur', function() {
+                const value = this.value.toLowerCase().trim();
+                if (value && value !== 'yes' && value !== 'no') {
+                    setErrorFor(this, 'Please enter "yes" or "no"');
+                }
+            });
+        }
+
+        // Add input event listeners to all form inputs to clear errors
+        document.querySelectorAll('.form-input').forEach(input => {
+            input.addEventListener('input', function() {
+                if (this.value.trim() !== '') {
+                    const formControl = this.parentElement;
+                    formControl.classList.remove('error');
+                    const small = formControl.querySelector('.error-message');
+                    if (small) small.style.display = 'none';
+                }
+            });
+        });
+    }
+
+    // ===============================
+    // CREATE COURSE BUTTON
+    // ===============================
+    function initCreateCourseButton() {
+        const createCourseBtn = document.getElementById('createCourseBtn');
+        if (!createCourseBtn) return;
+
+        createCourseBtn.addEventListener('click', function () {
+            const courseData = collectFormData();
+
+            if (validateCourseData(courseData)) {
+                submitCourse(courseData);
+            }
+        });
+
+        function collectFormData() {
+            return { 
+                courseName: document.getElementById('courseName')?.value || '',
+                field: document.getElementById('field')?.value || '',
+                destinatedTo: document.getElementById('destinatedTo')?.value || '',
+                sessions: document.getElementById('sessions')?.value || '',
+                chapters: chaptersData.filter(ch => ch && ch.trim() !== ''),
+                documentations: document.getElementById('documentations')?.value || '',
+                description: document.getElementById('description')?.value || '',
+                maxStudents: document.getElementById('maxStudents')?.value || '',
+                price: document.getElementById('price')?.value || '',
+                certificate: document.getElementById('certificate')?.value || '',
+                courseImage: selectedCourseImage,
+                files: window.getFiles ? window.getFiles() : [],
+                videos: window.getVideos ? window.getVideos() : []
+            };
+        }
+
+        function validateCourseData(data) {
+            let isValid = true;
+            let firstErrorInput = null;
+
+            // Validate Course Name
+            const courseNameInput = document.getElementById('courseName');
+            if (!data.courseName || data.courseName.trim() === '') {
+                setErrorFor(courseNameInput, 'Course name is required');
+                isValid = false;
+                if (!firstErrorInput) firstErrorInput = courseNameInput;
+            } else if (data.courseName.trim().length < 3) {
+                setErrorFor(courseNameInput, 'Course name must be at least 3 characters');
+                isValid = false;
+                if (!firstErrorInput) firstErrorInput = courseNameInput;
+            } else if (data.courseName.trim().length > 100) {
+                setErrorFor(courseNameInput, 'Course name must not exceed 100 characters');
+                isValid = false;
+                if (!firstErrorInput) firstErrorInput = courseNameInput;
+            } else if (/^[0-9]+$/.test(data.courseName.trim())) {
+                setErrorFor(courseNameInput, 'Course name cannot contain only digits');
+                isValid = false;
+                if (!firstErrorInput) firstErrorInput = courseNameInput;
+            } else {
+                setSuccessFor(courseNameInput);
+            }
+
+            // Validate Field
+            const fieldInput = document.getElementById('field');
+            if (!data.field || data.field.trim() === '') {
+                setErrorFor(fieldInput, 'Field is required');
+                isValid = false;
+                if (!firstErrorInput) firstErrorInput = fieldInput;
+            } else if (data.field.trim().length < 2) {
+                setErrorFor(fieldInput, 'Field must be at least 2 characters');
+                isValid = false;
+                if (!firstErrorInput) firstErrorInput = fieldInput;
+            } else if (/^[0-9]+$/.test(data.field.trim())) {
+                setErrorFor(fieldInput, 'Field cannot contain only digits');
+                isValid = false;
+                if (!firstErrorInput) firstErrorInput = fieldInput;
+            } else {
+                setSuccessFor(fieldInput);
+            }
+
+            // Validate Destinated To
+            const destinatedToInput = document.getElementById('destinatedTo');
+            if (!data.destinatedTo || data.destinatedTo.trim() === '') {
+                setErrorFor(destinatedToInput, 'Target audience is required');
+                isValid = false;
+                if (!firstErrorInput) firstErrorInput = destinatedToInput;
+            } else if (data.destinatedTo.trim().length < 3) {
+                setErrorFor(destinatedToInput, 'Target audience must be at least 3 characters');
+                isValid = false;
+                if (!firstErrorInput) firstErrorInput = destinatedToInput;
+            } else {
+                setSuccessFor(destinatedToInput);
+            }
+
+            // Validate Sessions
+            const sessionsInput = document.getElementById('sessions');
+            if (!data.sessions || data.sessions.trim() === '') {
+                setErrorFor(sessionsInput, 'Number of sessions is required');
+                isValid = false;
+                if (!firstErrorInput) firstErrorInput = sessionsInput;
+            } else if (parseInt(data.sessions) < 1) {
+                setErrorFor(sessionsInput, 'Number of sessions must be at least 1');
+                isValid = false;
+                if (!firstErrorInput) firstErrorInput = sessionsInput;
+            } else if (parseInt(data.sessions) > 100) {
+                setErrorFor(sessionsInput, 'Number of sessions cannot exceed 100');
+                isValid = false;
+                if (!firstErrorInput) firstErrorInput = sessionsInput;
+            } else {
+                setSuccessFor(sessionsInput);
+            }
+
+            // Validate Chapters
+            const numSessions = parseInt(data.sessions) || 0;
+            if (numSessions > 0) {
+                document.querySelectorAll('.chapter-input').forEach((input, index) => {
+                    if (!input.value || input.value.trim() === '') {
+                        setErrorFor(input, `Chapter ${index + 1} name is required`);
+                        isValid = false;
+                        if (!firstErrorInput) firstErrorInput = input;
+                    } else if (input.value.trim().length < 2) {
+                        setErrorFor(input, `Chapter ${index + 1} must be at least 2 characters`);
+                        isValid = false;
+                        if (!firstErrorInput) firstErrorInput = input;
+                    } else {
+                        setSuccessFor(input);
+                    }
+                });
+            }
+
+            // Validate Documentations
+            const documentationsInput = document.getElementById('documentations');
+            if (!data.documentations || data.documentations.trim() === '') {
+                setErrorFor(documentationsInput, 'Number of documentations is required');
+                isValid = false;
+                if (!firstErrorInput) firstErrorInput = documentationsInput;
+            } else if (parseInt(data.documentations) < 0) {
+                setErrorFor(documentationsInput, 'Number of documentations must be 0 or greater');
+                isValid = false;
+                if (!firstErrorInput) firstErrorInput = documentationsInput;
+            } else if (parseInt(data.documentations) > 50) {
+                setErrorFor(documentationsInput, 'Number of documentations cannot exceed 50');
+                isValid = false;
+                if (!firstErrorInput) firstErrorInput = documentationsInput;
+            } else {
+                setSuccessFor(documentationsInput);
+            }
+
+            // Validate Description
+            const descriptionInput = document.getElementById('description');
+            if (!data.description || data.description.trim() === '') {
+                setErrorFor(descriptionInput, 'Description is required');
+                isValid = false;
+                if (!firstErrorInput) firstErrorInput = descriptionInput;
+            } else if (data.description.trim().length < 10) {
+                setErrorFor(descriptionInput, 'Description must be at least 10 characters');
+                isValid = false;
+                if (!firstErrorInput) firstErrorInput = descriptionInput;
+            } else if (data.description.trim().length > 500) {
+                setErrorFor(descriptionInput, 'Description must not exceed 500 characters');
+                isValid = false;
+                if (!firstErrorInput) firstErrorInput = descriptionInput;
+            } else {
+                setSuccessFor(descriptionInput);
+            }
+
+            // Validate Max Students
+            const maxStudentsInput = document.getElementById('maxStudents');
+            if (!data.maxStudents || data.maxStudents.trim() === '') {
+                setErrorFor(maxStudentsInput, 'Maximum students is required');
+                isValid = false;
+                if (!firstErrorInput) firstErrorInput = maxStudentsInput;
+            } else if (parseInt(data.maxStudents) < 1) {
+                setErrorFor(maxStudentsInput, 'Maximum students must be at least 1');
+                isValid = false;
+                if (!firstErrorInput) firstErrorInput = maxStudentsInput;
+            } else if (parseInt(data.maxStudents) > 1000) {
+                setErrorFor(maxStudentsInput, 'Maximum students cannot exceed 1000');
+                isValid = false;
+                if (!firstErrorInput) firstErrorInput = maxStudentsInput;
+            } else {
+                setSuccessFor(maxStudentsInput);
+            }
+
+            // Validate Price
+            const priceInput = document.getElementById('price');
+            const priceValue = data.price.replace(/[^0-9.]/g, '');
+            if (!data.price || data.price.trim() === '' || data.price.trim() === 'DA') {
+                setErrorFor(priceInput, 'Price is required');
+                isValid = false;
+                if (!firstErrorInput) firstErrorInput = priceInput;
+            } else if (parseFloat(priceValue) < 0) {
+                setErrorFor(priceInput, 'Price must be 0 or greater');
+                isValid = false;
+                if (!firstErrorInput) firstErrorInput = priceInput;
+            } else if (parseFloat(priceValue) > 1000000) {
+                setErrorFor(priceInput, 'Price cannot exceed 1,000,000 DA');
+                isValid = false;
+                if (!firstErrorInput) firstErrorInput = priceInput;
+            } else {
+                setSuccessFor(priceInput);
+            }
+
+            // Validate Certificate
+            const certificateInput = document.getElementById('certificate');
+            const certValue = data.certificate.toLowerCase().trim();
+            if (!data.certificate || data.certificate.trim() === '') {
+                setErrorFor(certificateInput, 'Certificate option is required (yes/no)');
+                isValid = false;
+                if (!firstErrorInput) firstErrorInput = certificateInput;
+            } else if (certValue !== 'yes' && certValue !== 'no') {
+                setErrorFor(certificateInput, 'enter "yes" or "no"');
+                isValid = false;
+                if (!firstErrorInput) firstErrorInput = certificateInput;
+            } else {
+                setSuccessFor(certificateInput);
+            }
+
+            // Validate Course Image
+            if (!data.courseImage) {
+                isValid = false;
+            }
+
+            // Validate Files and Videos (optional but show info)
+            if (data.files.length === 0) {
+                console.warn('No files added to the course');
+            }
+            if (data.videos.length === 0) {
+                console.warn('No videos added to the course');
+            }
+
+            // Scroll to first error if validation failed
+            if (!isValid && firstErrorInput) {
+                firstErrorInput.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                firstErrorInput.focus();
+                
+            }
+
+            return isValid;
+        }
+
+        function submitCourse(courseData) {
+            console.log('Submitting course data:', courseData);
+
+            createCourseBtn.disabled = true;
+            createCourseBtn.textContent = 'Creating...';
+
+            setTimeout(() => {
+                createCourseBtn.disabled = false;
+                createCourseBtn.textContent = 'Create course';
+
+                showNotification('Course created successfully!', 'success');
+
+                setTimeout(() => {
+                    resetForm();
+                }, 2000);
+            }, 1500);
+        }
+
+        function resetForm() {
+            document.querySelectorAll('.form-input').forEach(input => {
+                input.value = '';
+                setSuccessFor(input);
+            });
+
+            if (window.resetFiles) window.resetFiles();
+            if (window.resetVideos) window.resetVideos();
+
+            selectedCourseImage = null;
+            chaptersData = [];
+
+            const chaptersContainer = document.getElementById('chaptersContainer');
+            if (chaptersContainer) chaptersContainer.style.display = 'none';
+
+            const courseImageInput = document.getElementById('courseImageInput');
+            const courseImageName = document.getElementById('courseImageName');
+            const courseImagePreview = document.getElementById('courseImagePreview');
+
+            if (courseImageInput) courseImageInput.value = '';
+            if (courseImageName) courseImageName.textContent = 'No image selected';
+            if (courseImagePreview) {
+                courseImagePreview.style.display = 'none';
+                courseImagePreview.innerHTML = '';
+            }
+        }
+    }
+
+    window.getChaptersData = () => chaptersData;
+    window.getCourseImage = () => selectedCourseImage;
+}
+
+// ===============================
+// ERROR HANDLING FUNCTIONS
+// ===============================
+function setErrorFor(input, message) {
+    const formControl = input.parentElement;
+    const small = formControl.querySelector('small') || createErrorElement(formControl);
+    
+    formControl.classList.add('error');
+    formControl.classList.remove('success');
+    small.textContent = message;
+    small.style.display = 'block';
+    
+    // Add shake animation
+    input.style.animation = 'shake 0.3s ease';
+    setTimeout(() => {
+        input.style.animation = '';
+    }, 300);
+    
+    // Add focus listener to clear error when user starts typing
+    if (!input.hasAttribute('data-error-listener')) {
+        input.setAttribute('data-error-listener', 'true');
+        input.addEventListener('focus', function() {
+            formControl.classList.remove('error');
+            if (small) {
+                small.style.display = 'none';
+            }
+        });
+    }
+}
+
+function setSuccessFor(input) {
+    const formControl = input.parentElement;
+    const small = formControl.querySelector('small');
+    
+    formControl.classList.remove('error');
+    formControl.classList.add('success');
+    
+    if (small) {
+        small.style.display = 'none';
+        small.textContent = '';
+    }
+}
+
+function createErrorElement(parent) {
+    const small = document.createElement('small');
+    small.className = 'error-message';
+    parent.appendChild(small);
+    return small;
+}
+
+// ===============================
+// HELPER FUNCTIONS
+// ===============================
+function formatBytes(bytes) {
+    if (bytes === 0) return '0 Bytes';
+    const k = 1024;
+    const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+    const i = Math.floor(Math.log(bytes) / Math.log(k));
+    return Math.round(bytes / Math.pow(k, i) * 100) / 100 + ' ' + sizes[i];
+}
+
+function showNotification(message, type) {
+    const notification = document.createElement('div');
+    notification.className = `notification ${type}`;
+    notification.textContent = message;
+    notification.style.cssText = `
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        background: ${type === 'success' ? '#4CAF50' : '#f44336'};
+        color: white;
+        padding: 1rem 2rem;
+        border-radius: 10px;
+        z-index: 9999;
+        animation: slideIn 0.3s ease;
+    `;
+
+    document.body.appendChild(notification);
+
+    setTimeout(() => {
+        notification.style.animation = 'slideOut 0.3s ease';
+        setTimeout(() => {
+            notification.remove();
+        }, 300);
+    }, 3000);
+}
+
+// ===============================
+// ADD QUIZ BUTTON
+// ===============================
+function initAddQuizButton() {
+    const addQuizBtn = document.getElementById('addQuizBtn');
+
+    if (addQuizBtn) {
+        addQuizBtn.addEventListener('click', () => {
+            setTimeout(() => {
+                window.location.href = '../quiz pages/tQuiz.html';
+            }, 700);
+        });
+    }
+}
+
+// ===============================
+// ANIMATION STYLES
+// ===============================
+function addAnimationStyles() {
+    const style = document.createElement('style');
+    style.textContent = `
+        @keyframes slideIn {
+            from {
+                transform: translateX(400px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+        
+        @keyframes slideOut {
+            from {
+                transform: translateX(0);
+                opacity: 1;
+            }
+            to {
+                transform: translateX(400px);
+                opacity: 0;
+            }
+        }
+        
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            75% { transform: translateX(10px); }
+        }
+        
+        .form-group {
+            position: relative;
+            margin-bottom: 0.5rem;
+        }
+        
+        .form-group.error input,
+        .form-group.error select,
+        .form-group.error textarea {
+           
+            background-color: #ffebee;
+        }
+        
+        .form-group.success input,
+        .form-group.success select,
+        .form-group.success textarea {
+            border-color: #4CAF50 !important;
+        }
+        
+        .error-message {
+            color: #f44336;
+            font-size: 0.85rem;
+            margin-top: 0.3rem;
+            display: none;
+            animation: slideIn 0.2s ease;
+        }
+        
+        .chapters-container {
+            margin-top: 1.5rem;
+            padding: 1.5rem;
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 12px;
+            border: 2px solid #3ba5e2;
+            box-shadow: 0 4px 12px rgba(59, 165, 226, 0.2);
+            animation: slideIn 0.3s ease;
+        }
+        
+        .chapters-header {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            margin-bottom: 1.2rem;
+        }
+        
+        .chapters-badge {
+            background: #3ba5e2;
+            color: white;
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+        
+        .chapters-title {
+            color: #154d70;
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin: 0;
+        }
+        
+        .chapters-list {
+            max-height: 300px;
+            overflow-y: auto;
+            padding-right: 0.5rem;
+        }
+        
+        .chapter-row {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.8rem;
+            margin-bottom: 0.8rem;
+        }
+        
+        .chapter-label {
+            color: #3ba5e2;
+            font-weight: 600;
+            min-width: 100px;
+            font-size: 0.95rem;
+            padding-top: 0.7rem;
+        }
+        
+        .chapter-row .form-group {
+            flex: 1;
+        }
+        
+        .chapter-input {
+            width: 100%;
+            padding: 0.7rem 1rem;
+            border: 1px solid #cbd5e0;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+        
+        .chapter-input:focus {
+            outline: none;
+            border-color: #3ba5e2;
+            box-shadow: 0 0 0 3px rgba(59, 165, 226, 0.1);
+        }
+        
+        .chapters-list::-webkit-scrollbar {
+            width: 6px;
+        }
+        
+        .chapters-list::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+        
+        .chapters-list::-webkit-scrollbar-thumb {
+            background: #3ba5e2;
+            border-radius: 10px;
+        }
+        
+        .chapters-list::-webkit-scrollbar-thumb:hover {
+            background: #2b95d2;
+        }
+    `;
+    document.head.appendChild(style);
+}
+
+ const profilebtn = document.querySelector('.btn-profile');
+
+if (profilebtn) {
+    profilebtn.addEventListener('click', () => {
+        
+
+        setTimeout(() => ripple.remove(), 600);
+        
+        setTimeout(() => {
+            window.location.href = '../profile/profile.html';
+        }, 300);
+      })};
+
+//////SideBar
+      
+
+      document.addEventListener("DOMContentLoaded", function () {
+  const sidebare = document.getElementById("sidebare");
+  const sidebarToggle = document.getElementById("sidebarToggle");
+  const sidebarClose = document.getElementById("sidebarClose");
+  const navvLinks = document.querySelectorAll(".navv-link");
+  const actionButtons = document.querySelectorAll(".action-btn");
+
+  // ===============================
+  // CREATE / GET OVERLAY
+  // ===============================
+  let overlay = document.querySelector(".sidebare-overlay");
+  if (!overlay) {
+    overlay = document.createElement("div");
+    overlay.className = "sidebare-overlay";
+    document.body.appendChild(overlay);
+  }
+
+  // ===============================
+  // SET ACTIVE PAGE
+  // ===============================
+  const currentPage = document.body.getAttribute('data-page');
+  
+  if (currentPage) {
+    // Remove all active classes first
+    navvLinks.forEach((link) => {
+      link.parentElement.classList.remove("active");
+    });
+    
+    // Add active class to matching page
+    const activeLink = document.querySelector(`.navv-link[data-page="${currentPage}"]`);
+    if (activeLink) {
+      activeLink.parentElement.classList.add("active");
+    }
+  }
+
+  // ===============================
+  // HELPER FUNCTIONS
+  // ===============================
+  function openSidebar() {
+    sidebare.classList.remove("collapsed");
+    localStorage.setItem("sidebarCollapsed", "false");
+
+    if (window.innerWidth <= 600) {
+      overlay.classList.add("active");
+    }
+  }
+
+  function closeSidebar() {
+    sidebare.classList.add("collapsed");
+    overlay.classList.remove("active");
+    localStorage.setItem("sidebarCollapsed", "true");
+  }
+
+  function toggleSidebar() {
+    if (sidebare.classList.contains("collapsed")) {
+      openSidebar();
+    } else {
+      closeSidebar();
+    }
+  }
+
+  // ===============================
+  // ON PAGE LOAD — RESTORE STATE
+  // ===============================
+  const savedState = localStorage.getItem("sidebarCollapsed");
+
+  if (window.innerWidth > 600) {
+    if (savedState === "true") {
+      sidebare.classList.add("collapsed");
+    } else {
+      sidebare.classList.remove("collapsed");
+    }
+  } else {
+    sidebare.classList.add("collapsed");
+  }
+
+  // ===============================
+  // EVENT LISTENERS
+  // ===============================
+
+  // Toggle button
+  sidebarToggle.addEventListener("click", toggleSidebar);
+
+  // Close button
+  if (sidebarClose) {
+    sidebarClose.addEventListener("click", closeSidebar);
+  }
+
+  // Close when clicking overlay
+  overlay.addEventListener("click", closeSidebar);
+
+  // Close when clicking outside sidebar (desktop)
+  document.addEventListener("click", function (event) {
+    if (!sidebare.classList.contains("collapsed")) {
+      if (!sidebare.contains(event.target) && !sidebarToggle.contains(event.target)) {
+        closeSidebar();
+      }
+    }
+  });
+
+  // ===============================
+  // WINDOW RESIZE
+  // ===============================
+  window.addEventListener("resize", function () {
+    if (window.innerWidth > 600) {
+      overlay.classList.remove("active");
+    } else {
+      if (!sidebare.classList.contains("collapsed")) {
+        overlay.classList.add("active");
+      }
+    }
+  });
+
+  // ===============================
+  // NAVIGATION LINKS
+  // ===============================
+  navvLinks.forEach((link) => {
+    link.addEventListener("click", function (e) {
+      // Only prevent default if it's a # link, allow real navigation
+      if (this.getAttribute('href') === '#') {
+        e.preventDefault();
+      }
+
+      // Click animation
+      this.style.transform = "scale(0.95)";
+      setTimeout(() => (this.style.transform = ""), 150);
+
+      // Close sidebar on mobile after clicking
+      if (window.innerWidth <= 600) {
+        closeSidebar();
+      }
+    });
+  });
+
+  // ===============================
+  // ACTION BUTTONS
+  // ===============================
+  actionButtons.forEach((button) => {
+    button.addEventListener("click", function () {
+      // Animation
+      this.style.transform = "scale(0.95)";
+      setTimeout(() => (this.style.transform = ""), 150);
+
+      console.log("Action:", this.querySelector(".btn-text").textContent);
+    });
+  });
+
+  // ===============================
+  // KEYBOARD SHORTCUTS
+  // ===============================
+  document.addEventListener("keydown", function (e) {
+    // Close with Escape key
+    if (e.key === "Escape" && !sidebare.classList.contains("collapsed")) {
+      closeSidebar();
+    }
+
+    // Toggle with Alt + S
+    if (e.altKey && e.key === "s") {
+      e.preventDefault();
+      toggleSidebar();
+    }
+  });
+});
+
+
+
+
+const probtn = document.querySelector('.action-btn btn-secondary');
+
+if (probtn) {
+    probtn.addEventListener('click', () => {
+        
+
+        setTimeout(() => ripple.remove(), 600);
+        
+        setTimeout(() => {
+            window.location.href = '../Homepage/homepage.html';
+        }, 300);
+      })};

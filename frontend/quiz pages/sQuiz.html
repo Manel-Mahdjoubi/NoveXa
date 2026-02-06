@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Student Quiz</title>
+  <link rel="stylesheet" href="styleQuiz.css">
+  <link rel="stylesheet" href="../Sidebar/sidebar.css">
+
+  <link rel="icon" type="image/png" href="../logoE.png">
+</head>
+
+<body data-page="quizzes">
+  <script src="../js/api-config.js"></script>
+  <script src="../js/navbar-logic.js"></script>
+  <!--Header part -->
+  <header class="navbar">
+    <div class="logo">
+      <a href="../home_page2/home_page2.html" id="logoButton">
+        <img src="../Novexa_assets/global_assets/logo_top.svg" alt="NoveXa Logo" />
+      </a>
+    </div>
+
+    <nav class="nav-links">
+      <a href="../home_page2/home_page2.html">Home</a>
+      <a href="../about_us/about_us.html">About Us</a>
+      <a href="#">Teachers</a>
+      <a href="../e_library/e_library.html">Library</a>
+    </nav>
+
+    <a href="../profile/profile.html" class="profile-btn">My profile</a>
+    <div class="menu-icon" id="menu-toggle">☰</div>
+  </header>
+
+  <!-- MOBILE MENU -->
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="../home_page2/home_page2.html">Home</a>
+    <a href="../about_us/about_us.html">About Us</a>
+    <a href="../teacher list/teachersList.html">Teachers</a>
+    <a href="../e_library/e_library.html">Library</a>
+  </div>
+  
+    <!-- Dynamic Sidebar will be loaded here -->
+    <script src="../Sidebar/load-sidebare.js"></script>
+
+  <!-- Quiz Container -->
+  <div class="qstdiv" id="quizSection">
+
+
+    <div class="quiz-header">
+      <h2>Quiz</h2>
+      <div class="question-number" id="questionNumber">Question 1 of 5</div>
+    </div>
+    <!-- Progress Bar  -->
+    <div class="progress-container">
+      <div class="progress-header">
+        <span>Progress</span>
+        <span id="progressText">Question 1 of 5</span>
+      </div>
+      <div class="progress-bar">
+        <div class="progress-fill" id="progressFill" style="width: 0%;">0%</div>
+      </div>
+    </div>
+    <h4 class="question-title" id="questionTitle">Question 1:</h4>
+    <div class="qstBox" id="questionText">What is the capital of France?</div>
+
+    <div class="options" id="optionsContainer">
+      <label>
+        <input type="radio" name="answer" value="0" onchange="selectAnswer(0)" />
+        Paris
+      </label>
+      <label>
+        <input type="radio" name="answer" value="1" onchange="selectAnswer(1)" />
+        London
+      </label>
+      <label>
+        <input type="radio" name="answer" value="2" onchange="selectAnswer(2)" />
+        Berlin
+      </label>
+      <label>
+        <input type="radio" name="answer" value="3" onchange="selectAnswer(3)" />
+        Madrid
+      </label>
+    </div>
+
+    <div class="buttons">
+      <button class="submit-btn secondary" id="prevBtn" onclick="previousQuestion()" disabled>
+        ← Previous
+      </button>
+      <button class="submit-btn" id="nextBtn" onclick="nextQuestion()" disabled>
+        Next →
+      </button>
+    </div>
+  </div>
+
+  <!-- Results Container -->
+  <div class="qstdiv results-container" id="resultsSection">
+    <div class="quiz-header">
+      <h2>Quiz Completed!</h2>
+    </div>
+
+    <div class="score-circle" id="scoreCircle">0%</div>
+    <div class="results-message" id="resultsMessage">Great job!</div>
+
+    <div class="score-details">
+      <div class="score-row">
+        <span>Total Questions:</span>
+        <strong id="totalQuestions">5</strong>
+      </div>
+      <div class="score-row">
+        <span>Correct Answers:</span>
+        <strong id="correctAnswers">0</strong>
+      </div>
+      <div class="score-row">
+        <span>Incorrect Answers:</span>
+        <strong id="incorrectAnswers">0</strong>
+      </div>
+      <div class="score-row">
+        <span>Final Score:</span>
+        <strong id="finalScore">0%</strong>
+      </div>
+    </div>
+
+    <div class="buttons">
+      <button class="submit-btn" onclick="restartQuiz()">Restart Quiz</button>
+    </div>
+  </div>
+
+
+
+  <script src="squiz.js"></script>
+ 
+
+</body>
+
+</html>

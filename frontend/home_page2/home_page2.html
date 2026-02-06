@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>NoveXa-Home page</title>
+    <link rel="icon" href="../logoE.png" type="image/png">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link rel="stylesheet" href="home_page2.css" />
+  </head>
+
+  <body>
+    <!-- NAVIGATION BAR -->
+    <header class="navbar">
+      <div class="logo">
+        <a href="../home_page2/home_page2.html" id="logoButton">
+          <img
+            src="../Novexa_assets/global_assets/logo_top.svg"
+            alt="NoveXa Logo"
+          />
+        </a>
+      </div>
+
+      <nav class="nav-links">
+        <a href="../home_page2/home_page2.html">Home</a>
+        <a href="../about_us/about_us.html">About Us</a>
+        <a href="../teacher list/teachersList.html">Teachers</a>
+        <a href="../e_library/e_library.html">Library</a>
+      </nav>
+      <a href="../profile/profile.html" class="profile-btn">My profile</a>
+      <div class="menu-icon" id="menu-toggle">☰</div>
+    </header>
+
+    <!-- MOBILE MENU -->
+    <div class="mobile-menu" id="mobileMenu">
+      <a href="../home_page2/home_page2.html">Home</a>
+      <a href="../about_us/about_us.html">About Us</a>
+      <a href="../teacher list/teachersList.html">Teachers</a>
+      <a href="../e_library/e_library.html">Library</a>
+    </div>
+
+    <!--hero section-->
+    <section class="hero">
+      <div class="hero-content">
+        <h1>Let's Begin Your <br >Learning Journey</h1>
+      </div>
+    </section>
+
+    <!-- CARDS SECTION-->
+    <section class="cards">
+      <div class="card" data-link="../student and teacher dashboard/sDashboard.html">
+        <div class="card-header">
+          <img
+            src="../Novexa_assets/home_page2_assets/dashboard (2).png"
+            alt="Dashboard icon"
+          />
+          <span>Your Dashboard</span>
+        </div>
+        <p>
+          Track your progress, recent activities,<br />
+          and course stats all in one place.
+        </p>
+      </div>
+
+      <div class="card" data-link="../e_library/e_library.html">
+        <div class="card-header">
+          <img
+            src="../Novexa_assets/home_page2_assets/online-library.png"
+            alt="Library icon"
+          />
+          <span>Your E-library</span>
+        </div>
+        <p>
+          Browse your saved courses and materials,<br />
+          ready anytime for your learning.
+        </p>
+      </div>
+
+      <div class="card" data-link="#explore-courses">
+        <div class="card-header">
+          <img
+            src="../Novexa_assets/home_page2_assets/lecture.png"
+            alt="Explore Courses icon"
+          />
+          <span>Explore Courses</span>
+        </div>
+        <p>
+          Browse our wide range of courses, filter by topic or category, and
+          find the perfect fit for your learning goals!
+        </p>
+      </div>
+
+      <div class="card" data-link="../Feedbackpage/feedback.html">
+        <div class="card-header">
+          <img
+            src="../Novexa_assets/home_page2_assets/feedback-loop.png"
+            alt="Feedback icon"
+          />
+          <span>Give your Feedback</span>
+        </div>
+        <p>
+          Share your thoughts to help us improve<br />
+          your learning experience.
+        </p>
+      </div>
+    </section>
+
+    <!-- EXPLORE COURSES SECTION-->
+    <section class="explore-courses" id="explore-courses">
+      <div class="explore-header">
+        <h2>Explore Courses</h2>
+        <p>Discover a world of knowledge with our diverse course offerings</p>
+      </div>
+
+      <!-- Search Bar -->
+      <div class="search-container">
+        <div class="search-box">
+          <input
+            type="text"
+            id="searchInput"
+            placeholder="Search for courses, topics, or categories..."
+          />
+          <button onclick="searchCourses()">Search</button>
+        </div>
+      </div>
+
+      
+      <!-- Courses Grid -->
+<div class="courses-grid" id="coursesGrid">
+  <!-- Course Card 1 -->
+  <div class="course-card" data-category="webdevelopment">
+    <div class="course-image">
+      <img
+        src="../Novexa_assets/e_library&courses_assets/webtech_ill.jfif"
+        alt="Web development course"
+        class="course-image-photo"
+      />
+    </div>
+    <div class="course-content">
+      <span class="course-category">web development</span>
+      <h3 class="course-title">Web Development Fundamentals</h3>
+      <p class="course-description">
+        Learn the basics of HTML, CSS, and JavaScript to build modern
+        responsive websites from scratch.
+      </p>
+      <div class="course-footer">
+        <div class="course-info">
+          <span>📚 24 lectures</span>
+        </div>
+        <a
+          href="../CourseDetails/coursedetails.html"
+          class="details-btn"
+          onclick="viewDetails(1)"
+        >
+          View Details
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Course Card 2 -->
+  <div class="course-card" data-category="design">
+    <div class="course-image">
+      <img
+        src="../Novexa_assets/e_library&courses_assets/graphic_design_ill.jfif"
+        alt="Graphic design course"
+        class="course-image-photo"
+      />
+    </div>
+    <div class="course-content">
+      <span class="course-category">Design</span>
+      <h3 class="course-title">Graphic Mastery</h3>
+      <p class="course-description">
+        Master the principles of graphic design using Adobe Photoshop and
+        Illustrator to create stunning visuals.
+      </p>
+      <div class="course-footer">
+        <div class="course-info">
+          <span>📚 20 lectures</span>
+        </div>
+        <a
+          href="../CourseDetails/coursedetails.html"
+          class="details-btn"
+          onclick="viewDetails(1)"
+        >
+          View Details
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Course Card 3 -->
+  <div class="course-card" data-category="marketing">
+    <div class="course-image">
+      <img
+        src="../Novexa_assets/e_library&courses_assets/marketing_ill.jfif"
+        alt="Digital marketing course"
+        class="course-image-photo"
+      />
+    </div>
+    <div class="course-content">
+      <span class="course-category">Marketing</span>
+      <h3 class="course-title">Digital Marketing Essentials</h3>
+      <p class="course-description">
+        Explore the world of digital marketing including SEO, social media,
+        and content marketing strategies.
+      </p>
+      <div class="course-footer">
+        <div class="course-info">
+          <span>📚 16 lectures</span>
+        </div>
+        <a
+          href="../CourseDetails/coursedetails.html"
+          class="details-btn"
+          onclick="viewDetails(1)"
+        >
+          View Details
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Course Card 4 -->
+  <div class="course-card" data-category="cybersecurity">
+    <div class="course-image">
+      <img
+        src="../Novexa_assets/e_library&courses_assets/ml_ill.jfif"
+        alt="Machine learning course"
+        class="course-image-photo"
+      />
+    </div>
+    <div class="course-content">
+      <span class="course-category">AI &amp; Data Science</span>
+      <h3 class="course-title">Machine Learning Basics</h3>
+      <p class="course-description">
+        Dive into artificial intelligence and learn how to build machine
+        learning models using Python.
+      </p>
+      <div class="course-footer">
+        <div class="course-info">
+          <span>📚 28 lectures</span>
+        </div>
+        <a
+          href="../CourseDetails/coursedetails.html"
+          class="details-btn"
+          onclick="viewDetails(1)"
+        >
+          View Details
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Course Card 5 -->
+  <div class="course-card" data-category="appdevelopment">
+    <div class="course-image">
+      <img
+        src="../Novexa_assets/e_library&courses_assets/appdev_ill.jfif"
+        alt="iOS app development course"
+        class="course-image-photo"
+      />
+    </div>
+    <div class="course-content">
+      <span class="course-category">Mobile Development</span>
+      <h3 class="course-title">iOS App Development</h3>
+      <p class="course-description">
+        Create powerful iOS applications using Swift and master the Apple
+        ecosystem development tools.
+      </p>
+      <div class="course-footer">
+        <div class="course-info">
+          <span>📚 32 lectures</span>
+        </div>
+        <a
+          href="../CourseDetails/coursedetails.html"
+          class="details-btn"
+          onclick="viewDetails(1)"
+        >
+          View Details
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Course Card 6 -->
+  <div class="course-card" data-category="design">
+    <div class="course-image">
+      <img
+        src="../Novexa_assets/e_library&courses_assets/photography_ill.jfif"
+        alt="Photography course"
+        class="course-image-photo"
+      />
+    </div>
+    <div class="course-content">
+      <span class="course-category">Photography</span>
+      <h3 class="course-title">Professional Photography</h3>
+      <p class="course-description">
+        Learn composition, lighting, and editing techniques to capture
+        stunning professional-quality photos.
+      </p>
+      <div class="course-footer">
+        <div class="course-info">
+          <span>📚 12 lectures</span>
+        </div>
+        <a
+          href="../CourseDetails/coursedetails.html"
+          class="details-btn"
+          onclick="viewDetails(1)"
+        >
+          View Details
+        </a>
+      </div>
+    </div>
+  </div>
+</div></section>
+ <!-- Footer -->
+    <div id="footer-placeholder"></div>
+
+    <script>
+        // Load footer.html into the placeholder
+        fetch("../Footer/footer.html")
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById("footer-placeholder").innerHTML = data;
+            })
+            .catch(error => console.error("Error loading footer:", error));
+    </script>
+    <script src="../js/api-config.js"></script>
+    <script src="../js/navbar-logic.js"></script>
+    <script src="home_page2.js"></script>
+  </body>
+</html>

@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Payment - Novexa</title>
+  <link rel="icon" type="image/png" href="../logoE.png">
+  <link rel="stylesheet" href="../globals.css">
+  <link rel="stylesheet" href="styleForEpayment.css">
+</head>
+
+<body>
+  <!-- NAVIGATION BAR -->
+  <header class="navbar">
+    <div class="logo">
+      <a href="../home_page2/home_page2.html" id="logoButton">
+        <img src="../Novexa_assets/global_assets/logo_top.svg" alt="NoveXa Logo" />
+      </a>
+    </div>
+
+    <nav class="nav-links">
+      <a href="../home_page2/home_page2.html">Home</a>
+      <a href="../about_us/about_us.html">About Us</a>
+      <a href="../teacher list/teachersList.html">Teachers</a>
+      <a href="../e_library/e_library.html">Library</a>
+    </nav>
+
+    <a href="../profile/profile.html" class="profile-btn">My profile</a>
+    <div class="menu-icon" id="menu-toggle">☰</div>
+  </header>
+
+  
+  <!-- MOBILE MENU -->
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="../home_page2/home_page2.html">Home</a>
+    <a href="../about_us/about_us.html">About Us</a>
+    <a href="../teacher list/teachersList.html">Teachers</a>
+    <a href="../e_library/e_library.html">Library</a>
+  </div>
+
+    
+  <div class="page-container">
+    
+
+    <!-- Page Title -->
+    <h1 class="page-title">E-Payment</h1>
+
+    <!-- Payment Method Selection -->
+    <section class="card payment-methods">
+      <h2 class="section-title">Payment Method</h2>
+
+      <label class="payment-option">
+        <input type="radio" name="payment-method" value="edhahabia" class="payment-radio">
+        <span class="payment-label">Edhahabia card</span>
+      </label>
+
+      <label class="payment-option">
+        <input type="radio" name="payment-method" value="bna" class="payment-radio">
+        <span class="payment-label">BNA card</span>
+      </label>
+
+      <label class="payment-option">
+        <input type="radio" name="payment-method" value="visa" class="payment-radio">
+        <span class="payment-label">Visa card</span>
+      </label>
+    </section>
+
+    <!-- Card Details Form -->
+    <section class="card card-details-form">
+      <form id="payment-form">
+        <div class="form-group">
+          <label for="card-number" class="form-label">Card Number</label>
+          <input type="text" id="card-number" name="card-number" class="form-input" placeholder="Enter 16-digit card number" maxlength="19" required>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="expiry" class="form-label">Expiry Date</label>
+            <input type="text" id="expiry" name="expiry" class="form-input" placeholder="MM/YY" required>
+          </div>
+
+          <div class="form-group">
+            <label for="cvv" class="form-label">CVV</label>
+            <input type="text" id="cvv" name="cvv" class="form-input" placeholder="***" maxlength="3" required>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="name" class="form-label">Name on Card</label>
+          <input type="text" id="name" name="name" class="form-input" placeholder="Enter name" required>
+        </div>
+      </form>
+    </section>
+
+    <!-- Illustration -->
+    <img class="illustration-payment" src="../assets/undraw_send-money_4qc7 1.svg" alt="Payment illustration">
+
+    <!-- Order Summary -->
+    <section class="card order-summary">
+      <h2 class="section-title">Order Summary</h2>
+
+      <div class="summary-table">
+        <div class="summary-header">
+          <span class="header-cell">Course Name</span>
+          <span class="header-cell">Price</span>
+        </div>
+
+        <div class="summary-items">
+          <div class="summary-row">
+            <span class="course-name">Machine Learning Fundamentals </span>
+            <span class="course-price">5000 DA</span>
+          </div>
+          <div class="summary-row">
+            <span class="course-name">Advanced Web Technologies</span>
+            <span class="course-price">50000 DA</span>
+          </div>
+          <div class="summary-row">
+            <span class="course-name">Cybersecurity Essentials</span>
+            <span class="course-price">24000 DA</span>
+          </div>
+        </div>
+
+        <div class="summary-totals">
+            <div class="header-cell1">Discount</div>
+            <div class="header-cell2">Total</div>
+          
+          
+            <div class="discount-amount">2200 DA</div>
+            
+              <div class="total-amount">7800 DA </div>
+           
+        </div>
+
+        <div class="final-total">
+          <div class="complete">
+          <div class="final-total-amount">7800 DA</div>
+          <button class="btn-primary btn-complete-payment">
+                Complete Payment
+          </button>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <button 
+  onclick="window.location.href='mailto:novexaacademy@gmail.com?subject=Support%20Request&body=Hello,%20I%20need%20help%20with...'"
+  class="btn-secondary btn-support">
+  Troubleshoot? Visit contact center
+</button>
+
+  </div>
+<!-- Footer -->
+    <div id="footer-placeholder"></div>
+
+    <script>
+        // Load footer.html into the placeholder
+        fetch("../Footer/footer.html")
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById("footer-placeholder").innerHTML = data;
+            })
+            .catch(error => console.error("Error loading footer:", error));
+    </script>
+
+    <script src="../js/api-config.js"></script>
+    <script src="../js/navbar-logic.js"></script>
+    <script src="./script-epayment.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/png" href="../logoE.png" />
+    <link rel="stylesheet" href="./feedback.css" />
+    <link rel="stylesheet" href="../Homepage/style.css" />
+    <title>Feedbacks Page - NoveXa</title>
+</head>
+
+<body>
+   <!--Header part -->
+    <header id="mainHeader">
+        <nav class="navbar">
+            <a href="../home_page2/home_page2.html" class="navbar-logo">
+                <img src="../asset/logo.svg" alt="Logo" />
+            </a>
+
+            <ul class="nav-menu">
+                <li class="nav-item">
+                    <a href="../home_page2/home_page2.html" class="nav-link">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a href="../about_us/about_us.html" class="nav-link">About us</a>
+                </li>
+                <li class="nav-item">
+                    <a href="../teacher list/teachersList.html" class="nav-link">Teachers</a>
+                </li>
+                <li class="nav-item">
+                    <a href="../e_library/e_library.html" class="nav-link">Library</a>
+                </li>
+            </ul>
+
+            <div class="nav-buttons">
+                <button class="btn-profile">My Profile</button>
+            </div>
+
+            <div class="menu-toggle">&#9776;</div>
+        </nav>
+    </header>
+
+    <div class="feedback-page">
+        <!-- Feedback Form -->
+        <div class="feedback-container">
+            <h3>Course Feedback</h3>
+            
+            <!-- Display Course and Teacher Info (read-only) -->
+            <div class="feedback-info">
+                <div class="info-item">
+                    <span class="info-label">📚 Course:</span>
+                    <span class="info-value" id="displayCourseName">Loading...</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">👨‍🏫 Instructor:</span>
+                    <span class="info-value" id="displayTeacherName">Loading...</span>
+                </div>
+            </div>
+
+            <form id="feedbackForm" class="feedback-form">
+                <!-- Hidden fields for course and teacher IDs -->
+                <input type="hidden" name="courseId" id="courseId" />
+                <input type="hidden" name="teacherId" id="teacherId" />
+
+                <label>What do you think about the teacher?</label>
+                <textarea name="teacherFeedback" placeholder="Share your thoughts about the instructor's teaching style, communication, and expertise..." required></textarea>
+
+                <label>What do you think about the course content and materials?</label>
+                <textarea name="courseFeedback" placeholder="Share your feedback about the course content, materials, quizzes, and overall structure..." required></textarea>
+
+                <!-- Rating Section -->
+                <div class="rating-section">
+                    <div class="rating-row">
+                        <label>Rate the course:</label>
+                        <div class="stars" data-type="courseRating">
+                            <span class="star">★</span>
+                            <span class="star">★</span>
+                            <span class="star">★</span>
+                            <span class="star">★</span>
+                            <span class="star">★</span>
+                        </div>
+                    </div>
+
+                    <div class="rating-row">
+                        <label>Rate the teacher:</label>
+                        <div class="stars" data-type="teacherRating">
+                            <span class="star">★</span>
+                            <span class="star">★</span>
+                            <span class="star">★</span>
+                            <span class="star">★</span>
+                            <span class="star">★</span>
+                        </div>
+                    </div>
+                </div>
+
+                <button type="submit" class="submit-btn">Submit Feedback</button>
+                <button type="button" class="cancel-btn" id="cancelBtn">Cancel</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <div id="footer-placeholder"></div>
+
+    <script>
+        fetch("../Footer/footer.html")
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById("footer-placeholder").innerHTML = data;
+            })
+            .catch(error => console.error("Error loading footer:", error));
+    </script>
+
+    <!-- Load API Config first -->
+    <script src="../js/api-config.js"></script>
+    <script src="feedback.js"></script>
+</body>
+
+</html>

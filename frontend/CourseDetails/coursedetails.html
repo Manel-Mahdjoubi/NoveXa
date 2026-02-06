@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/png" href="../logoE.png" />
+    <title>Course Details - NoveXa</title>
+
+    <link rel="stylesheet" href="../globals.css">
+    <link rel="stylesheet" href="coursedetails.css" />
+    <link rel="stylesheet" href="../Homepage/style.css" />
+</head>
+
+<body>
+
+    <!-- NAVIGATION BAR -->
+    <header class="navbar">
+        <div class="logo">
+            <a href="../home_page2/home_page2.html" id="logoButton">
+                <img src="../Novexa_assets/global_assets/logo_top.svg" alt="NoveXa Logo" />
+            </a>
+        </div>
+
+        <nav class="nav-links">
+            <a href="../home_page2/home_page2.html">Home</a>
+            <a href="../about_us/about_us.html">About Us</a>
+            <a href="../teacher list/teachersList.html">Teachers</a>
+            <a href="../e_library/e_library.html">Library</a>
+        </nav>
+
+        <a href="../profile/profile.html" class="profile-btn">My profile</a>
+        <div class="menu-icon" id="menu-toggle">☰</div>
+    </header>
+
+    <!-- MOBILE MENU -->
+    <div class="mobile-menu" id="mobileMenu">
+        <a href="../home_page2/home_page2.html">Home</a>
+        <a href="../about_us/about_us.html">About Us</a>
+        <a href="../teacher list/teachersList.html">Teachers</a>
+        <a href="../e_library/e_library.html">Library</a>
+    </div>
+
+    <!-- ================= MAIN ================= -->
+    <main class="course-details-page">
+
+        <!-- ===== COURSE OVERVIEW ===== -->
+        <section class="course-overview-section">
+            <div class="course-overview-card">
+
+                <div class="course-content-wrapper">
+                    <div class="course-header">
+                        <!-- FILLED BY JS -->
+                        <h1 class="course-title"></h1>
+                        <p class="course-description"></p>
+                    </div>
+
+                    <!-- FILLED BY JS -->
+                    <div class="course-image-container"></div>
+                </div>
+
+                <!-- FILLED BY JS -->
+                <div class="course-stats-grid"></div>
+
+            </div>
+        </section>
+
+        <!-- ===== HERO ===== -->
+        <section class="hero-section">
+            <div class="hero-content">
+                <h2 class="teacher-name">Course Content</h2>
+                <button class="expand-btn" id="expandBtn">Expand all sections</button>
+            </div>
+        </section>
+
+        <!-- ===== COURSE CONTENT ===== -->
+        <section class="course-content">
+            <!-- EMPTY ON PURPOSE -->
+            <div class="sections-container">
+                <div class="loading-state">
+                    Loading course content...
+                </div>
+            </div>
+        </section>
+
+        <section class="show-btn">
+            <button class="show-more-btn" id="showMoreBtn" style="display:none;">Show More</button>
+        </section>
+
+        <!-- ===== CTA ===== -->
+        <section class="cta-section">
+            <h2>What are you waiting for?</h2>
+            <button class="apply-btn">Apply for course</button>
+        </section>
+
+    </main>
+
+    <!-- ================= FOOTER ================= -->
+    <div id="footer-placeholder"></div>
+
+    <script>
+        fetch("../Footer/footer.html")
+            .then(res => res.text())
+            .then(html => document.getElementById("footer-placeholder").innerHTML = html)
+            .catch(err => console.error("Footer load error:", err));
+    </script>
+
+    <!-- ================= SCRIPTS ================= -->
+    <script src="../js/api-config.js"></script>
+    <script src="../js/navbar-logic.js"></script>
+    <script src="coursedetails.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NoveXa - Students list</title>
+    <link rel="stylesheet" href="studentList.css">
+    <link rel="stylesheet" href="../Sidebar/sidebar.css">
+    <link rel="icon" type="image/png" href="../logoE.png">
+</head>
+
+<body>
+    <script src="../js/api-config.js"></script>
+    <script src="../Sidebar/load-sidebare.js"></script>
+    
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="spinner"></div>
+        <p>Loading dashboard...</p>
+    </div>
+
+    <!--Header part -->
+    <header class="navbar">
+        <div class="logo">
+            <a href="../home_page2/home_page2.html" id="logoButton">
+                <img src="../Novexa_assets/global_assets/logo_top.svg" alt="NoveXa Logo" />
+            </a>
+        </div>
+
+        <nav class="nav-links">
+            <a href="../home_page2/home_page2.html">Home</a>
+            <a href="../about_us/about_us.html">About Us</a>
+            <a href="#">Teachers</a>
+            <a href="../e_library/e_library.html">Library</a>
+        </nav>
+
+        <a href="../profile/profile.html" class="profile-btn">My profile</a>
+        <div class="menu-icon" id="menu-toggle">☰</div>
+    </header>
+
+    <!-- MOBILE MENU -->
+    <div class="mobile-menu" id="mobileMenu">
+        <a href="../home_page2/home_page2.html">Home</a>
+        <a href="../about_us/about_us.html">About Us</a>
+        <a href="../students list/studentsList.html">Students</a>
+        <a href="../e_library/e_library.html">Library</a>
+    </div>
+
+    <!-- Main Dashboard Container -->
+    <div class="dashboard-container" role="main">
+
+        <!-- Header Section -->
+        <header class="dashboard-header">
+            <div class="header-left">
+                <h1> My Students List</h1>
+                <p class="header-subtitle">Manage and track student progress</p>
+            </div>
+            <div class="header-actions">
+                <div class="search-wrapper">
+                    <input type="search" id="searchInput" placeholder="Search students... (Ctrl+K)" class="search-input"
+                        aria-label="Search students">
+                </div>
+                <button class="btn-refresh" onclick="refreshData()" aria-label="Refresh data" title="Refresh (Ctrl+R)">
+                    <span class="btn-text">Refresh</span>
+                </button>
+                <button class="btn-export" onclick="exportToCSV()" aria-label="Export to CSV" title="Export (Ctrl+E)">
+                    <span class="btn-text">Export CSV</span>
+                </button>
+            </div>
+        </header>
+
+        <!-- Statistics Cards -->
+        <section class="stats-section" aria-label="Statistics">
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <img src="../assets/student.png" alt="Students Icon" width="30" height="30">
+                    </div>
+                    <div class="stat-content">
+                        <h3 id="totalStudents" class="stat-value">0</h3>
+                        <p class="stat-label">Total Students</p>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <img src="../assets/courses.png" alt="Courses Icon" width="30" height="30">
+                    </div>
+                    <div class="stat-content">
+                        <h3 id="activeCourses" class="stat-value">0</h3>
+                        <p class="stat-label">Active Courses</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Filter Section -->
+        <section class="filter-section" aria-label="Filters">
+            <div class="filter-container">
+                <div class="filter-group">
+                    <label for="courseFilter" class="filter-label"> Filter by Course:</label>
+                    <select id="courseFilter" class="filter-select" onchange="filterTable()"
+                        aria-label="Filter by course">
+                        <option value="">All Courses</option>
+                        <option value="Intro to AI">Intro to AI</option>
+                        <option value="Web Development">Web Development</option>
+                        <option value="Data Science">Data Science</option>
+                        <option value="Machine Learning">Machine Learning</option>
+                        <option value="UI/UX Design">UI/UX Design</option>
+                        <option value="Cybersecurity Basics">Cybersecurity Basics</option>
+                        <option value="Cloud Computing">Cloud Computing</option>
+                        <option value="Frontend Development">Frontend Development</option>
+                        <option value="Backend Engineering">Backend Engineering</option>
+                        <option value="Database Systems">Database Systems</option>
+                        <option value="Computer Vision">Computer Vision</option>
+                        <option value="Software Engineering">Software Engineering</option>
+                    </select>
+                </div>
+
+                <div class="filter-actions">
+                    <button class="btn-clear-filters" onclick="clearFilters()" aria-label="Clear all filters">
+                        Clear Filters
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Table Section -->
+        <section class="table-section" aria-label="Students table">
+            <div class="table-header">
+                <h2 class="table-title">Student Records</h2>
+                <div class="table-info">
+                    <span id="tableCount" class="table-count">Showing 0 students</span>
+                </div>
+            </div>
+
+            <div class="table-container">
+                <table class="students-table" id="studentsTable">
+                    <thead>
+                        <tr>
+                            <th onclick="sortTable(0)" class="sortable" role="button" tabindex="0">
+                                ID <span class="sort-icon" aria-hidden="true">⇅</span>
+                            </th>
+                            <th onclick="sortTable(1)" class="sortable" role="button" tabindex="0">
+                                Name <span class="sort-icon" aria-hidden="true">⇅</span>
+                            </th>
+                            <th onclick="sortTable(2)" class="sortable" role="button" tabindex="0">
+                                Email <span class="sort-icon" aria-hidden="true">⇅</span>
+                            </th>
+                            <th onclick="sortTable(3)" class="sortable" role="button" tabindex="0">
+                                Course <span class="sort-icon" aria-hidden="true">⇅</span>
+                            </th>
+                            <th>Enrollment Date</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tableBody">
+                        <!-- Dynamic content populated by JavaScript -->
+                        <tr>
+                            <td colspan="7" class="loading-row">
+                                <div class="loading-spinner"></div>
+                                <p>Loading students...</p>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Pagination Section -->
+        <nav class="pagination" aria-label="Pagination">
+            <button class="btn-page" onclick="changePage(-1)" id="prevPageBtn" aria-label="Previous page">
+                ← Previous
+            </button>
+            <span id="pageInfo" class="page-info" aria-live="polite">Page 1 of 1</span>
+            <button class="btn-page" onclick="changePage(1)" id="nextPageBtn" aria-label="Next page">
+                Next →
+            </button>
+        </nav>
+
+        <!-- Toast Container -->
+        <div id="toastContainer" aria-live="polite" aria-atomic="true"></div>
+
+        <!---------------------------------------------- Scripts -------------------------------------------------------------------->
+        <script src="../js/navbar-logic.js"></script>
+        <script src="studentList.js"></script>
+
+        <script>
+            // Helper functions for modals
+            function showHelp() {
+                showKeyboardShortcuts();
+            }
+
+            function showKeyboardShortcuts() {
+                const modal = document.getElementById('helpModal');
+                if (modal) {
+                    modal.style.display = 'flex';
+                    setTimeout(() => modal.classList.add('show'), 10);
+                }
+            }
+
+            function closeHelpModal() {
+                const modal = document.getElementById('helpModal');
+                if (modal) {
+                    modal.classList.remove('show');
+                    setTimeout(() => modal.style.display = 'none', 300);
+                }
+            }
+
+            // Update table count
+            function updateTableCount() {
+                const count = document.querySelectorAll('#tableBody tr:not(.empty-state)').length;
+                const countEl = document.getElementById('tableCount');
+                if (countEl) {
+                    countEl.textContent = `Showing ${count} student${count !== 1 ? 's' : ''}`;
+                }
+            }
+
+            // Hide loading overlay after page load
+            window.addEventListener('load', () => {
+                setTimeout(() => {
+                    document.getElementById('loadingOverlay')?.classList.add('hidden');
+                }, 500);
+            });
+        </script>
+    </div>
+
+
+<!-- Script for header-->
+ <script>
+  document.addEventListener("DOMContentLoaded", function () {
+    /*MOBILE NAV MENU */
+    const menuToggle = document.getElementById("menu-toggle");
+    const mobileMenu = document.getElementById("mobileMenu");
+
+    if (menuToggle && mobileMenu) {
+      menuToggle.addEventListener("click", () => {
+        const isVisible =
+          mobileMenu.style.display === "flex" ||
+          mobileMenu.classList.contains("active");
+
+        if (isVisible) {
+          mobileMenu.style.display = "none";
+          mobileMenu.classList.remove("active");
+        } else {
+          mobileMenu.style.display = "flex";
+          mobileMenu.classList.add("active");
+        }
+      });
+    }
+  }); 
+ </script>
+
+
+
+
+
+    <!-- Footer -->
+    <div id="footer-placeholder"></div>
+
+    <script>
+        // Load footer.html into the placeholder
+        fetch("../Footer/footer.html")
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById("footer-placeholder").innerHTML = data;
+            })
+            .catch(error => console.error("Error loading footer:", error));
+    </script>
+
+
+</body>
+
+</html>

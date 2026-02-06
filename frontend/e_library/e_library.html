@@ -1,0 +1,193 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Library — Novexa</title>
+  <link rel="icon" type="image/png" href="../logoE.png" />
+  <link rel="stylesheet" href="e_library.css" />
+  <link rel="stylesheet" href="../Sidebar/sidebar.css" />
+</head>
+
+<body data-page="library">
+  <!-- NAVIGATION BAR -->
+  <header class="navbar">
+    <div class="logo">
+      <a href="../home_page2/home_page2.html" id="logoButton">
+        <img src="../Novexa_assets/global_assets/logo_top.svg" alt="NoveXa Logo" />
+      </a>
+    </div>
+
+    <nav class="nav-links">
+      <a href="../home_page2/home_page2.html">Home</a>
+      <a href="../about_us/about_us.html">About Us</a>
+      <a href="../teacher list/teachersList.html">Teachers</a>
+      <a href="../e_library/e_library.html">Library</a>
+    </nav>
+
+    <a href="../profile/profile.html" class="profile-btn">My profile</a>
+    <div class="menu-icon" id="menu-toggle">☰</div>
+  </header>
+
+  <script src="../js/api-config.js"></script>
+  <script src="../js/navbar-logic.js"></script>
+  <script src="../Sidebar/load-sidebare.js"></script>
+  <!-- MOBILE MENU -->
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="../home_page2/home_page2.html">Home</a>
+    <a href="../about_us/about_us.html">About Us</a>
+    <a href="../teacher list/teachersList.html">Teachers</a>
+    <a href="../e_library/e_library.html">Library</a>
+  </div>
+
+  <div class="library">
+    <div class="hero">
+      <!-- center text -->
+      <div class="hero-center">
+        <h1 class="title">Library</h1>
+        <button class="explore" type="button">Explore courses</button>
+      </div>
+    </div>
+
+    <!-- Search bar -->
+    <div class="search-container">
+      <div class="search-box">
+        <input type="text" id="searchInput" placeholder="Search for courses, topics, or categories..." />
+        <button onclick="searchCourses()">Search </button>
+      </div>
+    </div>
+
+    <!-- Main content area with cards and sidebar -->
+    <div class="content">
+      <main class="cards">
+        <div class="card-grid">
+          <!-- Cards will be dynamically loaded here -->
+        </div>
+      </main>
+
+      <aside class="sidebar" id="librarySidebar">
+        <div class="upload-card">
+          <label for="upload-input" class="upload-illustration upload-image-btn">
+            <img src="../Novexa_assets/e_library&courses_assets/upload_files_ill.png" alt="Upload" />
+          </label>
+          <input type="file" id="upload-input" style="display: none" />
+          <div class="upload-actions">
+            <strong>Add new file</strong>
+          </div>
+        </div>
+
+        <div class="filters">
+
+
+          <h4>Subject</h4>
+          <div><button class="filter-item">CyberSecurity</button></div>
+          <div><button class="filter-item">Design</button></div>
+          <div><button class="filter-item">Marketing</button></div>
+          <div>
+            <button class="filter-item">Machine Learning</button>
+            <button class="filter-item">JavaScript</button>
+          </div>
+          <div><button class="filter-item">Astronomy</button></div>
+
+          <h4>Sort By</h4>
+          <div><button class="filter-item">Recent</button></div>
+          <div><button class="filter-item">Popular</button></div>
+        </div>
+      </aside>
+    </div>
+
+    <!-- Mobile toggle button for sidebar  -->
+    <button class="sidebar-toggle" type="button" aria-label="Open library tools" aria-expanded="false"
+      aria-controls="librarySidebar">
+      Library tools
+    </button>
+  </div>
+
+  <!-- Upload Modal -->
+  <div class="upload-modal" id="uploadModal">
+    <div class="upload-modal-content">
+      <div class="upload-modal-header">
+        <h3>Upload File to Library</h3>
+        <button class="modal-close-btn" id="closeModal">&times;</button>
+      </div>
+
+      <form id="uploadForm">
+        <div class="upload-form-group">
+          <label for="subjectSelect">Select Subject *</label>
+          <select id="subjectSelect" required>
+            <option value="">Choose a subject...</option>
+            <option value="CyberSecurity">CyberSecurity</option>
+            <option value="Web Technology">Web Technology</option>
+            <option value="Machine Learning">Machine Learning</option>
+            <option value="Graphic Design">Graphic Design</option>
+            <option value="JavaScript">JavaScript</option>
+            <option value="Marketing">Marketing</option>
+            <option value="Astronomy">Astronomy</option>
+            <option value="OTHER">Other (New Subject)...</option>
+          </select>
+        </div>
+
+        <div class="upload-form-group" id="newSubjectGroup" style="display: none;">
+          <label for="newSubjectName">New Subject Name *</label>
+          <input type="text" id="newSubjectName" placeholder="Enter the subject name..." />
+        </div>
+
+        <div class="upload-form-group">
+          <label for="fileTitle">File Title (optional)</label>
+          <input type="text" id="fileTitle" placeholder="Enter a descriptive title..." />
+        </div>
+
+        <div class="upload-drop-zone" id="dropZone">
+          <div class="upload-drop-zone-icon">📁</div>
+          <div class="upload-drop-zone-text">
+            <strong>Click to browse</strong> or drag and drop your file here
+          </div>
+          <div class="upload-drop-zone-text" style="font-size: 13px; color: #94a3b8;">
+            Supported: PDF, DOC, DOCX, PPT, PPTX, XLS, XLSX, ZIP
+          </div>
+        </div>
+
+        <input type="file" id="fileInput" style="display: none;" accept=".pdf,.doc,.docx,.ppt,.pptx,.xls,.xlsx,.zip" />
+
+        <div class="upload-selected-file" id="selectedFileDisplay">
+          <div class="upload-file-icon">📄</div>
+          <div class="upload-file-info">
+            <div class="upload-file-name" id="fileName"></div>
+            <div class="upload-file-size" id="fileSize"></div>
+          </div>
+          <button type="button" class="upload-remove-file" id="removeFile">&times;</button>
+        </div>
+
+        <button type="submit" class="upload-submit-btn" id="submitBtn" disabled>
+          Submit to Admin for Review
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Page Drop Overlay -->
+  <div class="page-drop-overlay" id="pageDropOverlay">
+    <div class="page-drop-message">
+      <div class="page-drop-message-icon">📂</div>
+      <div class="page-drop-message-text">Drop your file to upload</div>
+    </div>
+  </div>
+  <!-- Footer -->
+  <div id="footer-placeholder"></div>
+
+  <script>
+    // Load footer.html into the placeholder
+    fetch("../Footer/footer.html")
+      .then(response => response.text())
+      .then(data => {
+        document.getElementById("footer-placeholder").innerHTML = data;
+      })
+      .catch(error => console.error("Error loading footer:", error));
+  </script>
+
+  <script src="../js/navbar-logic.js"></script>
+  <script type="module" src="e_library.js" defer></script>
+</body>
+
+</html>

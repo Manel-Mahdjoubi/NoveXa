@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <!-- Responsive layout on mobile devices -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Thanks for Feedback - NoveXa</title>
+    <link rel="icon" type="image/png" href="../logoE.png" />
+    <link rel="stylesheet" href="after_feedback.css" />
+  </head>
+  <body>
+    <!--NAVBAR -->
+    <header class="navbar">
+      <div class="logo">
+        <a href="../home_page2/home_page2.html" id="logoButton">
+          <img
+            src="../Novexa_assets/global_assets/logo_top.svg"
+            alt="NoveXa Logo"
+          />
+        </a>
+      </div>
+
+      <!-- Desktop navigation links -->
+      <nav class="nav-links">
+        <a href="../home_page2/home_page2.html">Home</a>
+        <a href="../about_us/about_us.html">About Us</a>
+        <a href="../teacher list/teachersList.html">Teachers</a>
+        <a href="../e_library/e_library.html">Library</a>
+      </nav>
+
+      <!-- Profile button that leads to the user profile page -->
+      <a href="../profile/profile.html" class="profile-btn">My profile</a>
+
+      <!-- Menu icon used to open the mobile menu on small screens -->
+      <div class="menu-icon" id="menu-toggle">☰</div>
+    </header>
+
+    <!--MOBILE MENU -->
+    <div class="mobile-menu" id="mobileMenu">
+      <!-- Same navigation links as the desktop navbar, but adapted for mobile -->
+      <a href="../home_page2/home_page2.html">Home</a>
+      <a href="../about_us/about_us.html">About Us</a>
+      <a href="../teacher list/teachersList.html">Teachers</a>
+      <a href="../e_library/e_library.html">Library</a>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div class="content">
+      <div class="text">
+        <h1>Thanks for your<br />feedback</h1>
+      </div>
+
+      <div class="illustration">
+        <img
+          src="../Novexa_assets/after_feedback_assets/screen_ill.svg"
+          alt="Feedback success illustration"
+        />
+      </div>
+
+      <!-- Button-style link that sends the user back to the home page -->
+      <a href="../home_page2/home_page2.html" class="back-home">
+        Back to home page
+      </a>
+    </div>
+       <!-- Footer -->
+    <div id="footer-placeholder"></div>
+
+    <script>
+        // Load footer.html into the placeholder
+        fetch("../Footer/footer.html")
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById("footer-placeholder").innerHTML = data;
+            })
+            .catch(error => console.error("Error loading footer:", error));
+    </script>
+  </body>
+  <script src="../js/navbar-logic.js"></script>
+  <script src="after_feedback.js"></script>
+</html>
