@@ -28,7 +28,7 @@ Render will ask for some details. Fill them in exactly like this:
 *   **Branch**: `main`
 *   **Root Directory**: `manel-backend`  <-- *Very important!*
 *   **Runtime**: `Node`
-*   **Build Command**: `npm install`
+*   **Build Command**: `npm install && npx prisma generate`
 *   **Start Command**: `node src/server.js`
 
 ### 4. Add your Environment Variables (The Secret Keys)
