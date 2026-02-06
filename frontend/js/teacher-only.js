@@ -70,12 +70,17 @@
     
     // Check if user is logged in and is a teacher
     function checkTeacherAccess() {
-        const token = localStorage.getItem('token');
-        const userStr = localStorage.getItem('user');
+        const token = localStorage.getItem(API_CONFIG.KEYS.TOKEN);
+        const userStr = localStorage.getItem(API_CONFIG.KEYS.USER);
         
         // Not logged in
         if (!token || !userStr) {
-            showNotification('You must be logged in as a teacher to access this page', 'error');
+            if (typeof showNotification === 'function') {
+                showNotification('You must be logged in as a teacher to access this page', 'error');
+            } else {
+                alert('You must be logged in as a teacher to access this page');
+            }
+            
             setTimeout(() => {
                 window.location.href = '../login_page/login.html';
             }, 2000);
@@ -87,7 +92,12 @@
             
             // Check if user is a teacher
             if (user.role !== 'teacher') {
-                showNotification('This page is only accessible to teachers', 'error');
+                if (typeof showNotification === 'function') {
+                    showNotification('This page is only accessible to teachers', 'error');
+                } else {
+                    alert('This page is only accessible to teachers');
+                }
+                
                 setTimeout(() => {
                     window.location.href = '../home_page2/home_page2.html';
                 }, 2000);
@@ -97,9 +107,12 @@
             return true;
         } catch (error) {
             console.error('Error parsing user data:', error);
-            showNotification('Authentication error. Please login again', 'error');
-            localStorage.removeItem('token');
-            localStorage.removeItem('user');
+            if (typeof showNotification === 'function') {
+                showNotification('Authentication error. Please login again', 'error');
+            }
+            
+            localStorage.removeItem(API_CONFIG.KEYS.TOKEN);
+            localStorage.removeItem(API_CONFIG.KEYS.USER);
             setTimeout(() => {
                 window.location.href = '../login_page/login.html';
             }, 2000);

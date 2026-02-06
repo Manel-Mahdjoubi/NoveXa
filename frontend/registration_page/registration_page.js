@@ -387,19 +387,44 @@ document.addEventListener('DOMContentLoaded', function () {
         registrationDate: new Date().toISOString(),
       };
 
-      try {
-        let users = JSON.parse(localStorage.getItem('novexa_users') || '[]');
+      // Show loading state
+      const originalText = form.querySelector('.create-btn').textContent;
+      form.querySelector('.create-btn').textContent = "Creating Account...";
+      form.querySelector('.create-btn').disabled = true;
 
-        const emailExists = users.some(
-          (user) => user.email === userData.email
-        );
-        if (emailExists) {
-          showError(email, 'This email is already registered');
-          return;
+      const registrationData = {
+        [`${role.value === 'teacher' ? 'T' : 'S'}_firstname`]: firstName.value.trim(),
+        [`${role.value === 'teacher' ? 'T' : 'S'}_lastname`]: lastName.value.trim(),
+        [`${role.value === 'teacher' ? 'T' : 'S'}_email`]: email.value.trim(),
+        [`${role.value === 'teacher' ? 'T' : 'S'}_phone`]: phone.value.trim(),
+        [`${role.value === 'teacher' ? 'T' : 'S'}_birthdate`]: dob.value,
+        [`${role.value === 'teacher' ? 'T' : 'S'}_password`]: password.value
+      };
+
+      const endpoint = role.value === 'teacher' 
+        ? API_CONFIG.ENDPOINTS.REGISTER_TEACHER 
+        : API_CONFIG.ENDPOINTS.REGISTER_STUDENT;
+
+      fetch(`${API_CONFIG.BASE_URL}${endpoint}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(registrationData)
+      })
+      .then(response => response.json().then(data => ({ status: response.status, ok: response.ok, data })))
+      .then(({ ok, data }) => {
+        if (!ok) {
+          throw new Error(data.message || 'Registration failed');
         }
 
-        users.push(userData);
-        localStorage.setItem('novexa_users', JSON.stringify(users));
+        // Registration successful
+        // Automatically log them in by saving the token
+        if (data.token) {
+          localStorage.setItem(API_CONFIG.KEYS.TOKEN, data.token);
+          localStorage.setItem(API_CONFIG.KEYS.USER, JSON.stringify(data.user || data.teacher || data.student));
+          localStorage.setItem(API_CONFIG.KEYS.ROLE, role.value);
+        }
 
         showSuccessMessage();
 
@@ -407,10 +432,18 @@ document.addEventListener('DOMContentLoaded', function () {
         setTimeout(() => {
           window.location.href = '../home_page2/home_page2.html';
         }, 2000);
-      } catch (error) {
-        console.error('Error saving user data:', error);
-        alert('An error occurred during registration. Please try again.');
-      }
+      })
+      .catch (error => {
+        console.error('Registration error:', error);
+        form.querySelector('.create-btn').textContent = originalText;
+        form.querySelector('.create-btn').disabled = false;
+        
+        if (error.message.includes('email')) {
+          showError(email, error.message);
+        } else {
+          alert(error.message || 'An error occurred during registration. Please try again.');
+        }
+      });
     } else {
       const firstError = form.querySelector('.error-message');
       if (firstError) {
@@ -438,15 +471,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
 
-const register = document.querySelector('.create-btn');
+// End of Registration Script
 
-if (register) {
-    register.addEventListener('click', () => {
-        
 
-        setTimeout(() => ripple.remove(), 6000);
-        
-        setTimeout(() => {
-            window.location.href = '../home_page2/home_page2.html';
-        }, 100000);
-      })};
