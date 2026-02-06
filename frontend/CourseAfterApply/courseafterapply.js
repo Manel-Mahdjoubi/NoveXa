@@ -24,8 +24,8 @@ function getCourseIdFromURL() {
 
 // Check authentication
 function checkAuthentication() {
-  const token = localStorage.getItem('token');
-  const userStr = localStorage.getItem('user');
+  const token = localStorage.getItem(API_CONFIG.KEYS.TOKEN);
+  const userStr = localStorage.getItem(API_CONFIG.KEYS.USER);
   
   if (!token || !userStr) {
     showNotification('Please login to access this course', 'error');
@@ -489,7 +489,7 @@ async function downloadResource(resourceName) {
         return;
     }
 
-    const token = localStorage.getItem('token');
+    const token = localStorage.getItem(API_CONFIG.KEYS.TOKEN);
     if (!token) {
         showNotification('Unauthorized access', 'error');
         return;
@@ -915,7 +915,7 @@ async function generateCertificate() {
     }
 
     try {
-        const userStr = localStorage.getItem('user');
+        const userStr = localStorage.getItem(API_CONFIG.KEYS.USER);
         if (!userStr) throw new Error('User not found');
         const user = JSON.parse(userStr);
         

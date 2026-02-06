@@ -352,11 +352,11 @@ function getCourseIdFromURL() {
 }
 
 function isUserLoggedIn() {
-  return !!localStorage.getItem('token');
+  return !!localStorage.getItem(API_CONFIG.KEYS.TOKEN);
 }
 
 function getUserRole() {
-  const userStr = localStorage.getItem('user');
+  const userStr = localStorage.getItem(API_CONFIG.KEYS.USER);
   if (userStr) {
     const user = JSON.parse(userStr);
     return user.role;

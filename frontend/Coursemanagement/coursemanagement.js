@@ -726,7 +726,7 @@ function initCourseManagement() {
     Backend fetch request to create a course
 ==========================================*/
 async function createCourse(courseData) {
-    const token = localStorage.getItem('token');
+    const token = localStorage.getItem(API_CONFIG.KEYS.TOKEN);
 
     try {
         // Create FormData instead of JSON
