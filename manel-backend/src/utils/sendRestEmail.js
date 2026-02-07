@@ -27,13 +27,13 @@ export const sendResetEmail = async (toEmail, resetToken, userName) => {
       user: smtpUser,
       pass: smtpPass
     },
-    family: 4, // Force IPv4
+    family: 4, // CRITICAL: Force IPv4 as Render sometimes has IPv6 resolution issues
     tls: {
       rejectUnauthorized: false
     },
-    connectionTimeout: 2000000,
-    greetingTimeout: 2000000,
-    socketTimeout: 3000000,
+    connectionTimeout: 15000, // 15 seconds
+    greetingTimeout: 15000,
+    socketTimeout: 20000,
     debug: true,
     logger: true 
   });

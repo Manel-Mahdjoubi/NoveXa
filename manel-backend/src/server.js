@@ -46,12 +46,26 @@ const __dirname = path.dirname(__filename);
 
 // --- 1. CORS & Security Headers ---
 app.use((req, res, next) => {
+  const allowedOrigins = [
+    'https://novexa-online.vercel.app',
+    'http://localhost:3000',
+    'http://localhost:5173',
+    'http://127.0.0.1:5500'
+  ];
+  
   const origin = req.headers.origin;
-  // Reflect the origin back to the caller (standard practice for CORS)
-  res.header('Access-Control-Allow-Origin', origin || '*');
-  res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
-  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
-  res.header('Access-Control-Allow-Credentials', 'true');
+  
+  if (allowedOrigins.includes(origin) || !origin) {
+    res.setHeader('Access-Control-Allow-Origin', origin || '*');
+  } else {
+    // For debugging: if origin is not allowed, still log it but don't block yet (or block if desired)
+    console.log(`⚠️ Origin ${origin} not in explicit whitelist, defaulting to *`);
+    res.setHeader('Access-Control-Allow-Origin', '*');
+  }
+
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
+  res.setHeader('Access-Control-Allow-Credentials', 'true');
   
   if (req.method === 'OPTIONS') {
     return res.status(200).end();
