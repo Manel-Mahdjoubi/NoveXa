@@ -1,5 +1,5 @@
 // Admin User Management Page
-const API_BASE_URL = API_CONFIG.BASE_URL;
+// API_BASE_URL is inherited from admin-credentials.js
 
 let allUsers = [];
 let filteredUsers = [];
