@@ -132,11 +132,11 @@ async function populateCourseFilter() {
         const userStr = localStorage.getItem(API_CONFIG.KEYS.USER);
         const user = userStr ? JSON.parse(userStr) : null;
         
-        if (!user || !user.T_id) {
+        if (!user || !user.id || user.role !== 'teacher') {
             return;
         }
         
-        const teacherId = user.T_id;
+        const teacherId = user.id;
         
         // Get unique courses from the teacher's students
         const result = await apiRequest(`/students/teacher/${teacherId}?page=1&limit=1000`);
@@ -194,11 +194,11 @@ async function loadStudentsData() {
         const userStr = localStorage.getItem(API_CONFIG.KEYS.USER);
         const user = userStr ? JSON.parse(userStr) : null;
         
-        if (!user || !user.T_id) {
+        if (!user || !user.id || user.role !== 'teacher') {
             throw new Error('Teacher ID not found. Please login again.');
         }
         
-        const teacherId = user.T_id;
+        const teacherId = user.id;
         const { currentPage, filters } = state;
         const queryParams = new URLSearchParams({
             page: currentPage,
