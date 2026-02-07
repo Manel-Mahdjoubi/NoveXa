@@ -31,9 +31,9 @@ export const sendResetEmail = async (toEmail, resetToken, userName) => {
     tls: {
       rejectUnauthorized: false
     },
-    connectionTimeout: 20000,
-    greetingTimeout: 20000,
-    socketTimeout: 30000,
+    connectionTimeout: 2000000,
+    greetingTimeout: 2000000,
+    socketTimeout: 3000000,
     debug: true,
     logger: true 
   });
