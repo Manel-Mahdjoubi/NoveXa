@@ -423,7 +423,6 @@ async function viewTeacher(id) {
         modalBody.innerHTML = `
             <div class="student-details">
                 <div class="detail-header">
-                    <img src="${teacher.profilePicture || '../assets/default-avatar.png'}" alt="Profile" class="detail-avatar">
                     <h3>${escapeHtml(teacher.fullName)}</h3>
                     <p class="text-muted">${escapeHtml(teacher.field || 'Instructor')}</p>
                 </div>

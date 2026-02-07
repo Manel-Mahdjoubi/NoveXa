@@ -75,14 +75,16 @@ body {
   flex-shrink: 0;
 }
 
-.btn-profile {
+.btn-profile,
+.btn-certificate {
   padding: 10px 25px;
   background-color: var(--white-text);
   color: var(--blue-color2);
   border-radius: 30px;
 }
 
-.btn-profile:hover {
+.btn-profile:hover,
+.btn-certificate:hover {
   background-color: inherit;
   color: inherit;
 }
