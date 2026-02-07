@@ -44,35 +44,29 @@ const PORT = process.env.PORT || 3000;
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// Middleware
-app.use(express.json({ limit: '50mb' }));
-app.use(express.urlencoded({ extended: true, limit: '50mb' }));
-
-// CORS middleware
+// --- 1. CORS & Security Headers ---
 app.use((req, res, next) => {
-  const allowedOrigins = [
-    'https://novexa-online.vercel.app',
-    'http://localhost:5500', 
-    'http://127.0.0.1:5500',
-    'http://127.0.0.1:54578'
-  ];
   const origin = req.headers.origin;
-  
-  if (allowedOrigins.includes(origin) || !origin) {
-    res.header('Access-Control-Allow-Origin', origin || '*');
-  } else {
-    // Fallback to wildcard if origin is not in list but we want to be permissive
-    res.header('Access-Control-Allow-Origin', '*');
-  }
-
+  // Reflect the origin back to the caller (standard practice for CORS)
+  res.header('Access-Control-Allow-Origin', origin || '*');
   res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
   res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
+  res.header('Access-Control-Allow-Credentials', 'true');
   
   if (req.method === 'OPTIONS') {
-    return res.sendStatus(200);
+    return res.status(200).end();
   }
   next();
 });
+
+// --- 2. Basic Routes ---
+app.get('/api/health', (req, res) => {
+  res.status(200).json({ status: 'up', time: new Date().toISOString() });
+});
+
+// --- 3. Body Parsing ---
+app.use(express.json({ limit: '50mb' }));
+app.use(express.urlencoded({ extended: true, limit: '50mb' }));
 
 // API routes
 app.use('/api/auth', authRoutes);
