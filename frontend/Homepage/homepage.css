@@ -64,6 +64,7 @@ header.scrolled{
     justify-content: space-between;
     background: transparent;
     flex-wrap: nowrap;
+    margin-top: 0px;
     padding: 10px 40px;
     
 
@@ -523,7 +524,7 @@ header.scrolled{
     .navbar {
         padding: 10px 15px;
         position: relative;
-        overflow-x: hidden;
+        /* overflow-x: hidden; Removed to allow menu to show */
     }
 
     .navbar-logo {
@@ -544,7 +545,7 @@ header.scrolled{
         background: var(--blue-color2);
         border-radius: 10px;
         padding: 10px 0;
-        z-index: 1000;
+        z-index: 2000;
         box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     }
 
@@ -573,7 +574,6 @@ header.scrolled{
         font-size: 16px;
     }
  header{ 
-        overflow-x: hidden;
          margin-left: 0px;
         margin-right:0px ;
     }
@@ -678,14 +678,13 @@ header.scrolled{
         flex-direction: column;
         background: linear-gradient(135deg, rgba(14, 132, 200, 0.98), rgba(59, 165, 226, 0.98));
         backdrop-filter: blur(20px) saturate(180%);
-        border-radius: 36px;
+        border-radius: 20px;
         padding: 0;
         margin: 0;
-        margin-left: auto;
         margin-top: 10px;
         overflow: hidden;
         opacity: 0;
-        transform: translateY(-30px) scale(0.95);
+        transform: translateY(-30px);
         transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
         box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
         border: 2px solid rgba(255, 255, 255, 0.1);
@@ -693,13 +692,15 @@ header.scrolled{
         top: 100%;
         left: 0;
         right: 0;
-        width: 50%;
+        width: 100%;
+        z-index: 2000;
     }
 
     .nav-menu.show {
-        max-height: 600px;
+        display: flex !important;
+        max-height: 800px;
         opacity: 1;
-        transform: translateY(0) scale(1);
+        transform: translateY(0);
         padding: 25px 0;
     }
 
@@ -1436,3 +1437,4 @@ margin-right: 0px;}
 
 
 }
+

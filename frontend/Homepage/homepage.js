@@ -137,19 +137,30 @@ document.addEventListener('DOMContentLoaded', function () {
   window.addEventListener('resize', handleResize);
   handleResize();
 });
+
+
+
  
 
 //header background changing in small screens
 
 const logo = document.getElementById("logo");
+const header = document.getElementsByClassName("hero-content");
+const body = document.body;
 
 function changeLogo() {
   if (!logo) return;
   
-  if (window.innerWidth <= 900) {
-    logo.src = "../asset/homepage/backgroundTablet.svg";
+  if (window.innerWidth <= 800) {
+    logo.src = "../asset/homepage/mobile.svg";
+    logo.style.borderRadius = "0%";
+    logo.style.height = "300px";
+    logo.style.width = "0px";
+    body.style.background = "linear-gradient(to bottom, #216890 0%, #0e84c8 -20%, #ffffff 10%)";
+
   } else {
     logo.src = "../asset/homepage/Union.svg";
+    
   }
    
   
@@ -162,7 +173,6 @@ function changeLogo() {
     logo.style.opacity = '1';
   }, 150);
 }
-
 // Run when page loads and when window resizes
 changeLogo();
 window.addEventListener("resize", changeLogo);
