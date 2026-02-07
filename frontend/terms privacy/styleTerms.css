@@ -152,6 +152,79 @@
   color: #0b4d8f;
 }
 
+/* Mobile navigation menu (used by navbar-logic.js) */
+.nav-menu {
+  display: none;
+  position: fixed;
+  top: 0;
+  right: -100%;
+  width: 280px;
+  height: 100vh;
+  background: rgba(255, 255, 255, 0.98);
+  backdrop-filter: blur(10px);
+  box-shadow: -4px 0 20px rgba(0, 0, 0, 0.15);
+  padding: 80px 30px 30px;
+  transition: right 0.3s ease;
+  z-index: 1000;
+  list-style: none;
+}
+
+.nav-menu.active {
+  display: flex;
+  flex-direction: column;
+  right: 0;
+}
+
+.nav-menu li {
+  margin-bottom: 10px;
+}
+
+.nav-menu li a {
+  color: #0e84c8;
+  text-decoration: none;
+  font-weight: 600;
+  padding: 12px 0;
+  font-size: 16px;
+  display: block;
+  transition: color 0.2s ease;
+}
+
+.nav-menu li a:hover {
+  color: #0b4d8f;
+}
+
+.menu-toggle {
+  display: none;
+  cursor: pointer;
+  z-index: 1002;
+}
+
+.menu-toggle .hamburger {
+  width: 25px;
+  height: 2px;
+  background: white;
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+.menu-toggle .hamburger::before,
+.menu-toggle .hamburger::after {
+  content: '';
+  position: absolute;
+  width: 25px;
+  height: 2px;
+  background: white;
+  transition: all 0.3s ease;
+}
+
+.menu-toggle .hamburger::before {
+  top: -8px;
+}
+
+.menu-toggle .hamburger::after {
+  top: 8px;
+}
+
 /* Responsive navbar */
 @media (max-width: 930px) {
  
@@ -160,7 +233,11 @@
     display: none;
   }
 
-  .menu-icon {
+  .auth-buttons {
+    display: none;
+  }
+
+  .menu-toggle {
     display: block;
   }
 
