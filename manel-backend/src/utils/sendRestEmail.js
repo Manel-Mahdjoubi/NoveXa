@@ -26,9 +26,9 @@ export const sendResetEmail = async (toEmail, resetToken, userName) => {
       user: process.env.SMTP_EMAIL, // Updated to match .env
       pass: process.env.SMTP_PASSWORD // Updated to match .env
     },
-    connectionTimeout: 15000, // Increase to 15 seconds
-    greetingTimeout: 15000,
-    socketTimeout: 30000,
+    connectionTimeout: 40000, // Increase to 15 seconds
+    greetingTimeout: 40000,
+    socketTimeout: 50000,
     debug: true,
     logger: true 
   });
