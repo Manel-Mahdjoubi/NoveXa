@@ -23,7 +23,12 @@ export const sendResetEmail = async (toEmail, resetToken, userName) => {
     auth: {
       user: process.env.SMTP_EMAIL, // Updated to match .env
       pass: process.env.SMTP_PASSWORD // Updated to match .env
-    }
+    },
+    connectionTimeout: 10000, // 10 seconds
+    greetingTimeout: 10000,
+    socketTimeout: 20000,
+    debug: true,
+    logger: true // Enable internal nodemailer logging
   });
 
   // Load designed template

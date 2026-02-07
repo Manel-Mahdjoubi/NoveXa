@@ -362,7 +362,7 @@ export const forgotPassword = asyncHandler(async (req, res) => {
     }
 
     res.status(500);
-    throw new Error('Email could not be sent');
+    throw new Error(`Email could not be sent: ${err.message}`);
   }
 });
 
