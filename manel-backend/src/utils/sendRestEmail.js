@@ -57,7 +57,7 @@ export const sendResetEmail = async (toEmail, resetToken, userName) => {
 
   // Email message
   const message = {
-    from: `"NoveXa Academy" <${process.env.EMAIL_USER}>`,
+    from: `"NoveXa Academy" <${process.env.SMTP_EMAIL}>`,
     to: toEmail,
     subject: 'Reset your NoveXa password',
     html: htmlTemplate

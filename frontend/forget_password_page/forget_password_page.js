@@ -52,8 +52,7 @@ if (form && emailInput && successMessage && errorMessage) {
       }
     } catch (error) {
       console.error('Forgot password error:', error);
-      errorMessage.textContent =
-        'Server error. Please try again later.';
+      errorMessage.textContent = error.message || 'Server error. Please try again later.';
       errorMessage.style.display = 'block';
     }
   });
