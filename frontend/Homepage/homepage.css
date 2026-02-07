@@ -549,7 +549,7 @@ header.scrolled{
     }
 
     .nav-menu.show {
-        display: flex;
+        display: flex !important;
     }
 
     .nav-item {
@@ -674,11 +674,7 @@ header.scrolled{
 
     /* Enhanced mobile menu dropdown */
     .nav-menu {
-        position: absolute;
-        top: 100%;
-        left: 0;
-        right: 0;
-        width: 50%;
+        display: none;
         flex-direction: column;
         background: linear-gradient(135deg, rgba(14, 132, 200, 0.98), rgba(59, 165, 226, 0.98));
         backdrop-filter: blur(20px) saturate(180%);
@@ -693,6 +689,11 @@ header.scrolled{
         transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
         box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
         border: 2px solid rgba(255, 255, 255, 0.1);
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        width: 50%;
     }
 
     .nav-menu.show {
