@@ -1,4 +1,4 @@
-import nodemailer from 'nodemailer';
+import axios from 'axios';
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
@@ -7,45 +7,26 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 /**
- * Send reset password email using Resend via SMTP
+ * Send reset password email using Resend via HTTP API (Bypasses port blocks)
  * @param {string} toEmail - user email
  * @param {string} resetToken - raw reset token
  * @param {string} userName - user's name
  */
 export const sendResetEmail = async (toEmail, resetToken, userName) => {
   const resetUrl = `${process.env.FRONTEND_URL}/reset_pasword_page/reset_password_page.html?token=${resetToken}`;
+  const apiKey = process.env.RESEND_API_KEY;
 
-  console.log(`Attempting to send email to ${toEmail} using Gmail SMTP...`);
+  if (!apiKey) {
+    console.error('❌ RESEND_API_KEY is missing in .env!');
+    throw new Error('Email service configuration missing (RESEND_API_KEY)');
+  }
 
-  // Create transporter with Gmail SMTP settings
-  // Port 587 with STARTTLS + forcing IPv4 (family: 4) is the most robust config for Render
-  const transporter = nodemailer.createTransport({
-    host: 'smtp.gmail.com',
-    port: 587,
-    secure: false, // STARTTLS
-    auth: {
-      user: process.env.SMTP_EMAIL,
-      pass: process.env.SMTP_PASSWORD
-    },
-    family: 4, // CRITICAL: Force IPv4 as Render sometimes has IPv6 resolution issues
-    tls: {
-      rejectUnauthorized: false,
-      minVersion: 'TLSv1.2'
-    },
-    connectionTimeout: 20000, 
-    greetingTimeout: 20000,
-    socketTimeout: 30000,
-    debug: true,
-    logger: true 
-  });
+  console.log(`🚀 Sending email to ${toEmail} using Resend HTTP API...`);
 
   // Load designed template
   let htmlTemplate;
   try {
-    // Go up 3 levels: utils -> src -> manel-backend -> root -> frontend
     const templatePath = path.join(__dirname, '../../../frontend/email_template/email_template.html');
-    console.log('Loading template from:', templatePath);
-    
     htmlTemplate = fs.readFileSync(templatePath, 'utf8');
 
     // Replace placeholders
@@ -63,25 +44,28 @@ export const sendResetEmail = async (toEmail, resetToken, userName) => {
           <a href="${resetUrl}" style="display:inline-block; padding:12px 24px; background:#4a90e2; color:#ffffff; text-decoration:none; border-radius:8px; font-weight:bold;">Reset Password</a>
         </div>
         <p>This link will expire in 15 minutes.</p>
-        <p>If you did not request this, please ignore this email.</p>
       </div>
     `;
   }
 
-  // Email message
-  const message = {
-    from: `"NoveXa Academy" <${process.env.SMTP_EMAIL}>`,
-    to: toEmail,
-    subject: 'Reset your NoveXa password',
-    html: htmlTemplate
-  };
-
   try {
-    const info = await transporter.sendMail(message);
-    console.log('Email sent successfully via Gmail SMTP:', info.messageId);
-    return info;
+    const response = await axios.post('https://api.resend.com/emails', {
+      from: 'NoveXa Academy <onboarding@resend.dev>', // Free tier default, or verify your domain
+      to: [toEmail],
+      subject: 'Reset your NoveXa password',
+      html: htmlTemplate
+    }, {
+      headers: {
+        'Authorization': `Bearer ${apiKey}`,
+        'Content-Type': 'application/json'
+      }
+    });
+
+    console.log('✅ Email sent successfully via Resend:', response.data.id);
+    return response.data;
   } catch (err) {
-    console.error('Email Dispatch Error (Gmail SMTP):', err);
-    throw err;
+    const errorMsg = err.response?.data?.message || err.message;
+    console.error('❌ Resend API Error:', errorMsg);
+    throw new Error(`Email could not be sent: ${errorMsg}`);
   }
 };
