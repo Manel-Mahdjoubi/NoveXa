@@ -4,7 +4,7 @@
 (function() {
     // Standard logout function
     const logoutUser = () => {
-        console.log("🚀 Logging out...");
+        console.log("ðŸš€ Logging out...");
         if (typeof logout === 'function') {
             logout();
         } else {
@@ -19,14 +19,14 @@
     };
 
     const initNavbar = () => {
-        console.log('🔄 Initializing role-based navbar logic...');
+        console.log('ðŸ”„ Initializing role-based navbar logic...');
 
         const userKey = (typeof API_CONFIG !== 'undefined' && API_CONFIG.KEYS && API_CONFIG.KEYS.USER) ? API_CONFIG.KEYS.USER : 'user';
         const userStr = localStorage.getItem(userKey);
         const user = userStr ? JSON.parse(userStr) : null;
 
         if (!user) {
-            console.log('ℹ️ No user logged in, navbar remains unchanged.');
+            console.log('â„¹ï¸ No user logged in, navbar remains unchanged.');
             return;
         }
 

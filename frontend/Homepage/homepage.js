@@ -1,4 +1,3 @@
-
 //header script for background on scroll
 window.addEventListener("scroll", function () {
   const header = document.getElementById("mainHeader");
@@ -110,7 +109,7 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   // ===============================
-  // 📌 SMOOTH SCROLLING FOR NAV LINKS
+  // ðŸ“Œ SMOOTH SCROLLING FOR NAV LINKS
   // ===============================
   navLinks.forEach((link) => {
     link.addEventListener("click", (e) => {
@@ -126,7 +125,7 @@ document.addEventListener('DOMContentLoaded', function () {
   });
 
   // ===============================
-  // 📌 CARDS AUTO-SCROLL
+  // ðŸ“Œ CARDS AUTO-SCROLL
   // ===============================
   const cards = document.querySelector('.cards-scroll-container');
 
@@ -223,4 +222,3 @@ if (getstarted) {
             window.location.href = '../login_page/login.html';
         }, 300);
       })};
-
