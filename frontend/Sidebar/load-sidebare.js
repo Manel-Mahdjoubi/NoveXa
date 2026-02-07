@@ -3,7 +3,8 @@ document.addEventListener('DOMContentLoaded', function() {
     console.log(' Starting to load sidebar...');
     
     // Get user role from localStorage
-    const userStr = localStorage.getItem(API_CONFIG.KEYS.USER);
+    const userKey = (typeof API_CONFIG !== 'undefined' && API_CONFIG.KEYS && API_CONFIG.KEYS.USER) ? API_CONFIG.KEYS.USER : 'user';
+    const userStr = localStorage.getItem(userKey);
     const user = userStr ? JSON.parse(userStr) : null;
     let role = 'student'; // Default
     

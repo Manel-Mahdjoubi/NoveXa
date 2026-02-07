@@ -14,6 +14,7 @@
             localStorage.removeItem("teacherId");
             localStorage.removeItem("studentId");
             localStorage.removeItem("adminToken");
+            
             window.location.href = "../Homepage/homepage.html";
         }
     };

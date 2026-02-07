@@ -128,8 +128,18 @@ function initializeDashboard() {
 
 async function populateCourseFilter() {
     try {
-        // Get unique courses from the current student data
-        const result = await apiRequest('/students/with-quiz-stats?page=1&limit=1000');
+        // Get teacher ID from user data
+        const userStr = localStorage.getItem(API_CONFIG.KEYS.USER);
+        const user = userStr ? JSON.parse(userStr) : null;
+        
+        if (!user || !user.T_id) {
+            return;
+        }
+        
+        const teacherId = user.T_id;
+        
+        // Get unique courses from the teacher's students
+        const result = await apiRequest(`/students/teacher/${teacherId}?page=1&limit=1000`);
         if (result && result.success && result.data) {
             const courses = [...new Set(result.data.map(s => s.course).filter(c => c && c !== 'No enrollment'))];
             courses.sort();
@@ -180,15 +190,25 @@ function setupEventListeners() {
 
 async function loadStudentsData() {
     try {
+        // Get teacher ID from user data
+        const userStr = localStorage.getItem(API_CONFIG.KEYS.USER);
+        const user = userStr ? JSON.parse(userStr) : null;
+        
+        if (!user || !user.T_id) {
+            throw new Error('Teacher ID not found. Please login again.');
+        }
+        
+        const teacherId = user.T_id;
         const { currentPage, filters } = state;
         const queryParams = new URLSearchParams({
             page: currentPage,
             limit: CONFIG.rowsPerPage,
             search: filters.search || '',
-            course: filters.course || ''
+            courseName: filters.course || ''
         });
 
-        const result = await apiRequest(`/students/with-quiz-stats?${queryParams.toString()}`);
+        // Use teacher-specific endpoint to get only students in teacher's courses
+        const result = await apiRequest(`/students/teacher/${teacherId}?${queryParams.toString()}`);
         
         if (!result || !result.success) {
             throw new Error('Failed to load students');
