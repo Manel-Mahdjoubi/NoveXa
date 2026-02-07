@@ -78,27 +78,33 @@ app.get('/api/health', (req, res) => {
   res.status(200).json({ status: 'up', time: new Date().toISOString() });
 });
 
-app.get('/api/test-smtp', async (req, res) => {
+app.get('/api/test-email', async (req, res) => {
   try {
-    const nodemailer = await import('nodemailer');
-    const transporter = nodemailer.default.createTransport({
-      host: 'smtp.gmail.com',
-      port: 587,
-      secure: false,
-      auth: {
-        user: process.env.SMTP_EMAIL,
-        pass: process.env.SMTP_PASSWORD
-      },
-      family: 4,
-      connectionTimeout: 10000
+    const axios = (await import('axios')).default;
+    const apiKey = process.env.RESEND_API_KEY;
+    
+    if (!apiKey) {
+      return res.status(500).json({ success: false, error: 'RESEND_API_KEY missing' });
+    }
+
+    console.log('🔍 Testing Resend API connection...');
+    const response = await axios.post('https://api.resend.com/emails', {
+      from: 'NoveXa Academy <onboarding@resend.dev>',
+      to: ['novexaacademy@gmail.com'], // Test to yourself
+      subject: 'Test connection from Render',
+      html: '<strong>Resend API (HTTP) is working!</strong>'
+    }, {
+      headers: {
+        'Authorization': `Bearer ${apiKey}`,
+        'Content-Type': 'application/json'
+      }
     });
     
-    console.log('🔍 Testing SMTP connection...');
-    await transporter.verify();
-    res.status(200).json({ success: true, message: 'SMTP connection verified!' });
+    res.status(200).json({ success: true, message: 'Resend API verified!', data: response.data });
   } catch (err) {
-    console.error('❌ SMTP Test Failed:', err);
-    res.status(500).json({ success: false, error: err.message });
+    const errorMsg = err.response?.data?.message || err.message;
+    console.error('❌ Resend Test Failed:', errorMsg);
+    res.status(500).json({ success: false, error: errorMsg });
   }
 });
 
