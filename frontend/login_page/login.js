@@ -156,7 +156,8 @@ document.addEventListener("DOMContentLoaded", () => {
           }
         }
 
-        // Redirect to home page
+        // Redirect to unified home page
+        // The page at home_page2.html dynamically adjusts based on user role
         window.location.href = "../home_page2/home_page2.html";
 
       } catch (error) {

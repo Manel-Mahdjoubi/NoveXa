@@ -428,7 +428,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
         showSuccessMessage();
 
-        // redirect to HOME page after 2 seconds
+        // redirect to unified home page after 2 seconds
+        // The page at home_page2.html dynamically adjusts based on user role
         setTimeout(() => {
           window.location.href = '../home_page2/home_page2.html';
         }, 2000);
