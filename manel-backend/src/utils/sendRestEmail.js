@@ -18,21 +18,22 @@ export const sendResetEmail = async (toEmail, resetToken, userName) => {
   console.log(`Attempting to send email to ${toEmail} using Gmail SMTP...`);
 
   // Create transporter with Gmail SMTP settings
-  // Port 587 with STARTTLS is often more reliable on cloud providers
+  // Port 587 with STARTTLS + forcing IPv4 (family: 4) is the most robust config for Render
   const transporter = nodemailer.createTransport({
     host: 'smtp.gmail.com',
     port: 587,
-    secure: false, // false for port 587
+    secure: false, // STARTTLS
     auth: {
       user: process.env.SMTP_EMAIL,
       pass: process.env.SMTP_PASSWORD
     },
+    family: 4, // CRITICAL: Force IPv4 as Render sometimes has IPv6 resolution issues
     tls: {
-      // Do not fail on invalid certificates (helpful for some cloud proxies)
-      rejectUnauthorized: false
+      rejectUnauthorized: false,
+      minVersion: 'TLSv1.2'
     },
-    connectionTimeout: 30000, // 30 seconds
-    greetingTimeout: 30000,
+    connectionTimeout: 20000, 
+    greetingTimeout: 20000,
     socketTimeout: 30000,
     debug: true,
     logger: true 

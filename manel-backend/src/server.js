@@ -64,6 +64,30 @@ app.get('/api/health', (req, res) => {
   res.status(200).json({ status: 'up', time: new Date().toISOString() });
 });
 
+app.get('/api/test-smtp', async (req, res) => {
+  try {
+    const nodemailer = await import('nodemailer');
+    const transporter = nodemailer.default.createTransport({
+      host: 'smtp.gmail.com',
+      port: 587,
+      secure: false,
+      auth: {
+        user: process.env.SMTP_EMAIL,
+        pass: process.env.SMTP_PASSWORD
+      },
+      family: 4,
+      connectionTimeout: 10000
+    });
+    
+    console.log('🔍 Testing SMTP connection...');
+    await transporter.verify();
+    res.status(200).json({ success: true, message: 'SMTP connection verified!' });
+  } catch (err) {
+    console.error('❌ SMTP Test Failed:', err);
+    res.status(500).json({ success: false, error: err.message, details: err.code });
+  }
+});
+
 // --- 3. Body Parsing ---
 app.use(express.json({ limit: '50mb' }));
 app.use(express.urlencoded({ extended: true, limit: '50mb' }));
