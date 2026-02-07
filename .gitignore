@@ -36,3 +36,6 @@ dist/
 build/
 out/
 .next/
+
+README.md
+hosting_guide.md
