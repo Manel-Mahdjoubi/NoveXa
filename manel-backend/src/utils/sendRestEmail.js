@@ -19,16 +19,18 @@ export const sendResetEmail = async (toEmail, resetToken, userName) => {
 
   // Create transporter with Gmail SMTP settings
   const transporter = nodemailer.createTransport({
-    service: 'gmail',
+    host: 'smtp.gmail.com',
+    port: 465,
+    secure: true, // use SSL
     auth: {
       user: process.env.SMTP_EMAIL, // Updated to match .env
       pass: process.env.SMTP_PASSWORD // Updated to match .env
     },
-    connectionTimeout: 10000, // 10 seconds
-    greetingTimeout: 10000,
-    socketTimeout: 20000,
+    connectionTimeout: 15000, // Increase to 15 seconds
+    greetingTimeout: 15000,
+    socketTimeout: 30000,
     debug: true,
-    logger: true // Enable internal nodemailer logging
+    logger: true 
   });
 
   // Load designed template
