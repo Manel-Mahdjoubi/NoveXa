@@ -45,15 +45,15 @@ const API_CONFIG = {
     RESET_PASSWORD: '/auth/reset-password',
 
     // Admin
-    ADMIN_LOGIN: '/admin/login',
-    ADMIN_STATISTICS: '/admin/statistics',
-    ADMIN_STUDENTS: '/admin/students',
-    ADMIN_TEACHERS: '/admin/teachers',
-    ADMIN_DELETION_REQUESTS: '/admin/deletion-requests',
-    ADMIN_REVIEW_DELETION_REQUEST: (requestId) => `/admin/deletion-requests/${requestId}/review`,
-    ADMIN_LIBRARY_REQUESTS: '/admin/library-requests',
-    ADMIN_APPROVE_LIBRARY_REQUEST: (id) => `/admin/library-requests/${id}/approve`,
-    ADMIN_REJECT_LIBRARY_REQUEST: (id) => `/admin/library-requests/${id}/reject`,
+    ADMIN_LOGIN: '/7x_admin_control_9/login',
+    ADMIN_STATISTICS: '/7x_admin_control_9/statistics',
+    ADMIN_STUDENTS: '/7x_admin_control_9/students',
+    ADMIN_TEACHERS: '/7x_admin_control_9/teachers',
+    ADMIN_DELETION_REQUESTS: '/7x_admin_control_9/deletion-requests',
+    ADMIN_REVIEW_DELETION_REQUEST: (requestId) => `/7x_admin_control_9/deletion-requests/${requestId}/review`,
+    ADMIN_LIBRARY_REQUESTS: '/7x_admin_control_9/library-requests',
+    ADMIN_APPROVE_LIBRARY_REQUEST: (id) => `/7x_admin_control_9/library-requests/${id}/approve`,
+    ADMIN_REJECT_LIBRARY_REQUEST: (id) => `/7x_admin_control_9/library-requests/${id}/reject`,
 
     // Legacy/Generic (from config.js)
     QUIZ: '/quiz',
@@ -121,7 +121,7 @@ function logout() {
 function logoutAdmin() {
   localStorage.removeItem(API_CONFIG.KEYS.ADMIN_TOKEN);
   sessionStorage.clear();
-  window.location.href = '../admin/admin-login.html';
+  window.location.href = '../7x_admin_control_9/admin-login.html';
 }
 
 // Generic API call function

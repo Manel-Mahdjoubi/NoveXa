@@ -6,7 +6,7 @@ const API_BASE_URL = API_CONFIG.BASE_URL;
 // Function to validate admin login via backend API
 async function validateAdminLogin(username, password) {
     try {
-        const response = await fetch(`${API_BASE_URL}/admin/login`, {
+        const response = await fetch(`${API_BASE_URL}${API_CONFIG.ENDPOINTS.ADMIN_LOGIN}`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -66,7 +66,7 @@ async function validateToken() {
     if (!token) return false;
     
     try {
-        const response = await fetch(`${API_BASE_URL}/admin/statistics`, {
+        const response = await fetch(`${API_BASE_URL}${API_CONFIG.ENDPOINTS.ADMIN_STATISTICS}`, {
             headers: { 'Authorization': `Bearer ${token}` }
         });
         

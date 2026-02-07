@@ -134,7 +134,7 @@ async function verifyAdminAuth() {
 
     try {
         // Verify token by fetching admin profile - MUST succeed
-        const response = await fetch(`${API_URL}/admin/statistics`, {
+        const response = await fetch(`${API_URL}/7x_admin_control_9/statistics`, {
             headers: { 'Authorization': `Bearer ${token}` }
         });
 
@@ -200,7 +200,7 @@ async function fetchData(type) {
         const token = localStorage.getItem('adminToken');
         if (!token) throw new Error('No token');
 
-        const response = await fetch(`${API_URL}/admin/${type}`, {
+        const response = await fetch(`${API_URL}/7x_admin_control_9/${type}`, {
             headers: { 'Authorization': `Bearer ${token}` }
         });
 
@@ -286,7 +286,7 @@ async function loadStatistics() {
 
     try {
         const token = localStorage.getItem('adminToken');
-        const response = await fetch(`${API_URL}/admin/statistics`, {
+        const response = await fetch(`${API_URL}/7x_admin_control_9/statistics`, {
             headers: { 'Authorization': `Bearer ${token}` }
         });
 
@@ -331,7 +331,7 @@ async function loadStatistics() {
 async function fetchDeletionRequests() {
     try {
         const token = localStorage.getItem('adminToken');
-        const response = await fetch(`${API_URL}/admin/deletion-requests`, {
+        const response = await fetch(`${API_URL}/7x_admin_control_9/deletion-requests`, {
             headers: { 'Authorization': `Bearer ${token}` }
         });
 
@@ -358,7 +358,7 @@ async function fetchDeletionRequests() {
 async function fetchLibraryRequests() {
     try {
         const token = localStorage.getItem('adminToken');
-        const response = await fetch(`${API_URL}/admin/library-requests`, {
+        const response = await fetch(`${API_URL}/7x_admin_control_9/library-requests`, {
             headers: { 'Authorization': `Bearer ${token}` }
         });
 
@@ -437,7 +437,7 @@ async function fetchDeletionRequests() {
         const token = localStorage.getItem('adminToken');
         if (!token) return;
 
-        const response = await fetch(`${API_URL}/admin/deletion-requests`, {
+        const response = await fetch(`${API_URL}/7x_admin_control_9/deletion-requests`, {
             headers: { 'Authorization': `Bearer ${token}` }
         });
 
@@ -592,7 +592,7 @@ async function reviewDeletionRequest(requestId, action, notes = '') {
     }
     try {
         const token = localStorage.getItem('adminToken');
-        const response = await fetch(`${API_URL}/admin/deletion-requests/${requestId}/review`, {
+        const response = await fetch(`${API_URL}/7x_admin_control_9/deletion-requests/${requestId}/review`, {
             method: 'PUT',
             headers: {
                 'Authorization': `Bearer ${token}`,
@@ -627,7 +627,7 @@ async function reviewDeletionRequest(requestId, action, notes = '') {
 async function fetchLibraryRequests(status = 'pending') {
     try {
         const token = localStorage.getItem('adminToken');
-        const response = await fetch(`${API_URL}/admin/library-requests?status=${status}`, {
+        const response = await fetch(`${API_URL}/7x_admin_control_9/library-requests?status=${status}`, {
             headers: { 'Authorization': `Bearer ${token}` }
         });
 
@@ -672,7 +672,7 @@ function renderLibraryRequests() {
 async function approveLibraryRequest(id) {
     try {
         const token = localStorage.getItem('adminToken');
-        const response = await fetch(`${API_URL}/admin/library-requests/${id}/approve`, {
+        const response = await fetch(`${API_URL}/7x_admin_control_9/library-requests/${id}/approve`, {
             method: 'PUT',
             headers: { 'Authorization': `Bearer ${token}` }
         });
@@ -691,7 +691,7 @@ async function rejectLibraryRequest(id) {
 
     try {
         const token = localStorage.getItem('adminToken');
-        const response = await fetch(`${API_URL}/admin/library-requests/${id}/reject`, {
+        const response = await fetch(`${API_URL}/7x_admin_control_9/library-requests/${id}/reject`, {
             method: 'PUT',
             headers: {
                 'Authorization': `Bearer ${token}`,
@@ -711,7 +711,7 @@ async function rejectLibraryRequest(id) {
 async function deleteLibraryResource(id) {
     try {
         const token = localStorage.getItem('adminToken');
-        const response = await fetch(`${API_URL}/admin/library-resources/${id}`, {
+        const response = await fetch(`${API_URL}/7x_admin_control_9/library-resources/${id}`, {
             method: 'DELETE',
             headers: { 'Authorization': `Bearer ${token}` }
         });
@@ -790,7 +790,7 @@ function loadTeachers() {
 async function viewUserDetails(userId, type) {
     try {
         const token = localStorage.getItem('adminToken');
-        const response = await fetch(`${API_URL}/admin/${type}s/${userId}`, {
+        const response = await fetch(`${API_URL}/7x_admin_control_9/${type}s/${userId}`, {
             headers: { 'Authorization': `Bearer ${token}` }
         });
 
@@ -840,7 +840,7 @@ function filterTeachers(searchTerm) {
 async function loadAdmins() {
     try {
         const token = localStorage.getItem('adminToken');
-        const response = await fetch(`${API_URL}/admin/admins`, {
+        const response = await fetch(`${API_URL}/7x_admin_control_9/admins`, {
             headers: { 'Authorization': `Bearer ${token}` }
         });
 
@@ -1123,7 +1123,7 @@ function showDeleteAdminModal(adminId, username) {
 async function changeAdminRole(adminId) {
     try {
         const token = localStorage.getItem('adminToken');
-        const response = await fetch(`${API_URL}/admin/admins/${adminId}/role`, {
+        const response = await fetch(`${API_URL}/7x_admin_control_9/admins/${adminId}/role`, {
             method: 'PUT',
             headers: {
                 'Authorization': `Bearer ${token}`,
@@ -1147,7 +1147,7 @@ async function changeAdminRole(adminId) {
 async function deleteAdmin(adminId) {
     try {
         const token = localStorage.getItem('adminToken');
-        const response = await fetch(`${API_URL}/admin/admins/${adminId}`, {
+        const response = await fetch(`${API_URL}/7x_admin_control_9/admins/${adminId}`, {
             method: 'DELETE',
             headers: { 'Authorization': `Bearer ${token}` }
         });

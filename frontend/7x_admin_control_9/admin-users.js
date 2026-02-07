@@ -43,7 +43,7 @@ async function checkAdminAuth() {
     }
     
     // Verify token with backend
-    const response = await fetch(`${API_BASE_URL}/admin/statistics`, {
+    const response = await fetch(`${API_BASE_URL}${API_CONFIG.ENDPOINTS.ADMIN_STATISTICS}`, {
         headers: { 'Authorization': `Bearer ${token}` }
     });
     
@@ -149,7 +149,7 @@ async function loadUsers() {
         if (tableContainer) tableContainer.style.display = 'none';
         
         const token = localStorage.getItem('adminToken');
-        const response = await fetch(`${API_BASE_URL}/admin/users`, {
+        const response = await fetch(`${API_BASE_URL}/7x_admin_control_9/users`, {
             headers: {
                 'Authorization': `Bearer ${token}`,
                 'Content-Type': 'application/json'

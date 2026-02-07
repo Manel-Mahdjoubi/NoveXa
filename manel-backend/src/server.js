@@ -121,7 +121,7 @@ app.use('/api/learning', learningRoutes);
 app.use('/api/quiz-access', quizAccessRoutes);
 app.use('/api/feedback', feedbackRoutes);
 app.use('/api/profile', profileRoutes);
-app.use('/api/admin', adminRoutes(prisma));
+app.use('/api/7x_admin_control_9', adminRoutes(prisma));
 app.use('/api/students', studentRoutes(prisma));
 app.use('/api/teachers', teacherRoutes(prisma));
 app.use('/api/certificates', createCertificateRoutes(prisma)); 
