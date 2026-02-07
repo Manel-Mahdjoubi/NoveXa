@@ -1,4 +1,4 @@
-import axios from 'axios';
+import nodemailer from 'nodemailer';
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
@@ -7,21 +7,36 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 /**
- * Send reset password email using Resend via HTTP API (Bypasses port blocks)
+ * Send reset password email using SMTP
  * @param {string} toEmail - user email
  * @param {string} resetToken - raw reset token
  * @param {string} userName - user's name
  */
 export const sendResetEmail = async (toEmail, resetToken, userName) => {
   const resetUrl = `${process.env.FRONTEND_URL}/reset_pasword_page/reset_password_page.html?token=${resetToken}`;
-  const apiKey = process.env.RESEND_API_KEY;
+  const smtpUser = process.env.SMTP_EMAIL;
+  const smtpPass = process.env.SMTP_PASSWORD;
 
-  if (!apiKey) {
-    console.error('❌ RESEND_API_KEY is missing in .env!');
-    throw new Error('Email service configuration missing (RESEND_API_KEY)');
-  }
+  console.log(`🚀 Sending email to ${toEmail} using SMTP...`);
 
-  console.log(`🚀 Sending email to ${toEmail} using Resend HTTP API...`);
+  const transporter = nodemailer.createTransport({
+    host: 'smtp.gmail.com',
+    port: 587,
+    secure: false, // STARTTLS
+    auth: {
+      user: smtpUser,
+      pass: smtpPass
+    },
+    family: 4, // Force IPv4
+    tls: {
+      rejectUnauthorized: false
+    },
+    connectionTimeout: 20000,
+    greetingTimeout: 20000,
+    socketTimeout: 30000,
+    debug: true,
+    logger: true 
+  });
 
   // Load designed template
   let htmlTemplate;
@@ -48,24 +63,19 @@ export const sendResetEmail = async (toEmail, resetToken, userName) => {
     `;
   }
 
-  try {
-    const response = await axios.post('https://api.resend.com/emails', {
-      from: 'NoveXa Academy <onboarding@resend.dev>', // Free tier default, or verify your domain
-      to: [toEmail],
-      subject: 'Reset your NoveXa password',
-      html: htmlTemplate
-    }, {
-      headers: {
-        'Authorization': `Bearer ${apiKey}`,
-        'Content-Type': 'application/json'
-      }
-    });
+  const message = {
+    from: `"NoveXa Academy" <${smtpUser}>`,
+    to: toEmail,
+    subject: 'Reset your NoveXa password',
+    html: htmlTemplate
+  };
 
-    console.log('✅ Email sent successfully via Resend:', response.data.id);
-    return response.data;
+  try {
+    const info = await transporter.sendMail(message);
+    console.log('✅ Email sent successfully:', info.messageId);
+    return info;
   } catch (err) {
-    const errorMsg = err.response?.data?.message || err.message;
-    console.error('❌ Resend API Error:', errorMsg);
-    throw new Error(`Email could not be sent: ${errorMsg}`);
+    console.error('❌ SMTP Error:', err.message);
+    throw new Error(`Email could not be sent: ${err.message}`);
   }
 };
