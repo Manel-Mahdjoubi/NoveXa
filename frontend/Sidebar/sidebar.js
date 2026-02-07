@@ -232,12 +232,7 @@ const initializeSidebar = function () {
             window.logout();
         } else {
             // Robust fallback if global logout is missing
-            localStorage.removeItem("token");
-            localStorage.removeItem("user");
-            localStorage.removeItem("role");
-            localStorage.removeItem("teacherId");
-            localStorage.removeItem("studentId");
-            localStorage.removeItem("adminToken");
+            localStorage.clear();
             window.location.href = "../Homepage/homepage.html";
         }
     });

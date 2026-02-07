@@ -113,11 +113,7 @@ function getUserRole() {
 
 // Helper function to logout
 function logout() {
-  localStorage.removeItem(API_CONFIG.KEYS.TOKEN);
-  localStorage.removeItem(API_CONFIG.KEYS.USER);
-  localStorage.removeItem(API_CONFIG.KEYS.ROLE);
-  localStorage.removeItem('teacherId');
-  localStorage.removeItem('studentId');
+  localStorage.clear();
   window.location.href = '../Homepage/homepage.html';
 }
 
