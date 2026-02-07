@@ -4,7 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>NoveXa - Terms & Privacy Policy</title>
-    <link rel="icon" type="image/png" href="../logoE.png">
+    <link rel="icon" type="image/png" href="../asset/logoE.png">
+    <link rel="stylesheet" href="../Sidebar/sidebar.css">
     <link rel="stylesheet" href="./styleTerms.css">
 </head>
 <body>
@@ -20,27 +21,35 @@
       </a>
     </div>
 
-    <nav class="nav-links">
+    <nav class="nav-links" id="navLinks">
       <a href="../Homepage/homepage.html">Home</a>
       <a href="../about_us/about_us.html">About Us</a>
-      <a href="../login_page/login.html">Teachers</a>
-      <a href="../login_page/login.html">Library</a>
+      <a href="../login_page/login.html" id="navTeachers">Teachers</a>
+      <a href="../login_page/login.html" id="navLibrary">Library</a>
     </nav>
 
-    <div class="auth-buttons">
+    <div class="auth-buttons" id="authButtons">
       <a href="../login_page/login.html" class="login-btn">Login</a>
       <a href="../registration_page/registration_page.html" class="register-btn">Register</a>
     </div>
-    <div class="menu-icon" id="menu-toggle">☰</div>
+    <div class="menu-toggle" id="menu-toggle">
+      <div class="hamburger"></div>
+    </div>
   </header>
 
   <!-- MOBILE MENU -->
-  <div class="mobile-menu" id="mobileMenu">
-    <a href="../Homepage/homepage.html">Home</a>
-    <a href="../about_us/about_us.html">About Us</a>
-    <a href="../login_page/login.html">Teachers</a>
-    <a href="../login_page/login.html">Library</a>
-  </div>
+  <ul class="nav-menu" id="mobileMenu">
+    <li><a href="../Homepage/homepage.html">Home</a></li>
+    <li><a href="../about_us/about_us.html">About Us</a></li>
+    <li><a href="../login_page/login.html" id="mobileNavTeachers">Teachers</a></li>
+    <li><a href="../login_page/login.html" id="mobileNavLibrary">Library</a></li>
+    <li id="mobileAuthButtons">
+      <a href="../login_page/login.html" class="login-btn">Login</a>
+    </li>
+    <li id="mobileAuthButtons2">
+      <a href="../registration_page/registration_page.html" class="register-btn">Register</a>
+    </li>
+  </ul>
  <!-- Table of Contents -->
             <div class="toc-section scroll-animate">
                 <div class="toc-grid">
@@ -253,30 +262,9 @@
         </section>
     </div>
 
-<!-- Script for header-->
- <script>
-  document.addEventListener("DOMContentLoaded", function () {
-    /*MOBILE NAV MENU */
-    const menuToggle = document.getElementById("menu-toggle");
-    const mobileMenu = document.getElementById("mobileMenu");
-
-    if (menuToggle && mobileMenu) {
-      menuToggle.addEventListener("click", () => {
-        const isVisible =
-          mobileMenu.style.display === "flex" ||
-          mobileMenu.classList.contains("active");
-
-        if (isVisible) {
-          mobileMenu.style.display = "none";
-          mobileMenu.classList.remove("active");
-        } else {
-          mobileMenu.style.display = "flex";
-          mobileMenu.classList.add("active");
-        }
-      });
-    }
-  }); 
- </script>
+<!-- Scripts -->
+ <script src="../js/api-config.js"></script>
+ <script src="../js/navbar-logic.js"></script>
  <!-- Footer -->
     <div id="footer-placeholder"></div>
 
