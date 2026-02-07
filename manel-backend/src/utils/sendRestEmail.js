@@ -18,14 +18,22 @@ export const sendResetEmail = async (toEmail, resetToken, userName) => {
   console.log(`Attempting to send email to ${toEmail} using Gmail SMTP...`);
 
   // Create transporter with Gmail SMTP settings
+  // Port 587 with STARTTLS is often more reliable on cloud providers
   const transporter = nodemailer.createTransport({
     host: 'smtp.gmail.com',
-    port: 465,
-    secure: true, // use SSL
+    port: 587,
+    secure: false, // false for port 587
     auth: {
-      user: process.env.SMTP_EMAIL, // Updated to match .env
-      pass: process.env.SMTP_PASSWORD // Updated to match .env
+      user: process.env.SMTP_EMAIL,
+      pass: process.env.SMTP_PASSWORD
     },
+    tls: {
+      // Do not fail on invalid certificates (helpful for some cloud proxies)
+      rejectUnauthorized: false
+    },
+    connectionTimeout: 30000, // 30 seconds
+    greetingTimeout: 30000,
+    socketTimeout: 30000,
     debug: true,
     logger: true 
   });
